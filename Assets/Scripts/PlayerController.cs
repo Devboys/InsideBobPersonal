@@ -60,13 +60,26 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                rb.AddForce(rightMovement, ForceMode2D.Force);
+                if(CheckIfValidXMovement(rightMovement)) rb.AddForce(rightMovement, ForceMode2D.Force);
             }
         }
         else
         {
             rb.AddForce(rightMovement * airDamping);
         }
+    }
+
+    private bool CheckIfValidXMovement(Vector2 movement)
+    {
+        if (movement.x > 0)
+        {
+            if (rb.velocity.x < speed) return true;
+        }
+        else
+        {
+            if (rb.velocity.x > -speed) return true;
+        }
+        return false;
     }
 
     private void HandleJump()
