@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7756270634918024313}
   - component: {fileID: 7756270634918024317}
   m_Layer: 0
-  m_Name: ground
+  m_Name: groundPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -143,4 +143,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: {x: 0, y: 1}
-  force: 10
+  force: 20
