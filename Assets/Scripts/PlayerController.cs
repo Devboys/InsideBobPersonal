@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
     public float jumpCooldown = 10;
     public float controllableCooldown = 10;
     public float airDamping = 0.2f;
+    public LayerMask platformLayer;
     private Timer jumpTimer = new Timer();
     private Timer controllableTimer = new Timer();
 
@@ -33,7 +34,7 @@ public class PlayerController : MonoBehaviour
         filter = new ContactFilter2D();
     }
 
-    // Update is called once per frame
+    // We need to either seperate this into Update and FixedUpdate or stop using physics for movement
     void Update()
     {
         TickTimers(Time.deltaTime * 1000);
@@ -84,11 +85,12 @@ public class PlayerController : MonoBehaviour
 
     private void HandleJump()
     {
-        if (movementState == MovementState.Grounded && jumpTimer.isFinished)
+        float jumpInput = Input.GetAxisRaw("Jump");
+        if (jumpInput != 0 && movementState == MovementState.Grounded && jumpTimer.isFinished)
         {
-            float jumpInput = Input.GetAxisRaw("Jump");
             Vector2 jumpMovement = transform.up * jumpForce * jumpInput;
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y + jumpMovement.y);
+            //rb.AddForce(new Vector2(rb.velocity.x, rb.velocity.y + jumpMovement.y), ForceMode2D.Impulse);
+            rb.velocity = new Vector2(rb.velocity.x, jumpMovement.y);
 
             jumpTimer.StartTimer(jumpCooldown);
         }
@@ -96,9 +98,20 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateMovementState()
     {
-        int grounded = rb.Cast(-Vector3.up, filter, hitBuffer, 0.05f);
+        /*int grounded = rb.Cast(-Vector3.up, filter, hitBuffer, 0.05f);
 
         if (grounded > 0)
+        {
+            movementState = MovementState.Grounded;
+        }
+        else
+        {
+            movementState = MovementState.InAir;
+        }*/
+
+        CapsuleCollider2D col = GetComponent<CapsuleCollider2D>(); // Cache this
+        RaycastHit2D hitInfo = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - col.size.y / 2 * transform.localScale.y), -transform.up, 0.05f, platformLayer);
+        if (hitInfo)
         {
             movementState = MovementState.Grounded;
         }
