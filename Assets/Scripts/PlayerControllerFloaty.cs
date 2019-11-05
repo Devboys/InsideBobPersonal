@@ -55,6 +55,8 @@ public class PlayerControllerFloaty : MonoBehaviour
         HandleJump();
 
         oldVelocity = rb.velocity;
+
+        Debug.Log(rb.velocity);
     }
 
     private void FixedUpdate()
@@ -126,7 +128,7 @@ public class PlayerControllerFloaty : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (platform && platform != collision.otherRigidbody) {
+        if (platform && platform != collision.rigidbody) {
             onPlatform = false;
             platform = null;
         }
