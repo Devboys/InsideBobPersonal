@@ -1,152 +1,277 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(RaycastMover))]
 public class PlayerController : MonoBehaviour
 {
+    //Editor properties.
+    [Header("-- Gravity")]
+    public float gravity;
+    public float maxGravity;
 
-    public float speed;
-    public float jumpForce = 2;
+    [Header("-- Ground Movement")]
+    public float maxSpeed = 5;
+    public float acceleration;
+    public float dirChangeAcceleration;
+    public float deceleration;
 
-    public enum MovementState {
-        Grounded, InAir
-    }
+    [Header("-- Air movement")]
+    public float airAcceleration;
+    public float airDirChangeAcceleration;
+    public float airDeceleration;
 
-    public MovementState movementState;
+    [Header("-- Jumping")]
+    [Tooltip("Height of apex if player does not release button")]
+    public float maxJumpHeight;
+    [Tooltip("Jump height if player instantly releases button")]
+    public float minJumpHeight;
+    [Tooltip("How long to allow for jumping after walking off edges")]
+    public float jumpGraceTime = 0.1f;
 
-    private Rigidbody2D rb;
-    private RaycastHit2D[] hitBuffer;
-    private ContactFilter2D filter;
+    [Header("-- Bouncing")]
+    public float bounceTime;
+    public float bounceMultiplier;
+    public float bounceAcceleration;
+    public float bounceDirChangeAcceleration;
+    public float bounceDeceleration;
 
-    public float jumpCooldown = 10;
-    public float controllableCooldown = 10;
-    public float airDamping = 0.2f;
-    public LayerMask platformLayer;
-    private Timer jumpTimer = new Timer();
-    private Timer controllableTimer = new Timer();
+    [Header("-- Shooting")]
+    public GameObject padPrefab;
+    public LayerMask hitLayers;
+    public float shotCooldown;
+    public float numPadsAllowed;
 
-    // Start is called before the first frame update
-    void Start()
+
+    //private variables
+    [Header("-- State")]
+    [ReadOnly] public Vector2 velocity;
+    private List<GameObject> padList;
+
+    [SerializeField] [ReadOnly] private bool inBounce;
+
+    #region Cached components
+    private RaycastMover _mover;
+
+    #endregion
+
+    #region Timers
+    Timer jumpGraceTimer;
+    Timer bounceTimer;
+    Timer shootTimer;
+
+    #endregion
+
+    private void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        hitBuffer = new RaycastHit2D[16];
-        filter = new ContactFilter2D();
+        //cache components
+        _mover = this.GetComponent<RaycastMover>();
+
+        padList = new List<GameObject>();
+
+        //init timers
+        jumpGraceTimer = new Timer();
+        bounceTimer = new Timer();
+        shootTimer = new Timer();
     }
 
-    // We need to either seperate this into Update and FixedUpdate or stop using physics for movement
     void Update()
     {
-        TickTimers(Time.deltaTime * 1000);
+        //Do not attempt to move downwards if already grounded
+        if (_mover.IsGrounded && bounceTimer.IsFinished) velocity.y = 0;
 
-        UpdateMovementState();
-
-        HandleMovement();
-
+        //Order of movement events matter. Be mindful of changes.
+        HandleGravity();
+        HandleHorizontalMovement();
         HandleJump();
+        HandleShoot();
+
+        _mover.Move(velocity * Time.deltaTime);
+        //Apply corrected velocity changes
+        velocity = _mover.velocity;
+
+
+        //Start grace timer on the same frame we leave ground.
+        if (_mover.HasLeftGround)
+            jumpGraceTimer.StartTimer(jumpGraceTime);
+
+        //When we land on group, we're no longer bouncing.
+        if (_mover.HasLanded)
+            bounceTimer.EndTimer();
+
+        TickTimers();
     }
 
-    private void HandleMovement()
+    #region Update Handle methods
+    private void HandleGravity()
     {
-        float horizontalInput = Input.GetAxisRaw("Horizontal");
-
-        Vector2 rightMovement = transform.right * speed * horizontalInput;
-
-        if (controllableTimer.isFinished)
+        //REMEMBER TO ENABLE AUTOSYNC TRANSFORMS, OTHERWISE BOUNCINESS
+        if (velocity.y > maxGravity)
         {
-            if (movementState == MovementState.Grounded)
+            velocity.y += gravity * Time.deltaTime;
+        }
+        BoundValue(ref velocity.y, maxGravity);
+    }
+
+    private void HandleHorizontalMovement()
+    {
+
+        float horizontalMove = Input.GetAxisRaw("Horizontal");
+        float currentAcceleration;
+        float currentDeceleration;
+        float currentDirChange;
+
+        if (_mover.IsGrounded && !bounceTimer.IsFinished)
+        {
+            currentAcceleration = acceleration;
+            currentDeceleration = deceleration;
+            currentDirChange = dirChangeAcceleration;
+        }
+        else if (bounceTimer.IsFinished)
+        {
+            currentAcceleration = airAcceleration;
+            currentDeceleration = airDeceleration;
+            currentDirChange = airDirChangeAcceleration;
+        }
+        else
+        {
+            currentAcceleration = bounceAcceleration;
+            currentDeceleration = bounceDeceleration;
+            currentDirChange = bounceDirChangeAcceleration;
+        }
+
+        //Temporary approach to all these is weighted average
+        if (Mathf.Abs(horizontalMove) != 0)
+        {
+            //Accelerate
+            if (Mathf.Sign(velocity.x) == Mathf.Sign(horizontalMove))
             {
-                rb.velocity = new Vector2(0, rb.velocity.y);
-                rb.AddForce(rightMovement, ForceMode2D.Impulse);
+                float targetVelocity = Mathf.Sign(horizontalMove) * maxSpeed;
+                velocity.x += (targetVelocity - velocity.x) * Time.deltaTime * currentAcceleration;
             }
+            //Direction change
             else
             {
-                if(CheckIfValidXMovement(rightMovement)) rb.AddForce(rightMovement, ForceMode2D.Force);
+                float targetVelocity = Mathf.Sign(horizontalMove) * maxSpeed;
+                velocity.x += (targetVelocity - velocity.x) * Time.deltaTime * currentDirChange;
             }
         }
         else
         {
-            rb.AddForce(rightMovement * airDamping);
-        }
-    }
+            //Decelerate
+            float decelerateForce = velocity.x * Time.deltaTime * currentDeceleration;
 
-    private bool CheckIfValidXMovement(Vector2 movement)
-    {
-        if (movement.x > 0)
-        {
-            if (rb.velocity.x < speed) return true;
+            if (Mathf.Abs(decelerateForce) > Mathf.Abs(velocity.x))
+                velocity.x = 0;
+            else
+                velocity.x -= decelerateForce;
+
         }
-        else
-        {
-            if (rb.velocity.x > -speed) return true;
-        }
-        return false;
+
+        //BoundValue(ref velocity.x, Mathf.Sign(velocity.x) * maxSpeed);
     }
 
     private void HandleJump()
     {
-        float jumpInput = Input.GetAxisRaw("Jump");
-        if (jumpInput != 0 && movementState == MovementState.Grounded && jumpTimer.isFinished)
+        //assumes constant gravity
+        if (Input.GetAxisRaw("Jump") != 0 && (!jumpGraceTimer.IsFinished || _mover.IsGrounded))
         {
-            Vector2 jumpMovement = transform.up * jumpForce * jumpInput;
-            //rb.AddForce(new Vector2(rb.velocity.x, rb.velocity.y + jumpMovement.y), ForceMode2D.Impulse);
-            rb.velocity = new Vector2(rb.velocity.x, jumpMovement.y);
+            velocity.y = Mathf.Sqrt(2f * maxJumpHeight * -gravity);
 
-            jumpTimer.StartTimer(jumpCooldown);
+            jumpGraceTimer.EndTimer();
+        }
+
+        if (Input.GetButtonUp("Jump") && velocity.y > Mathf.Sqrt(2f * minJumpHeight * -gravity))
+        {
+            velocity.y = Mathf.Sqrt(2f * minJumpHeight * -gravity);
         }
     }
 
-    private void UpdateMovementState()
+    private void HandleShoot()
     {
-        /*int grounded = rb.Cast(-Vector3.up, filter, hitBuffer, 0.05f);
+        if (Input.GetMouseButtonDown(0) && shootTimer.IsFinished)
+        {
+            //calculate inverse of vector between mouse and player
+            Vector2 clickPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 direction = clickPos - (Vector2)transform.position;
 
-        if (grounded > 0)
-        {
-            movementState = MovementState.Grounded;
-        }
-        else
-        {
-            movementState = MovementState.InAir;
-        }*/
+            //normalize direction for ease-of-use.
+            direction = direction.normalized;
+            shootTimer.StartTimer(shotCooldown);
 
-        CapsuleCollider2D col = GetComponent<CapsuleCollider2D>(); // Cache this
-        RaycastHit2D hitInfo = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - col.size.y / 2 * transform.localScale.y), -transform.up, 0.05f, platformLayer);
-        if (hitInfo)
-        {
-            movementState = MovementState.Grounded;
+            //cast ray to calculate platform position.
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, Mathf.Infinity, hitLayers);
+
+            if (hit)
+            {
+                //instantiate platform
+                GameObject platform = Instantiate(padPrefab, hit.point, Quaternion.identity);
+                float angle = Mathf.Atan2(hit.normal.x, hit.normal.y) * Mathf.Rad2Deg;
+                platform.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -angle));
+                padList.Add(platform);
+                if(padList.Count > numPadsAllowed)
+                {
+                    Destroy(padList[0]);
+                    padList.RemoveAt(0);
+                }
+                
+            }
         }
-        else
-        {
-            movementState = MovementState.InAir;
-        }
+
     }
-
-    private void TickTimers(float deltaTime)
+    private void TickTimers()
     {
-        controllableTimer.TickTimer(deltaTime);
-
-        jumpTimer.TickTimer(deltaTime);
+        jumpGraceTimer.TickTimer(Time.deltaTime);
+        bounceTimer.TickTimer(Time.deltaTime);
+        shootTimer.TickTimer(Time.deltaTime);
     }
 
-    public void SetUncontrollable()
+    #endregion
+
+    #region Public methods
+    public void StartBounce(Vector2 initVelocity)
     {
-        controllableTimer.StartTimer(controllableCooldown);
+        //Debug.Log("pre: " + velocity.normalized + " post: " + initVelocity);
+        velocity = initVelocity * bounceMultiplier;
+        bounceTimer.StartTimer(bounceTime);
     }
+    #endregion
 
+    #region Utilities
+    private void BoundValue(ref float value, float max)
+    {
+        if (Mathf.Abs(value) > Mathf.Abs(max)) value = max;
+    }
 
     private class Timer
     {
-        float timer;
+        private float initTime = 1; //initialized as 1 to prevent div by 0
+        private float timer = 0;
+        bool finishedLastCheck;
 
-        public bool isFinished
+        public bool IsFinished
         {
             get { return timer <= 0; }
         }
 
-        public void StartTimer(float totalTime) { timer = totalTime; }
+        public float AsFraction()
+        {
+            if (timer < 0) return 0;
 
+            return 1 - timer / initTime;
+        }
+
+        public bool HasJustFinished()
+        {
+            bool result = finishedLastCheck == IsFinished;
+            finishedLastCheck = IsFinished;
+
+            return result;
+        }
+
+        public void StartTimer(float startTime) { timer = this.initTime = startTime; }
         public void TickTimer(float amount) { timer -= amount; }
-        
+        public void EndTimer() { timer = 0; }
     }
-
+    #endregion
 }
