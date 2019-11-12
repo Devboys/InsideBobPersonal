@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     //Editor properties.
     [Header("-- Gravity")]
-    public float gravity;
+    public float gravity = -20;
     public float maxGravity;
 
     [Header("-- Ground Movement")]
@@ -23,11 +23,17 @@ public class PlayerController : MonoBehaviour
 
     [Header("-- Jumping")]
     [Tooltip("Height of apex if player does not release button")]
-    public float maxJumpHeight;
+    public float maxJumpHeight = 3f;
     [Tooltip("Jump height if player instantly releases button")]
-    public float minJumpHeight;
+    public float minJumpHeight = 0.5f;
+    [Tooltip("Distance covered before jump apex at max speed")]
+    public float JumpDistance1 = 5;
+    [Tooltip("Distance covered after jump apex at max speed")]
+    public float JumpDistance2 = 2;
     [Tooltip("How long to allow for jumping after walking off edges")]
-    public float jumpGraceTime = 0.1f;
+    public float edgeGraceTime = 0.1f;
+    [Tooltip("How early to allow for registering next jump before landing")]
+    public float bunnyGraceTime = 0.2f;
 
     [Header("-- Bouncing")]
     public float bounceTime;
@@ -47,6 +53,7 @@ public class PlayerController : MonoBehaviour
     [Header("-- State")]
     [ReadOnly] public Vector2 velocity;
     private List<GameObject> padList;
+    private bool postJumpApex;
 
     [SerializeField] [ReadOnly] private bool inBounce;
 
@@ -75,6 +82,12 @@ public class PlayerController : MonoBehaviour
         shootTimer = new Timer();
     }
 
+    //DEBUG TEST VARIABLES, DELETE WHEN JUMP ALGORITHM IS DONE
+    private float maxY;
+    private float initX;
+    private float totalX;
+    private bool preApex = true;
+
     void Update()
     {
         //Do not attempt to move downwards if already grounded
@@ -83,21 +96,40 @@ public class PlayerController : MonoBehaviour
         //Order of movement events matter. Be mindful of changes.
         HandleGravity();
         HandleHorizontalMovement();
-        HandleJump();
+        HandleJumpVariableGravity();
         HandleShoot();
 
         _mover.Move(velocity * Time.deltaTime);
         //Apply corrected velocity changes
         velocity = _mover.velocity;
 
-
         //Start grace timer on the same frame we leave ground.
         if (_mover.HasLeftGround)
-            jumpGraceTimer.StartTimer(jumpGraceTime);
+        {
+            jumpGraceTimer.StartTimer(edgeGraceTime);
+            maxY = 0;
+            initX = transform.position.x;
+            totalX = transform.position.x;
+            preApex = true;
+        }
+
+        if (transform.position.y > maxY) maxY = transform.position.y;
+
+        if(velocity.y < 0 && preApex)
+        {
+            postJumpApex = false;
+            preApex = false;
+            initX = transform.position.x - initX;
+        }
 
         //When we land on group, we're no longer bouncing.
         if (_mover.HasLanded)
+        {
             bounceTimer.EndTimer();
+            
+            totalX = transform.position.x - totalX;
+            Debug.Log("XT: " + totalX +" X: " + initX + " Y: " + maxY);
+        }
 
         TickTimers();
     }
@@ -106,11 +138,8 @@ public class PlayerController : MonoBehaviour
     private void HandleGravity()
     {
         //REMEMBER TO ENABLE AUTOSYNC TRANSFORMS, OTHERWISE BOUNCINESS
-        if (velocity.y > maxGravity)
-        {
-            velocity.y += gravity * Time.deltaTime;
-        }
-        BoundValue(ref velocity.y, maxGravity);
+        velocity.y += gravity * Time.deltaTime;
+        //BoundValue(ref velocity.y, maxGravity);
     }
 
     private void HandleHorizontalMovement()
@@ -171,7 +200,26 @@ public class PlayerController : MonoBehaviour
         //BoundValue(ref velocity.x, Mathf.Sign(velocity.x) * maxSpeed);
     }
 
-    private void HandleJump()
+    private void HandleJumpVariableGravity()
+    {
+        if (Input.GetButtonDown("Jump") && (!jumpGraceTimer.IsFinished || _mover.IsGrounded))
+        {
+            float initVelocity = (2 * maxJumpHeight * maxSpeed) / JumpDistance1;
+            float jumpGravity = (-2 * maxJumpHeight * Mathf.Pow(maxSpeed, 2)) / Mathf.Pow(JumpDistance1, 2);
+
+            gravity = jumpGravity;
+            velocity.y = initVelocity;
+        }
+
+        if(velocity.y < 0 && !postJumpApex)
+        {
+            //gravity = (-2 * maxJumpHeight * Mathf.Pow(maxSpeed, 2)) / Mathf.Pow(JumpDistance2, 2);
+            Debug.Log("hello");
+            gravity = (-2 * maxJumpHeight * Mathf.Pow(maxSpeed, 2)) / Mathf.Pow(JumpDistance2, 2);
+            postJumpApex = true;
+        }
+    }
+    private void HandleJumpConstantGravity()
     {
         //assumes constant gravity
         if (Input.GetAxisRaw("Jump") != 0 && (!jumpGraceTimer.IsFinished || _mover.IsGrounded))
