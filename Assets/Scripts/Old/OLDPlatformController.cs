@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlatformController : MonoBehaviour
+public class OLDPlatformController : MonoBehaviour
 {
 
     public Vector2 direction = new Vector2(0, 1);
@@ -33,10 +33,10 @@ public class PlatformController : MonoBehaviour
             {
                 rigidbody.velocity = direction * force;
 
-                PlayerController pc = rigidbody.GetComponent<PlayerController>();
+                OldPlayerController pc = rigidbody.GetComponent<OldPlayerController>();
                 if (pc != null)
                 {
-                    pc.SetUncontrollable();
+                    //pc.SetUncontrollable();
                 }
             }
             //Debug.Log(objects.Count);
