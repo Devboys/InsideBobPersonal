@@ -55,10 +55,10 @@ public class BouncyMonster : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        var pc = collision.gameObject.GetComponent<OldPlayerController>();
+        if (pc)
         {
-            var pc = collision.gameObject.GetComponent<PlayerController>();
-            if (pc.IsCanonBall()) Die();
+            if (pc.IsCannonBall()) Die();
         }
         if (collision.GetContact(0).point.x < transform.position.x - 0.1f && direction == Direction.Left) SwitchDirection();
         else if (collision.GetContact(0).point.x > transform.position.x + 0.01f && direction == Direction.Right) SwitchDirection();

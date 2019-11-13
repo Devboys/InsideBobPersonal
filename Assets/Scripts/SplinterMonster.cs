@@ -93,10 +93,10 @@ public class SplinterMonster : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        var pc = collision.gameObject.GetComponent<OldPlayerController>();
+        if (pc)
         {
-            var pc = collision.gameObject.GetComponent<PlayerController>();
-            if (pc.IsCanonBall())
+            if (pc.IsCannonBall())
             {
                 if (--size == 0)
                 {
