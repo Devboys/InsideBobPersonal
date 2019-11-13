@@ -150,4 +150,9 @@ public class OldPlayerController : MonoBehaviour
 
     }
 
+    public bool IsCannonBall()
+    {
+        return true;
+    }
+
 }
