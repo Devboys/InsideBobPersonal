@@ -121,6 +121,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public bool IsCanonBall()
+    {
+        return true;
+    }
+
     private void TickTimers(float deltaTime)
     {
         controllableTimer.TickTimer(deltaTime);
