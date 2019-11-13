@@ -57,7 +57,7 @@ public class BouncyMonster : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            var pc = collision.gameObject.GetComponent<PlayerController>();
+            var pc = collision.gameObject.GetComponent<OldPlayerController>();
             if (pc.IsCanonBall()) Die();
         }
         if (collision.GetContact(0).point.x < transform.position.x - 0.1f && direction == Direction.Left) SwitchDirection();

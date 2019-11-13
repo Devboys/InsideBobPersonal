@@ -13,7 +13,9 @@ GameObject:
   - component: {fileID: 4916881779835254890}
   - component: {fileID: 4916881779835254870}
   - component: {fileID: 4916881779835254891}
+  - component: {fileID: 756741447248034986}
   - component: {fileID: 4916881779835254868}
+  - component: {fileID: 7960695935954907856}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -118,6 +120,47 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 1, y: 2}
   m_Direction: 0
+--- !u!114 &756741447248034986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4916881779835254888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30739da3b8fb0474fab3be408b41ea19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gravity: -20
+  maxGravity: 0
+  maxSpeed: 5
+  acceleration: 3
+  dirChangeAcceleration: 0
+  deceleration: 0
+  airAcceleration: 0
+  airDirChangeAcceleration: 0
+  airDeceleration: 0
+  maxJumpHeight: 3
+  minJumpHeight: 0.5
+  JumpDistance1: 5
+  JumpDistance2: 2
+  edgeGraceTime: 0.1
+  bunnyGraceTime: 0.2
+  bounceTime: 0
+  bounceMultiplier: 0
+  bounceAcceleration: 0
+  bounceDirChangeAcceleration: 0
+  bounceDeceleration: 0
+  padPrefab: {fileID: 4840296420896782106, guid: 5dc506b3c374dd145a3d8c973bf86a7e,
+    type: 3}
+  hitLayers:
+    serializedVersion: 2
+    m_Bits: 1
+  shotCooldown: 0
+  numPadsAllowed: 0
+  velocity: {x: 0, y: 0}
+  inBounce: 0
 --- !u!114 &4916881779835254868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,3 +176,31 @@ MonoBehaviour:
   speed: 5
   jumpForce: 3
   movementState: 0
+  jumpCooldown: 10
+  controllableCooldown: 10
+  airDamping: 0.2
+  platformLayer:
+    serializedVersion: 2
+    m_Bits: 0
+--- !u!114 &7960695935954907856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4916881779835254888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a207da05efc142940a3cdddc54651b27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 1
+  numHorizontalRays: 3
+  numVerticalRays: 3
+  skinWidth: 0.02
+  wallCheckWidth: 0
+  wallOnRight: 0
+  wallOnLeft: 0
+  lastGroundedPosition: {x: 0, y: 0}

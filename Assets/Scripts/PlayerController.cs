@@ -47,7 +47,8 @@ public class PlayerController : MonoBehaviour
     public LayerMask hitLayers;
     public float shotCooldown;
     public float numPadsAllowed;
-
+    public Shader shader;
+    public AnimationCurve timeCurve;
 
     //private variables
     [Header("-- State")]
@@ -56,6 +57,12 @@ public class PlayerController : MonoBehaviour
     private bool postJumpApex;
 
     [SerializeField] [ReadOnly] private bool inBounce;
+
+    private bool inBulletTime;
+    private LineRenderer line;
+    private GameObject bouncePad;
+    private bool cancelBulletTime;
+    private float bulletTime;
 
     #region Cached components
     private RaycastMover _mover;
@@ -80,6 +87,18 @@ public class PlayerController : MonoBehaviour
         jumpGraceTimer = new Timer();
         bounceTimer = new Timer();
         shootTimer = new Timer();
+
+        // init Bullet Time
+        inBulletTime = false;
+        cancelBulletTime = false;
+        bulletTime = 0.0f;
+        line = gameObject.AddComponent<LineRenderer>();
+        line.startWidth = 0.05f;
+        line.endWidth = 0.05f;
+        line.positionCount = 2;
+
+        bouncePad = Instantiate(padPrefab, transform);
+        bouncePad.SetActive(false);
     }
 
     //DEBUG TEST VARIABLES, DELETE WHEN JUMP ALGORITHM IS DONE
@@ -97,6 +116,7 @@ public class PlayerController : MonoBehaviour
         HandleGravity();
         HandleHorizontalMovement();
         HandleJumpVariableGravity();
+        UpdateBulletTime();
         HandleShoot();
 
         _mover.Move(velocity * Time.deltaTime);
@@ -235,9 +255,85 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void UpdateBulletTime()
+    {
+        if (Input.GetMouseButton(0) && !Input.GetMouseButton(1) && !cancelBulletTime)
+        {
+            if (!inBulletTime)
+            {
+                EnterBulletTime();
+            }
+            else {
+                DrawBulletLine();
+            }
+        }
+        else
+        {
+            if (inBulletTime)
+            {
+                if (Input.GetMouseButton(1))
+                {
+                    cancelBulletTime = true;
+                }
+                ExitBulletTime();
+            }
+        }
+    }
+
+    private void EnterBulletTime()
+    {
+        var endTime = timeCurve.keys[timeCurve.length - 1].time;
+        bulletTime = (bulletTime + Time.unscaledDeltaTime);
+
+        var currentTime = bulletTime < endTime ? bulletTime : endTime;
+
+        var procent = currentTime / endTime;
+
+        Time.timeScale = timeCurve.Evaluate(currentTime);
+
+        if (currentTime == timeCurve.keys[timeCurve.length - 1].time) {
+            bulletTime = 0.0f;
+            inBulletTime = true;
+            line.enabled = true;
+        }
+    }
+
+    private void ExitBulletTime()
+    {
+        inBulletTime = false;
+        Time.timeScale = 1.0f;
+        line.enabled = false;
+        bouncePad.SetActive(false);
+    }
+
+    private void DrawBulletLine()
+    {
+        var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        var dir = (mousePos - transform.position).normalized;
+        dir.z = 0;
+
+        var hit = Physics2D.Raycast(transform.position, dir, int.MaxValue, hitLayers);
+        if (hit)
+        {
+            bouncePad.SetActive(true);
+            line.SetPosition(0, transform.position);
+            line.SetPosition(1, hit.point);
+
+            bouncePad.transform.position = hit.point;
+            Quaternion rot = Quaternion.FromToRotation(Vector2.up, hit.normal);
+            bouncePad.transform.rotation = rot;
+        }
+        else
+        {
+            bouncePad.SetActive(false);
+            line.SetPosition(0, transform.position);
+            line.SetPosition(1, dir * 100);
+        }
+    }
+
     private void HandleShoot()
     {
-        if (Input.GetMouseButtonDown(0) && shootTimer.IsFinished)
+        if (Input.GetMouseButtonUp(0) && shootTimer.IsFinished && !cancelBulletTime)
         {
             //calculate inverse of vector between mouse and player
             Vector2 clickPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -264,6 +360,11 @@ public class PlayerController : MonoBehaviour
                 }
                 
             }
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            cancelBulletTime = false;
+            bulletTime = 0.0f;
         }
     }
     private void TickTimers()
@@ -320,5 +421,10 @@ public class PlayerController : MonoBehaviour
         public void TickTimer(float amount) { timer -= amount; }
         public void EndTimer() { timer = 0; }
     }
+
+    public bool IsInBulletTime() {
+        return inBulletTime;
+    }
+
     #endregion
 }

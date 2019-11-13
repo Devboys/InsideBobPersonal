@@ -95,7 +95,7 @@ public class SplinterMonster : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            var pc = collision.gameObject.GetComponent<PlayerController>();
+            var pc = collision.gameObject.GetComponent<OldPlayerController>();
             if (pc.IsCanonBall())
             {
                 if (--size == 0)
