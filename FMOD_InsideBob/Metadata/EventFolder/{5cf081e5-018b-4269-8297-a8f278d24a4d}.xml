@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="EventFolder" id="{5cf081e5-018b-4269-8297-a8f278d24a4d}">
+		<property name="name">
+			<value>TempLvls</value>
+		</property>
+		<relationship name="folder">
+			<destination>{7ecd888f-79d4-43be-94ef-26b56610100d}</destination>
+		</relationship>
+	</object>
+</objects>

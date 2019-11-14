@@ -181,16 +181,28 @@ MonoBehaviour:
   edgeGraceTime: 0.1
   bunnyGraceTime: 0.2
   bounceTime: 999
-  bounceMultiplier: 20
+  bounceMultiplier: 40
   bounceAcceleration: 2
   bounceDirChangeAcceleration: 2
   bounceDeceleration: 2
-  padPrefab: {fileID: 4840296420896782106, guid: 5dc506b3c374dd145a3d8c973bf86a7e,
+  padPrefab: {fileID: 4840296420896782106, guid: 5f32f3a81d8845f4597b2d95192be694,
     type: 3}
   hitLayers:
     serializedVersion: 2
     m_Bits: 512
-  shotCooldown: 1
-  numPadsAllowed: 0
+  shotCooldown: 0
+  numPadsAllowed: 2
+  shader: {fileID: 0}
+  timeCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  footsteps: event:/Player/TempFS
+  footRate: 0.2
+  footDelay: 0
+  jumpSound: event:/Player/JumpSound
+  landSound: event:/Player/LandSound
   velocity: {x: 0, y: 0}
   inBounce: 0

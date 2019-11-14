@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FMODUnity;
 
 [RequireComponent(typeof(RaycastMover))]
 public class PlayerController : MonoBehaviour
@@ -49,6 +50,23 @@ public class PlayerController : MonoBehaviour
     public float numPadsAllowed;
     public Shader shader;
     public AnimationCurve timeCurve;
+    
+    //Audio variables
+    [Header("-- FMOD Events")] 
+    [Space(20)] 
+    [EventRef]
+    public string footsteps;
+    
+    public float footRate = 0.5f;
+    public float footDelay = 0.0f;
+    
+    [Space(20)] 
+    [EventRef] 
+    public string jumpSound;
+    
+    [EventRef] 
+    public string landSound;
+    
 
     //private variables
     [Header("-- State")]
@@ -118,6 +136,7 @@ public class PlayerController : MonoBehaviour
         HandleJumpVariableGravity();
         UpdateBulletTime();
         HandleShoot();
+        PlayFootSound();
 
         _mover.Move(velocity * Time.deltaTime);
         //Apply corrected velocity changes
@@ -131,6 +150,9 @@ public class PlayerController : MonoBehaviour
             initX = transform.position.x;
             totalX = transform.position.x;
             preApex = true;
+            
+            //Play jump sound.
+            RuntimeManager.PlayOneShot(jumpSound, transform.position);
         }
 
         if (transform.position.y > maxY) maxY = transform.position.y;
@@ -149,9 +171,23 @@ public class PlayerController : MonoBehaviour
             
             totalX = transform.position.x - totalX;
             Debug.Log("XT: " + totalX +" X: " + initX + " Y: " + maxY);
+            
+            //Play landing sound.
+            RuntimeManager.PlayOneShot(landSound, transform.position);
         }
 
         TickTimers();
+    }
+
+    private void PlayFootSound()
+    {
+        //Checks if player is moving, grounded, and triggers footstep sounds.
+        if (Mathf.Abs(velocity.x) > 0.1f && _mover.IsGrounded && Time.time > footDelay)
+        {
+            footDelay = Time.time + footRate;
+            
+            RuntimeManager.PlayOneShot(footsteps, transform.position);
+        }
     }
 
     #region Update Handle methods
@@ -261,10 +297,10 @@ public class PlayerController : MonoBehaviour
         {
             if (!inBulletTime)
             {
-                EnterBulletTime();
+                //EnterBulletTime();
             }
             else {
-                DrawBulletLine();
+                //DrawBulletLine();
             }
         }
         else

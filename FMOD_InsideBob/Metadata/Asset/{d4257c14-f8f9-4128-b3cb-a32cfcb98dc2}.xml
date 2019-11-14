@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="EncodableAsset" id="{d4257c14-f8f9-4128-b3cb-a32cfcb98dc2}">
+		<property name="assetPath">
+			<value>Sfx/BouncePads/</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{10195b06-6ee0-4530-9d28-5a4b5f1995d5}</destination>
+		</relationship>
+	</object>
+</objects>
