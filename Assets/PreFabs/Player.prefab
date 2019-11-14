@@ -200,7 +200,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   footsteps: event:/Player/TempFS
-  footRate: 0.2
+  footRate: 0.15
   footDelay: 0
   jumpSound: event:/Player/JumpSound
   landSound: event:/Player/LandSound
