@@ -45,7 +45,6 @@ public class PlayerController : MonoBehaviour
 
     [Header("-- Shooting")]
     public GameObject padPrefab;
-    public GameObject padPreview;
     public LayerMask hitLayers;
     public float shotCooldown;
     public float numPadsAllowed;
@@ -82,6 +81,7 @@ public class PlayerController : MonoBehaviour
     private bool cancelBulletTime;
     private float bulletTime;
     private float bulletTimePercentage;
+    private GameObject padPreview;
 
     #region Cached components
     private RaycastMover _mover;
@@ -116,7 +116,15 @@ public class PlayerController : MonoBehaviour
         line.startWidth = 0.05f;
         line.endWidth = 0.05f;
         line.positionCount = 2;
-    }
+
+        padPreview = Instantiate(padPrefab);
+        padPreview.transform.parent = transform;
+        padPreview.SetActive(false);
+        var previewComponents = padPreview.GetComponents(typeof(Component));
+        foreach (var c in previewComponents) {
+            if(c.GetType() != typeof(Transform) && c.GetType() != typeof(SpriteRenderer)) Destroy(c);
+        }
+}
 
     //DEBUG TEST VARIABLES, DELETE WHEN JUMP ALGORITHM IS DONE
     private float maxY;
