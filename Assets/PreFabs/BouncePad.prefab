@@ -142,5 +142,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea92968fd9a9c0640b8abe153ad2dbd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fixedDirection: 1
+  fixedDirection: 0
   bounceSound: event:/Sfx/BouncePad
