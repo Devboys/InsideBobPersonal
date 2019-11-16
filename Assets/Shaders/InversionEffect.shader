@@ -1,4 +1,4 @@
-﻿Shader "Hidden/BulletTime"
+﻿Shader "Hidden/InversionEffect"
 {
     Properties
     {
