@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("-- Shooting")]
     public GameObject padPrefab;
+    public GameObject padPreview;
     public LayerMask hitLayers;
     public float shotCooldown;
     public float numPadsAllowed;
@@ -78,7 +79,6 @@ public class PlayerController : MonoBehaviour
 
     private bool inBulletTime;
     private LineRenderer line;
-    private GameObject bouncePad;
     private bool cancelBulletTime;
     private float bulletTime;
     private float bulletTimePercentage;
@@ -116,9 +116,6 @@ public class PlayerController : MonoBehaviour
         line.startWidth = 0.05f;
         line.endWidth = 0.05f;
         line.positionCount = 2;
-
-        bouncePad = Instantiate(padPrefab, transform);
-        bouncePad.SetActive(false);
     }
 
     //DEBUG TEST VARIABLES, DELETE WHEN JUMP ALGORITHM IS DONE
@@ -172,7 +169,6 @@ public class PlayerController : MonoBehaviour
             bounceTimer.EndTimer();
             
             totalX = transform.position.x - totalX;
-            Debug.Log("XT: " + totalX +" X: " + initX + " Y: " + maxY);
             
             //Play landing sound.
             RuntimeManager.PlayOneShot(landSound, transform.position);
@@ -272,7 +268,6 @@ public class PlayerController : MonoBehaviour
         if(velocity.y < 0 && !postJumpApex)
         {
             //gravity = (-2 * maxJumpHeight * Mathf.Pow(maxSpeed, 2)) / Mathf.Pow(JumpDistance2, 2);
-            Debug.Log("hello");
             gravity = (-2 * maxJumpHeight * Mathf.Pow(maxSpeed, 2)) / Mathf.Pow(JumpDistance2, 2);
             postJumpApex = true;
         }
@@ -315,7 +310,33 @@ public class PlayerController : MonoBehaviour
                 }
                 ExitBulletTime();
             }
+
+            Time.timeScale = 1f;
         }
+
+        /*Vector2 rightInput = new Vector2(Input.GetAxisRaw("RightHorizontal"), Input.GetAxisRaw("RightVertical"));
+        if (rightInput.magnitude > 0.1f && Input.GetAxisRaw("Cancel") == 0 && !cancelBulletTime)
+        {
+            if (!inBulletTime)
+            {
+                EnterBulletTime();
+            }
+            else
+            {
+                DrawBulletLine(rightInput);
+            }
+        }
+        else
+        {
+            if (inBulletTime)
+            {
+                if (Input.GetAxisRaw("Cancel") != 0)
+                {
+                    cancelBulletTime = true;
+                }
+                ExitBulletTime();
+            }
+        }*/
     }
 
     private void EnterBulletTime()
@@ -344,29 +365,34 @@ public class PlayerController : MonoBehaviour
         inBulletTime = false;
         Time.timeScale = 1.0f;
         line.enabled = false;
-        bouncePad.SetActive(false);
+        padPreview.SetActive(false);
     }
 
     private void DrawBulletLine()
     {
         var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         var dir = (mousePos - transform.position).normalized;
-        dir.z = 0;
+        DrawBulletLine(dir);
+    }
+
+    private void DrawBulletLine(Vector2 dir)
+    {
+        //dir.z = 0;
 
         var hit = Physics2D.Raycast(transform.position, dir, int.MaxValue, hitLayers);
         if (hit)
         {
-            bouncePad.SetActive(true);
+            padPreview.SetActive(true);
             line.SetPosition(0, transform.position);
             line.SetPosition(1, hit.point);
 
-            bouncePad.transform.position = hit.point;
+            padPreview.transform.position = hit.point;
             Quaternion rot = Quaternion.FromToRotation(Vector2.up, hit.normal);
-            bouncePad.transform.rotation = rot;
+            padPreview.transform.rotation = rot;
         }
         else
         {
-            bouncePad.SetActive(false);
+            padPreview.SetActive(false);
             line.SetPosition(0, transform.position);
             line.SetPosition(1, dir * 100);
         }
@@ -408,6 +434,42 @@ public class PlayerController : MonoBehaviour
             bulletTime = 0.0f;
             bulletTimePercentage = 0;
         }
+
+        /*// Controller input
+        Vector2 rightInput = new Vector2(Input.GetAxisRaw("RightHorizontal"), Input.GetAxisRaw("RightVertical"));
+        if (rightInput.magnitude > 0.1f && shootTimer.IsFinished && !cancelBulletTime)
+        {
+            Vector2 direction = rightInput;
+
+            //normalize direction for ease-of-use.
+            direction = direction.normalized;
+            shootTimer.StartTimer(shotCooldown);
+
+            //cast ray to calculate platform position.
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, Mathf.Infinity, hitLayers);
+
+            if (hit)
+            {
+                //instantiate platform
+                GameObject platform = Instantiate(padPrefab, hit.point, Quaternion.identity);
+                float angle = Mathf.Atan2(hit.normal.x, hit.normal.y) * Mathf.Rad2Deg;
+                platform.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -angle));
+                padList.Add(platform);
+                if (padList.Count > numPadsAllowed)
+                {
+                    Destroy(padList[0]);
+                    padList.RemoveAt(0);
+                }
+
+            }
+        }
+        if (Input.GetAxisRaw("Cancel") != 0)
+        {
+            cancelBulletTime = false;
+            bulletTime = 0.0f;
+            bulletTimePercentage = 0;
+        }*/
+
     }
     private void TickTimers()
     {
@@ -469,4 +531,9 @@ public class PlayerController : MonoBehaviour
     }
 
     #endregion
+
+    public bool IsCannonBall()
+    {
+        return true;
+    }
 }
