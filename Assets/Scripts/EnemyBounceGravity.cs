@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BouncyMonster : MonoBehaviour
+public class EnemyBounceGravity : MonoBehaviour
 {
 
     public enum Direction {
@@ -55,7 +55,7 @@ public class BouncyMonster : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        var pc = collision.gameObject.GetComponent<OldPlayerController>();
+        var pc = collision.gameObject.GetComponent<PlayerController>();
         if (pc)
         {
             if (pc.IsCannonBall()) Die();

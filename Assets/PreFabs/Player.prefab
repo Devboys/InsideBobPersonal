@@ -181,12 +181,13 @@ MonoBehaviour:
   edgeGraceTime: 0.1
   bunnyGraceTime: 0.2
   bounceTime: 999
-  bounceMultiplier: 40
+  bounceMultiplier: 55
   bounceAcceleration: 2
   bounceDirChangeAcceleration: 2
   bounceDeceleration: 2
   padPrefab: {fileID: 4840296420896782106, guid: 5f32f3a81d8845f4597b2d95192be694,
     type: 3}
+  padPreview: {fileID: 0}
   hitLayers:
     serializedVersion: 2
     m_Bits: 512
@@ -206,7 +207,7 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.15
+      time: 0.05
       value: 1
       inSlope: 0
       outSlope: 0
@@ -215,8 +216,8 @@ MonoBehaviour:
       inWeight: 0.16562492
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.3
-      value: 0.101342775
+      time: 0.2
+      value: 0.05
       inSlope: 0
       outSlope: 0
       tangentMode: 136

@@ -148,17 +148,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 281763448}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12735ce4c352947418d7c8e48d3dd73d, type: 3}
+  m_Script: {fileID: 11500000, guid: 78be709c33b7dd7468fed729fe3106a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  player: {fileID: 622468040}
-  shader: {fileID: 4800000, guid: bbc6574f477e82347a155c593363a18a, type: 3}
 --- !u!81 &281763450
 AudioListener:
   m_ObjectHideFlags: 0
@@ -193,7 +185,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
+  orthographic: 1
   orthographic size: 5
   m_Depth: 0
   m_CullingMask:
@@ -218,7 +210,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 281763448}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.97, y: -4.0243354, z: -4.2226562}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -421,12 +413,47 @@ MonoBehaviour:
   bounceAcceleration: 0
   bounceDirChangeAcceleration: 0
   bounceDeceleration: 0
-  padPrefab: {fileID: 0}
+  padPrefab: {fileID: 4840296420896782106, guid: 5dc506b3c374dd145a3d8c973bf86a7e,
+    type: 3}
   hitLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 513
   shotCooldown: 0
-  numPadsAllowed: 0
+  numPadsAllowed: 10
+  shader: {fileID: 4800000, guid: bbc6574f477e82347a155c593363a18a, type: 3}
+  timeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.0045776367
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.053916857
+      value: 0.8660927
+      inSlope: -0.40060475
+      outSlope: -0.40060475
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0.13069153
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   velocity: {x: 0, y: 0}
   inBounce: 0
 --- !u!114 &622468037
@@ -506,7 +533,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 622468035}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.97, y: 1.38, z: -4.2226562}
+  m_LocalPosition: {x: -2.97, y: 1.38, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -711,7 +738,7 @@ PrefabInstance:
     - target: {fileID: 4652456008140689260, guid: 8b9356e00defb6d40b0fe2981d502318,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4652456008140689259, guid: 8b9356e00defb6d40b0fe2981d502318,
         type: 3}
