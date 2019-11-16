@@ -81,6 +81,7 @@ public class PlayerController : MonoBehaviour
     private GameObject bouncePad;
     private bool cancelBulletTime;
     private float bulletTime;
+    private float bulletTimePercentage;
 
     #region Cached components
     private RaycastMover _mover;
@@ -110,6 +111,7 @@ public class PlayerController : MonoBehaviour
         inBulletTime = false;
         cancelBulletTime = false;
         bulletTime = 0.0f;
+        bulletTimePercentage = 0f;
         line = gameObject.AddComponent<LineRenderer>();
         line.startWidth = 0.05f;
         line.endWidth = 0.05f;
@@ -297,10 +299,10 @@ public class PlayerController : MonoBehaviour
         {
             if (!inBulletTime)
             {
-                //EnterBulletTime();
+                EnterBulletTime();
             }
             else {
-                //DrawBulletLine();
+                DrawBulletLine();
             }
         }
         else
@@ -323,9 +325,11 @@ public class PlayerController : MonoBehaviour
 
         var currentTime = bulletTime < endTime ? bulletTime : endTime;
 
-        var procent = currentTime / endTime;
+        float endBulletTimeValue = timeCurve.keys[timeCurve.length - 1].value;
 
-        Time.timeScale = timeCurve.Evaluate(currentTime);
+        float curValue = timeCurve.Evaluate(currentTime);
+        Time.timeScale = curValue;
+        bulletTimePercentage = (1 - curValue) * (1 / (1 - endBulletTimeValue));
 
         if (currentTime == timeCurve.keys[timeCurve.length - 1].time) {
             bulletTime = 0.0f;
@@ -336,6 +340,7 @@ public class PlayerController : MonoBehaviour
 
     private void ExitBulletTime()
     {
+        bulletTimePercentage = 0;
         inBulletTime = false;
         Time.timeScale = 1.0f;
         line.enabled = false;
@@ -401,6 +406,7 @@ public class PlayerController : MonoBehaviour
         {
             cancelBulletTime = false;
             bulletTime = 0.0f;
+            bulletTimePercentage = 0;
         }
     }
     private void TickTimers()
@@ -458,8 +464,8 @@ public class PlayerController : MonoBehaviour
         public void EndTimer() { timer = 0; }
     }
 
-    public bool IsInBulletTime() {
-        return inBulletTime;
+    public float IsInBulletTime() {
+        return bulletTimePercentage;
     }
 
     #endregion

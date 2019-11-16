@@ -1,8 +1,9 @@
-﻿Shader "Hidden/NewImageEffectShader"
+﻿Shader "Hidden/BulletTime"
 {
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
+		_Percentage ("Percentage", Range(0, 1)) = 1
     }
     SubShader
     {
@@ -38,12 +39,13 @@
             }
 
             sampler2D _MainTex;
+			float _Percentage;
 
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed4 col = tex2D(_MainTex, i.uv);
                 // just invert the colors
-                col.rgb = 1 - col.rgb;
+                col.rgb = lerp(col.rgb, 1 - col.rgb, _Percentage);
                 return col;
             }
             ENDCG
