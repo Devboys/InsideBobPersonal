@@ -222,7 +222,9 @@ MonoBehaviour:
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
-  Params: []
+  Params:
+  - Name: Fade
+    Value: 1
   OverrideAttenuation: 0
   OverrideMinDistance: 0
   OverrideMaxDistance: 0
@@ -429,7 +431,7 @@ GameObject:
   m_Component:
   - component: {fileID: 611919189}
   m_Layer: 0
-  m_Name: BGMusic
+  m_Name: Music
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
