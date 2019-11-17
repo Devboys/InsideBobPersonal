@@ -144,3 +144,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fixedDirection: 0
   bounceSound: event:/Sfx/BouncePad
+  direction: {x: 0.3, y: 0.7}
