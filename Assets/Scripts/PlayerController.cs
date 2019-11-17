@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour
     public float shotCooldown;
     public float numPadsAllowed;
     public Gradient lineGradient;
+    public Material lineMaterial;
     public Shader shader;
     public AnimationCurve timeCurve;
     
@@ -72,6 +73,9 @@ public class PlayerController : MonoBehaviour
 
     [EventRef]
     public string placePad;
+    
+    [EventRef]
+    public string bulletTimePath;
     
 
     //private variables
@@ -138,7 +142,7 @@ public class PlayerController : MonoBehaviour
         bulletTime = 0.0f;
         bulletTimePercentage = 0f;
         line = gameObject.AddComponent<LineRenderer>();
-        line.material = new Material(Shader.Find("Legacy Shaders/Particles/Alpha Blended Premultiply"));
+        line.material = lineMaterial;
         line.colorGradient = lineGradient;
         line.startWidth = 0.05f;
         line.endWidth = 0.05f;
@@ -164,6 +168,7 @@ public class PlayerController : MonoBehaviour
         UpdateBulletTime();
         HandleShoot();
         PlayFootSound();
+        PlayInBulletTimeSound();
 
         _mover.Move(velocity * Time.deltaTime);
         //Apply corrected velocity changes
@@ -178,13 +183,16 @@ public class PlayerController : MonoBehaviour
         {
             lastLanding = transform.position;
             inBounce = false;
+            
+            //Play landing sound
+            RuntimeManager.PlayOneShot(landSound, transform.position);
         }
         TickTimers();
     }
 
     private void PlayFootSound()
     {
-        //Checks if player is moving, grounded, and triggers footstep sounds.
+        //Checks if player is moving, grounded, and triggers footstep sounds
         if (Mathf.Abs(velocity.x) > 0.1f && _mover.IsGrounded && Time.time > footDelay)
         {
             footDelay = Time.time + footRate;
@@ -193,11 +201,19 @@ public class PlayerController : MonoBehaviour
             footsteps.start();
         }
     }
-    
-    /*private void OnDisable()
+
+    private void PlayInBulletTimeSound()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+             //RuntimeManager.PlayOneShot(bulletTimePath, transform.position);
+        }
+    }
+
+    private void OnDisable()
     { 
         footsteps.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-    }*/
+    }
     
 
     #region Update Handle methods
@@ -429,6 +445,7 @@ public class PlayerController : MonoBehaviour
                
                 // Play sound for placing bounce pads
                 RuntimeManager.PlayOneShot(placePad, transform.position);
+
             }
         }
         if (Input.GetMouseButtonUp(0))

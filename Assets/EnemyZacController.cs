@@ -1,7 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
-using UnityEditor.EditorTools;
 using UnityEngine;
 
 public class EnemyZacController : MonoBehaviour
@@ -9,7 +7,6 @@ public class EnemyZacController : MonoBehaviour
     public GameObject blobZac;
     public LayerMask obstacles;
     public int size;
-    public EditorGUILayout slider;
     public float rangeMax;
     public float rangeMin;
     public float blobSpeed;

@@ -184,7 +184,7 @@ MonoBehaviour:
   hitLayers:
     serializedVersion: 2
     m_Bits: 512
-  shotCooldown: 1
+  shotCooldown: 0
   numPadsAllowed: 2
   lineGradient:
     serializedVersion: 2
@@ -215,6 +215,7 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
+  lineMaterial: {fileID: 2100000, guid: a4197d9c6e28d994db351b21aaf40673, type: 2}
   shader: {fileID: 4800000, guid: 6e6090794941e8d4ab15944aae73eaa3, type: 3}
   timeCurve:
     serializedVersion: 2
@@ -249,7 +250,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  footsteps: event:/Player/TempFS
+  footstepsPath: event:/Player/Footsteps
+  surfaceIndex: 0
   footRate: 0.5
   footDelay: 0
   jumpSound: event:/Player/JumpSound
