@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.00.00">
 	<object class="ParameterPreset" id="{8ed3a417-6087-405a-bb75-6e1f6a685ab4}">
 		<property name="name">
-			<value>Fade</value>
+			<value>MasterVol</value>
 		</property>
 		<relationship name="folder">
 			<destination>{52f48567-9380-431c-9d47-0cba7345fbc0}</destination>

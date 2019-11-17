@@ -81,7 +81,7 @@ public class PlayerController : MonoBehaviour
     private LineRenderer line;
     private bool cancelBulletTime;
     private float bulletTime;
-    private float bulletTimePercentage;
+    public float bulletTimePercentage;
     private GameObject padPreview;
 
     #region Cached components
@@ -305,6 +305,8 @@ public class PlayerController : MonoBehaviour
             if (!inBulletTime)
             {
                 EnterBulletTime();
+                
+                //Trigger FMOD ReverbStop parameter
             }
             else {
                 DrawBulletLine();
