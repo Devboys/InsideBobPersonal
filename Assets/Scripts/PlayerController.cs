@@ -49,6 +49,7 @@ public class PlayerController : MonoBehaviour
     public LayerMask hitLayers;
     public float shotCooldown;
     public float numPadsAllowed;
+    public Gradient lineGradient;
     public Shader shader;
     public AnimationCurve timeCurve;
     
@@ -114,10 +115,11 @@ public class PlayerController : MonoBehaviour
         bulletTime = 0.0f;
         bulletTimePercentage = 0f;
         line = gameObject.AddComponent<LineRenderer>();
+        line.material = new Material(Shader.Find("Legacy Shaders/Particles/Alpha Blended Premultiply"));
+        line.colorGradient = lineGradient;
         line.startWidth = 0.05f;
         line.endWidth = 0.05f;
         line.positionCount = 2;
-
         padPreview = Instantiate(padPrefab);
         padPreview.transform.parent = transform;
         padPreview.SetActive(false);
