@@ -151,7 +151,7 @@ public class PlayerController : MonoBehaviour
     private bool preApex = true;
     public bool isCannonBall;
 
-    void FixedUpdate()
+    void Update()
     {
         //Do not attempt to move downwards if already grounded
         if (_mover.IsGrounded && !inBounce) velocity.y = 0;
@@ -164,7 +164,7 @@ public class PlayerController : MonoBehaviour
         HandleShoot();
         PlayFootSound();
 
-        _mover.Move(velocity * Time.fixedDeltaTime);
+        _mover.Move(velocity * Time.deltaTime);
         //Apply corrected velocity changes
         velocity = _mover.velocity;
 
@@ -196,7 +196,7 @@ public class PlayerController : MonoBehaviour
     private void HandleGravity()
     {
         //REMEMBER TO ENABLE AUTOSYNC TRANSFORMS, OTHERWISE BOUNCINESS
-        velocity.y += gravity * Time.fixedDeltaTime;
+        velocity.y += gravity * Time.deltaTime;
         //BoundValue(ref velocity.y, maxGravity);
     }
     private void HandleHorizontalMovement()
@@ -210,12 +210,12 @@ public class PlayerController : MonoBehaviour
             if (_mover.IsGrounded)
             {
                 //ground movement
-                velocity.x += (targetVelocity - velocity.x) * Time.fixedDeltaTime * groundDamping;
+                velocity.x += (targetVelocity - velocity.x) * Time.deltaTime * groundDamping;
             }
             else
             {
                 //air damping movement
-                velocity.x += (targetVelocity - velocity.x) * Time.fixedDeltaTime * airDamping;
+                velocity.x += (targetVelocity - velocity.x) * Time.deltaTime * airDamping;
             }
         }
         else
@@ -223,7 +223,7 @@ public class PlayerController : MonoBehaviour
             if (velocity.x > bounceVelocityCutoff)
             {
                 //bounceDamp
-                velocity.x += (targetVelocity - velocity.x) * Time.fixedDeltaTime * bounceDamping;
+                velocity.x += (targetVelocity - velocity.x) * Time.deltaTime * bounceDamping;
             }
             else if (velocity.x > maxSpeed)//is this the right cutoff for 2nd phase???
             {
@@ -231,7 +231,7 @@ public class PlayerController : MonoBehaviour
                 float dif = (bounceVelocityCutoff - velocity.x) / bounceVelocityCutoff - maxSpeed;
                 float lerpedDamping = Mathf.Lerp(bounceDamping, airDamping, 1 - dif);
 
-                velocity.x += (targetVelocity - velocity.x) * Time.fixedDeltaTime * lerpedDamping;
+                velocity.x += (targetVelocity - velocity.x) * Time.deltaTime * lerpedDamping;
             }
             else
             {
@@ -458,9 +458,9 @@ public class PlayerController : MonoBehaviour
     }
     private void TickTimers()
     {
-        jumpCoyoteTimer.TickTimer(Time.fixedDeltaTime);
-        bounceTimer.TickTimer(Time.fixedDeltaTime);
-        shootTimer.TickTimer(Time.fixedDeltaTime);
+        jumpCoyoteTimer.TickTimer(Time.deltaTime);
+        bounceTimer.TickTimer(Time.deltaTime);
+        shootTimer.TickTimer(Time.deltaTime);
     }
 
     #endregion

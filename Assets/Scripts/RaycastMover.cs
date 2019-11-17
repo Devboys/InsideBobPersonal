@@ -104,8 +104,8 @@ public class RaycastMover : MonoBehaviour
             collisionState.leftGroundThisFrame = true;
 
         //deltaMovement.z = 0;
-        //transform.Translate(deltaMovement, Space.World);
-        _rigidBody.MovePosition(_rigidBody.position + deltaMovement);
+        transform.Translate(deltaMovement, Space.World);
+        //_rigidBody.MovePosition(_rigidBody.position + deltaMovement);
         velocity = deltaMovement / Time.deltaTime;
     }
 
