@@ -6,9 +6,6 @@ using UnityEngine;
 
 public class EnemyZacController : MonoBehaviour
 {
-
-
-    public Transform player;
     public GameObject blobZac;
     public LayerMask obstacles;
     public int size;

@@ -42,6 +42,7 @@ public class PlayerController : MonoBehaviour
     public float bounceAcceleration;
     public float bounceDirChangeAcceleration;
     public float bounceDeceleration;
+    public float cannonballVelocity;
 
     [Header("-- Shooting")]
     public GameObject padPrefab;
@@ -131,6 +132,7 @@ public class PlayerController : MonoBehaviour
     private float initX;
     private float totalX;
     private bool preApex = true;
+    public bool isCannonBall;
 
     void Update()
     {
@@ -181,7 +183,7 @@ public class PlayerController : MonoBehaviour
             //Play landing sound.
             RuntimeManager.PlayOneShot(landSound, transform.position);
         }
-
+        isCannonBall = IsCannonBall();
         TickTimers();
     }
 
@@ -542,6 +544,6 @@ public class PlayerController : MonoBehaviour
 
     public bool IsCannonBall()
     {
-        return true;
+        return velocity.magnitude > cannonballVelocity;
     }
 }
