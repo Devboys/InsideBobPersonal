@@ -79,6 +79,10 @@ public class PlayerController : MonoBehaviour
     private float bulletTimePercentage;
     private GameObject padPreview;
 
+
+    //DEBUG
+    private Vector2 lastLanding;
+
     #region Cached components
     private RaycastMover _mover;
 
@@ -100,6 +104,11 @@ public class PlayerController : MonoBehaviour
         get { return (-2 * maxJumpHeight) / Mathf.Pow(timeToJumpLand, 2); }
     }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(lastLanding, 0.2f);
+    }
     private void Start()
     {
         //cache components
@@ -152,7 +161,7 @@ public class PlayerController : MonoBehaviour
         HandleShoot();
         PlayFootSound();
 
-        _mover.Move(velocity * Time.deltaTime);
+        _mover.Move(velocity * Time.fixedDeltaTime);
         //Apply corrected velocity changes
         velocity = _mover.velocity;
 
@@ -163,6 +172,7 @@ public class PlayerController : MonoBehaviour
         }
         if (_mover.HasLanded)
         {
+            lastLanding = transform.position;
             inBounce = false;
         }
         TickTimers();
@@ -183,7 +193,7 @@ public class PlayerController : MonoBehaviour
     private void HandleGravity()
     {
         //REMEMBER TO ENABLE AUTOSYNC TRANSFORMS, OTHERWISE BOUNCINESS
-        velocity.y += gravity * Time.deltaTime;
+        velocity.y += gravity * Time.fixedDeltaTime;
         //BoundValue(ref velocity.y, maxGravity);
     }
     private void HandleHorizontalMovement()
@@ -442,9 +452,9 @@ public class PlayerController : MonoBehaviour
     }
     private void TickTimers()
     {
-        jumpCoyoteTimer.TickTimer(Time.deltaTime);
-        bounceTimer.TickTimer(Time.deltaTime);
-        shootTimer.TickTimer(Time.deltaTime);
+        jumpCoyoteTimer.TickTimer(Time.fixedDeltaTime);
+        bounceTimer.TickTimer(Time.fixedDeltaTime);
+        shootTimer.TickTimer(Time.fixedDeltaTime);
     }
 
     #endregion
