@@ -12,6 +12,8 @@ public class BouncePadController : MonoBehaviour
     [Space(20)] 
     [EventRef]
     public string bounceSound;
+
+    public Vector2 direction;
     
     
     private void OnTriggerEnter2D(Collider2D collision)
@@ -20,8 +22,12 @@ public class BouncePadController : MonoBehaviour
         {
             PlayerController player = collision.GetComponent<PlayerController>();
             if (fixedDirection)
-                player.StartBounce(transform.up.normalized);
-            else 
+            {
+                direction = direction.normalized;
+                direction.x = Mathf.Sign(transform.up.x) * direction.x;
+                player.StartBounce(direction);
+            }
+            else
             {
                 player.StartBounce(Vector2.Reflect(player.velocity, transform.up).normalized);
             }

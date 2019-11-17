@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour
     public float shotCooldown;
     public float numPadsAllowed;
     public Gradient lineGradient;
+    public Material lineMaterial;
     public Shader shader;
     public AnimationCurve timeCurve;
     
@@ -141,7 +142,7 @@ public class PlayerController : MonoBehaviour
         bulletTime = 0.0f;
         bulletTimePercentage = 0f;
         line = gameObject.AddComponent<LineRenderer>();
-        line.material = new Material(Shader.Find("Legacy Shaders/Particles/Alpha Blended Premultiply"));
+        line.material = lineMaterial;
         line.colorGradient = lineGradient;
         line.startWidth = 0.05f;
         line.endWidth = 0.05f;
@@ -422,6 +423,19 @@ public class PlayerController : MonoBehaviour
                 GameObject platform = Instantiate(padPrefab, hit.point, Quaternion.identity);
                 float angle = Mathf.Atan2(hit.normal.x, hit.normal.y) * Mathf.Rad2Deg;
                 platform.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -angle));
+
+                float dot = Mathf.Abs(Vector2.Dot(hit.normal, Vector2.up));
+                if (dot > 0.95f && dot < 1.05f)
+                {
+                    //bouncepad is horizontal, so regular bounce
+                    platform.GetComponent<BouncePadController>().fixedDirection = false;
+                }
+                else
+                {
+                    //bouncepad is vertical, so upwards velocity only 
+                    platform.GetComponent<BouncePadController>().fixedDirection = true;
+                }
+
                 padList.Add(platform);
                 if(padList.Count > numPadsAllowed)
                 {
