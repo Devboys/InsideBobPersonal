@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using FMODUnity;
+using FMOD.Studio;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(RaycastMover))]
 public class PlayerController : MonoBehaviour
@@ -53,14 +55,20 @@ public class PlayerController : MonoBehaviour
     public Shader shader;
     public AnimationCurve timeCurve;
     
-    //Audio variables
+    // Audio variables
+    //[FormerlySerializedAs("footsteps")]
     [Header("-- FMOD Events")] 
     [Space(20)] 
     [EventRef]
-    public string footsteps;
+    public string footstepsPath;
+    private EventInstance footsteps;
+    
+    [Range(0, 10)]
+    public int surfaceIndex;
     
     public float footRate = 0.5f;
     public float footDelay = 0.0f;
+    
     
     [Space(20)] 
     [EventRef] 
@@ -102,6 +110,9 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        // FMOD
+        footsteps = RuntimeManager.CreateInstance(footstepsPath);
+       
         //cache components
         _mover = this.GetComponent<RaycastMover>();
 
@@ -199,9 +210,16 @@ public class PlayerController : MonoBehaviour
         {
             footDelay = Time.time + footRate;
             
-            RuntimeManager.PlayOneShot(footsteps, transform.position);
+            footsteps.setParameterByName("SurfaceIndex", surfaceIndex);
+            footsteps.start();
         }
     }
+    
+    /*private void OnDisable()
+    { 
+        footsteps.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+    }*/
+    
 
     #region Update Handle methods
     private void HandleGravity()

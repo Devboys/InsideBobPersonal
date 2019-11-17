@@ -20,6 +20,7 @@ public class FMOD_LevelMusic : MonoBehaviour
     private void Start()
     {
         playerController = FindObjectOfType<PlayerController>();
+        
         levelMusic = RuntimeManager.CreateInstance(musicEventPath);
         levelMusic.start();
     }

@@ -49,7 +49,7 @@ MonoBehaviour:
   Path: event:/Player/TempFS
   guid: 90b0af378991de44963e2c75b910243f
   Banks:
-  - {fileID: -5537910052249662733}
+  - {fileID: -6701546190705844047}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -74,6 +74,40 @@ MonoBehaviour:
   Max: 1
   Default: 1
   Exists: 0
+--- !u!114 &-7525857667457915294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/BulletTimeMusic/MasterVol
+  m_EditorClassIdentifier: 
+  Name: MasterVol
+  Min: 0
+  Max: 1
+  Default: 1
+  Exists: 1
+--- !u!114 &-7170791972185916796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/TempMusic/ReverbStop
+  m_EditorClassIdentifier: 
+  Name: ReverbStop
+  Min: 0
+  Max: 1
+  Default: 1
+  Exists: 1
 --- !u!114 &-7070068472452347710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89,13 +123,13 @@ MonoBehaviour:
   Path: event:/Music/TempLvls/TempMusic
   guid: 6b45d19861e5d84e9a34bf5710927be9
   Banks:
-  - {fileID: -5537910052249662733}
+  - {fileID: -6701546190705844047}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
   Parameters:
-  - {fileID: -5317356445117150906}
-  - {fileID: 3769065233572301089}
+  - {fileID: -7170791972185916796}
+  - {fileID: -5711409010252093436}
   MinDistance: 0
   MaxDistance: 0
   Length: 80496
@@ -116,6 +150,24 @@ MonoBehaviour:
   Max: 1
   Default: 1
   Exists: 1
+--- !u!114 &-6701546190705844047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: FMOD_InsideBob/Assets/Desktop/Master.bank
+  SubDir: 
+  lastModified: 637096039800000000
+  LoadResult: 0
+  FileSizes: []
+  Exists: 1
 --- !u!114 &-6411648607581980213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,13 +183,13 @@ MonoBehaviour:
   Path: event:/Music/TempLvls/BulletTimeMusic
   guid: 54be94965862ea46b914d72d9f830b99
   Banks:
-  - {fileID: -5537910052249662733}
+  - {fileID: -6701546190705844047}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
   Parameters:
-  - {fileID: -7059479365629359741}
-  - {fileID: 8633887212275155304}
+  - {fileID: -4650306485231862700}
+  - {fileID: -7525857667457915294}
   MinDistance: 0
   MaxDistance: 0
   Length: 20487
@@ -176,6 +228,23 @@ MonoBehaviour:
   LoadResult: 0
   FileSizes: []
   Exists: 0
+--- !u!114 &-5711409010252093436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/TempMusic/MasterVol
+  m_EditorClassIdentifier: 
+  Name: MasterVol
+  Min: 0
+  Max: 1
+  Default: 1
+  Exists: 1
 --- !u!114 &-5672632882478576170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -280,6 +349,40 @@ MonoBehaviour:
   Max: 1
   Default: 1
   Exists: 0
+--- !u!114 &-4650306485231862700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/BulletTimeMusic/ReverbStop
+  m_EditorClassIdentifier: 
+  Name: ReverbStop
+  Min: 0
+  Max: 1
+  Default: 1
+  Exists: 1
+--- !u!114 &-4142946536368247467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Footsteps/SurfaceIndex
+  m_EditorClassIdentifier: 
+  Name: SurfaceIndex
+  Min: 0
+  Max: 11
+  Default: 0
+  Exists: 1
 --- !u!114 &-3844557911532654945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -328,11 +431,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: FMOD_InsideBob/Assets/Desktop/Master.strings.bank
   SubDir: 
-  lastModified: 637096008920000000
+  lastModified: 637096039800000000
   LoadResult: 0
   FileSizes:
   - Name: 
-    Value: 1386
+    Value: 1488
   Exists: 1
 --- !u!114 &-1852154553653750115
 MonoBehaviour:
@@ -369,6 +472,30 @@ MonoBehaviour:
   LoadResult: 0
   FileSizes: []
   Exists: 0
+--- !u!114 &-1694378360883861506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Player/Footsteps
+  m_EditorClassIdentifier: 
+  Path: event:/Player/Footsteps
+  guid: 425583c4928d5749810919b3270e8aa1
+  Banks:
+  - {fileID: -6701546190705844047}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: -4142946536368247467}
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 0
 --- !u!114 &-917446571455539250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -451,7 +578,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EditorBanks:
   - {fileID: -1991126453596860634}
-  - {fileID: -5537910052249662733}
+  - {fileID: -6701546190705844047}
   EditorEvents:
   - {fileID: 3031726958563847646}
   - {fileID: 2851264562074660587}
@@ -461,12 +588,13 @@ MonoBehaviour:
   - {fileID: -7070068472452347710}
   - {fileID: -8111254944926349019}
   - {fileID: 6607759279568380762}
+  - {fileID: -1694378360883861506}
   EditorParameters: []
   MasterBanks:
-  - {fileID: -5537910052249662733}
+  - {fileID: -6701546190705844047}
   StringsBanks:
   - {fileID: -1991126453596860634}
-  stringsBankWriteTime: 637096008920000000
+  stringsBankWriteTime: 637096039800000000
   cacheVersion: 3
 --- !u!114 &110092204826843937
 MonoBehaviour:
@@ -534,7 +662,7 @@ MonoBehaviour:
   Path: snapshot:/ReverbStop
   guid: 30ef709aa1daf24896b2b24789238da0
   Banks:
-  - {fileID: -5537910052249662733}
+  - {fileID: -6701546190705844047}
   IsStream: 0
   Is3D: 0
   IsOneShot: 0
@@ -557,7 +685,7 @@ MonoBehaviour:
   Path: event:/Sfx/BouncePad
   guid: 307c5a61cb26c24c9a6e701db9195268
   Banks:
-  - {fileID: -5537910052249662733}
+  - {fileID: -6701546190705844047}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -597,7 +725,7 @@ MonoBehaviour:
   Path: event:/Player/LandSound
   guid: 031ff3e291926946ae582e7cb0bb5ede
   Banks:
-  - {fileID: -5537910052249662733}
+  - {fileID: -6701546190705844047}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -620,7 +748,7 @@ MonoBehaviour:
   Path: event:/Player/JumpSound
   guid: 31e8eab1f4e7a147813339077f99f1b9
   Banks:
-  - {fileID: -5537910052249662733}
+  - {fileID: -6701546190705844047}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -816,7 +944,7 @@ MonoBehaviour:
   Path: event:/Sfx/PlacePad
   guid: fcf1d34b3d0fa04baee14e38263c56cb
   Banks:
-  - {fileID: -5537910052249662733}
+  - {fileID: -6701546190705844047}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
