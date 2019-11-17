@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
     public float bounceForce;
     public float bounceDamping;
     public float bounceVelocityCutoff;
-    public float cannonballVelocity;
+    public float cannonballTime;
 
     [Header("-- Shooting")]
     public GameObject padPrefab;
@@ -99,12 +99,14 @@ public class PlayerController : MonoBehaviour
 
     #region Cached components
     private RaycastMover _mover;
+    private Animator _anim;
 
     #endregion
 
     #region Timers
     Timer jumpCoyoteTimer;
     Timer shootTimer;
+    Timer cannonballTimer;
 
     #endregion
 
@@ -129,12 +131,14 @@ public class PlayerController : MonoBehaviour
        
         //cache components
         _mover = this.GetComponent<RaycastMover>();
+        _anim = GetComponent<Animator>();
 
         padList = new List<GameObject>();
 
         //init timers
         jumpCoyoteTimer = new Timer();
         shootTimer = new Timer();
+        cannonballTimer = new Timer();
 
         // init Bullet Time
         inBulletTime = false;
@@ -187,7 +191,16 @@ public class PlayerController : MonoBehaviour
             //Play landing sound
             RuntimeManager.PlayOneShot(landSound, transform.position);
         }
+        UpdateAnimation();
         TickTimers();
+    }
+
+    private void UpdateAnimation()
+    {
+        _anim.SetBool("IsInCannonball", IsCannonBall());
+        _anim.SetBool("Grounded", _mover.IsGrounded);
+        _anim.SetFloat("Horizontal Speed", Mathf.Abs(velocity.x));
+        _anim.SetFloat("Vertical Speed", Mathf.Abs(velocity.y));
     }
 
     private void PlayFootSound()
@@ -495,6 +508,7 @@ public class PlayerController : MonoBehaviour
     {
         jumpCoyoteTimer.TickTimer(Time.deltaTime);
         shootTimer.TickTimer(Time.deltaTime);
+        cannonballTimer.TickTimer(Time.deltaTime);
     }
 
     #endregion
@@ -505,6 +519,7 @@ public class PlayerController : MonoBehaviour
         inBounce = true;
         velocity = initVelocity * bounceForce;
         gravity = fallGravity;
+        cannonballTimer.StartTimer(cannonballTime);
     }
     #endregion
 
@@ -553,6 +568,6 @@ public class PlayerController : MonoBehaviour
 
     public bool IsCannonBall()
     {
-        return inBounce;
+        return !cannonballTimer.IsFinished;
     }
 }
