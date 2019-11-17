@@ -168,30 +168,53 @@ MonoBehaviour:
   gravity: -20
   maxGravity: -25
   maxSpeed: 10
-  acceleration: 20
-  dirChangeAcceleration: 30
-  deceleration: 20
-  airAcceleration: 20
-  airDirChangeAcceleration: 30
-  airDeceleration: 20
+  groundDamping: 30
+  airDamping: 20
   maxJumpHeight: 3
   minJumpHeight: 1
-  JumpDistance1: 3
-  JumpDistance2: 2
-  edgeGraceTime: 0.1
-  bunnyGraceTime: 0.2
-  bounceTime: 999
-  bounceMultiplier: 55
-  bounceAcceleration: 2
-  bounceDirChangeAcceleration: 2
-  bounceDeceleration: 2
+  timeToJumpApex: 0.5
+  timeToJumpLand: 0.2
+  coyoteTime: 0.1
+  bounceForce: 50
+  bounceDamping: 2
+  bounceVelocityCutoff: 12
+  cannonballVelocity: 5
   padPrefab: {fileID: 4840296420896782106, guid: 5f32f3a81d8845f4597b2d95192be694,
     type: 3}
   hitLayers:
     serializedVersion: 2
     m_Bits: 512
-  shotCooldown: 0
+  shotCooldown: 1
   numPadsAllowed: 2
+  lineGradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
   shader: {fileID: 4800000, guid: 6e6090794941e8d4ab15944aae73eaa3, type: 3}
   timeCurve:
     serializedVersion: 2
@@ -201,10 +224,10 @@ MonoBehaviour:
       value: 1
       inSlope: 0
       outSlope: 0
-      tangentMode: 0
+      tangentMode: 34
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.33333334
     - serializedVersion: 3
       time: 0.05
       value: 1
@@ -212,24 +235,27 @@ MonoBehaviour:
       outSlope: 0
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.16562492
+      inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 0.2
       value: 0.05
       inSlope: 0
       outSlope: 0
-      tangentMode: 136
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.33333334
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   footsteps: event:/Player/TempFS
-  footRate: 0.15
+  footRate: 0.5
   footDelay: 0
   jumpSound: event:/Player/JumpSound
   landSound: event:/Player/LandSound
+  placePad: event:/Sfx/PlacePad
   velocity: {x: 0, y: 0}
   inBounce: 0
+  bulletTimePercentage: 0
+  isCannonBall: 0
