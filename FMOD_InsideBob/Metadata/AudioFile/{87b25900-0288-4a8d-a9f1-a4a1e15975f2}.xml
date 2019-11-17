@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.00.00">
 	<object class="AudioFile" id="{87b25900-0288-4a8d-a9f1-a4a1e15975f2}">
 		<property name="assetPath">
-			<value>Foley/Player/FS_Temp/FS_Temp_08.wav</value>
+			<value>Player/FS_Temp/FS_Temp_08.wav</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>48</value>

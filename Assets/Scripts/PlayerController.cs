@@ -61,6 +61,9 @@ public class PlayerController : MonoBehaviour
     
     [EventRef] 
     public string landSound;
+
+    [EventRef]
+    public string placePad;
     
 
     //private variables
@@ -76,7 +79,7 @@ public class PlayerController : MonoBehaviour
     private LineRenderer line;
     private bool cancelBulletTime;
     private float bulletTime;
-    private float bulletTimePercentage;
+    public float bulletTimePercentage;
     private GameObject padPreview;
 
 
@@ -336,6 +339,7 @@ public class PlayerController : MonoBehaviour
             inBulletTime = true;
             line.enabled = true;
         }
+        
     }
 
     private void ExitBulletTime()
@@ -404,7 +408,9 @@ public class PlayerController : MonoBehaviour
                     Destroy(padList[0]);
                     padList.RemoveAt(0);
                 }
-                
+               
+                // Play sound for placing bounce pads
+                RuntimeManager.PlayOneShot(placePad, transform.position);
             }
         }
         if (Input.GetMouseButtonUp(0))
