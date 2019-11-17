@@ -68,6 +68,9 @@ public class PlayerController : MonoBehaviour
     
     [EventRef] 
     public string landSound;
+
+    [EventRef]
+    public string placePad;
     
 
     //private variables
@@ -307,8 +310,6 @@ public class PlayerController : MonoBehaviour
             if (!inBulletTime)
             {
                 EnterBulletTime();
-                
-                //Trigger FMOD ReverbStop parameter
             }
             else {
                 DrawBulletLine();
@@ -371,6 +372,7 @@ public class PlayerController : MonoBehaviour
             inBulletTime = true;
             line.enabled = true;
         }
+        
     }
 
     private void ExitBulletTime()
@@ -439,7 +441,9 @@ public class PlayerController : MonoBehaviour
                     Destroy(padList[0]);
                     padList.RemoveAt(0);
                 }
-                
+               
+                // Play sound for placing bounce pads
+                RuntimeManager.PlayOneShot(placePad, transform.position);
             }
         }
         if (Input.GetMouseButtonUp(0))

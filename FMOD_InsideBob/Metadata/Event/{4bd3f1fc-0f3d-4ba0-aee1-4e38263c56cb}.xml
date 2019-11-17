@@ -92,12 +92,21 @@
 		<property name="length">
 			<value>0.20283333333333334</value>
 		</property>
+		<property name="pitch">
+			<value>24</value>
+		</property>
+		<relationship name="modulators">
+			<destination>{eae2af98-8f48-40dd-b60d-2fb91822813c}</destination>
+		</relationship>
 		<relationship name="sounds">
 			<destination>{0c2dd2e3-252b-402d-bf75-3e06c40ed12c}</destination>
 			<destination>{56295edd-b668-407a-a141-3b3c6c70fac1}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{90c41037-010c-49f7-9240-d4f3ea750f76}">
+		<property name="volume">
+			<value>-12</value>
+		</property>
 		<property name="name">
 			<value>Placing Pad</value>
 		</property>
@@ -118,6 +127,14 @@
 	</object>
 	<object class="MixerBusPanner" id="{bc4a9e0e-e5c8-4ba6-9a8e-7b8ee720f453}" />
 	<object class="MixerBusFader" id="{a4afddfb-18ca-4acf-bcb7-65859867fe5b}" />
+	<object class="RandomizerModulator" id="{eae2af98-8f48-40dd-b60d-2fb91822813c}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>pitch</value>
+		</property>
+		<property name="amount">
+			<value>3.125</value>
+		</property>
+	</object>
 	<object class="SingleSound" id="{0c2dd2e3-252b-402d-bf75-3e06c40ed12c}">
 		<relationship name="audioFile">
 			<destination>{c9f89fa8-0ea7-40bf-810a-f9db9aebe838}</destination>
@@ -131,9 +148,30 @@
 	<object class="MixerBusEffectChain" id="{6a000c23-e45b-40d6-a7de-d12b6d008bcd}">
 		<relationship name="effects">
 			<destination>{8f0cae60-b3c4-4451-9b46-89f667c31f5e}</destination>
+			<destination>{94c4aa59-c2f5-4fde-a38d-e4c1f62a3dcc}</destination>
+			<destination>{be9d0ac9-3547-44a8-b23a-3b79375a6370}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{8f2b36c9-0fea-415f-89a6-ce35cb663382}" />
 	<object class="MixerBusFader" id="{a6e3ff19-a46f-4ea4-9a6c-abda0d8833b6}" />
 	<object class="MixerBusFader" id="{8f0cae60-b3c4-4451-9b46-89f667c31f5e}" />
+	<object class="ChorusEffect" id="{94c4aa59-c2f5-4fde-a38d-e4c1f62a3dcc}">
+		<property name="rate">
+			<value>4.39999962</value>
+		</property>
+		<property name="depth">
+			<value>58.5</value>
+		</property>
+		<property name="mix">
+			<value>15.5</value>
+		</property>
+	</object>
+	<object class="DelayEffect" id="{be9d0ac9-3547-44a8-b23a-3b79375a6370}">
+		<property name="delay">
+			<value>38</value>
+		</property>
+		<property name="feedback">
+			<value>18</value>
+		</property>
+	</object>
 </objects>
