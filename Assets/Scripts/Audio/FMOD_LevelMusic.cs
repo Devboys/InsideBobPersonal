@@ -29,6 +29,7 @@ public class FMOD_LevelMusic : MonoBehaviour
     {
         levelMusic.setParameterByName("ReverbStop", 1 - playerController.bulletTimePercentage);
         levelMusic.setParameterByName("MasterVol", musicVolume);
+
     }
 
     private void OnDisable()

@@ -74,6 +74,9 @@ public class PlayerController : MonoBehaviour
     [EventRef]
     public string placePad;
     
+    [EventRef]
+    public string bulletTimePath;
+    
 
     //private variables
     [Header("-- State")]
@@ -82,7 +85,6 @@ public class PlayerController : MonoBehaviour
     private bool postJumpApex;
 
     [SerializeField] [ReadOnly] private bool inBounce;
-    private float initBounceX;
 
     private bool inBulletTime;
     private LineRenderer line;
@@ -102,7 +104,6 @@ public class PlayerController : MonoBehaviour
 
     #region Timers
     Timer jumpCoyoteTimer;
-    Timer bounceTimer;
     Timer shootTimer;
 
     #endregion
@@ -133,7 +134,6 @@ public class PlayerController : MonoBehaviour
 
         //init timers
         jumpCoyoteTimer = new Timer();
-        bounceTimer = new Timer();
         shootTimer = new Timer();
 
         // init Bullet Time
@@ -156,13 +156,6 @@ public class PlayerController : MonoBehaviour
         }
 }
 
-    //DEBUG TEST VARIABLES, DELETE WHEN JUMP ALGORITHM IS DONE
-    private float maxY;
-    private float initX;
-    private float totalX;
-    private bool preApex = true;
-    public bool isCannonBall;
-
     void Update()
     {
         //Do not attempt to move downwards if already grounded
@@ -175,6 +168,7 @@ public class PlayerController : MonoBehaviour
         UpdateBulletTime();
         HandleShoot();
         PlayFootSound();
+        PlayInBulletTimeSound();
 
         _mover.Move(velocity * Time.deltaTime);
         //Apply corrected velocity changes
@@ -204,11 +198,19 @@ public class PlayerController : MonoBehaviour
             footsteps.start();
         }
     }
-    
-    /*private void OnDisable()
+
+    private void PlayInBulletTimeSound()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+             //RuntimeManager.PlayOneShot(bulletTimePath, transform.position);
+        }
+    }
+
+    private void OnDisable()
     { 
         footsteps.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-    }*/
+    }
     
 
     #region Update Handle methods
@@ -239,15 +241,15 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            if (velocity.x > bounceVelocityCutoff)
+            if (Mathf.Abs(velocity.x) > bounceVelocityCutoff)
             {
                 //bounceDamp
                 velocity.x += (targetVelocity - velocity.x) * Time.deltaTime * bounceDamping;
             }
-            else if (velocity.x > maxSpeed)//is this the right cutoff for 2nd phase???
+            else if (Mathf.Abs(velocity.x) > maxSpeed)//is maxSpeed this the right cutoff for 2nd phase???
             {
-                //lerp between bounceDamp and airDamp
-                float dif = (bounceVelocityCutoff - velocity.x) / bounceVelocityCutoff - maxSpeed;
+                //lerp between bounceDamping and airDamping
+                float dif = (bounceVelocityCutoff - Mathf.Abs(velocity.x)) / (bounceVelocityCutoff - maxSpeed);
                 float lerpedDamping = Mathf.Lerp(bounceDamping, airDamping, 1 - dif);
 
                 velocity.x += (targetVelocity - velocity.x) * Time.deltaTime * lerpedDamping;
@@ -264,8 +266,6 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetButtonDown("Jump") && (!jumpCoyoteTimer.IsFinished || _mover.IsGrounded))
         {
-
-            //float jumpGravity = -(2 * maxJumpHeight) / Mathf.Pow(timeToJumpApex, 2);
             float jumpVelocity = Mathf.Abs(jumpGravity) * timeToJumpApex;
             gravity = jumpGravity;
             velocity.y = jumpVelocity;
@@ -282,7 +282,6 @@ public class PlayerController : MonoBehaviour
 
         else if (velocity.y < 0 && !postJumpApex)
         {
-            //float jumpGravity = (-2 * maxJumpHeight) / Mathf.Pow(timeToJumpLand, 2);
             gravity = fallGravity;
             postJumpApex = true;
         }
@@ -430,6 +429,7 @@ public class PlayerController : MonoBehaviour
                
                 // Play sound for placing bounce pads
                 RuntimeManager.PlayOneShot(placePad, transform.position);
+
             }
         }
         if (Input.GetMouseButtonUp(0))
@@ -478,7 +478,6 @@ public class PlayerController : MonoBehaviour
     private void TickTimers()
     {
         jumpCoyoteTimer.TickTimer(Time.deltaTime);
-        bounceTimer.TickTimer(Time.deltaTime);
         shootTimer.TickTimer(Time.deltaTime);
     }
 
@@ -490,7 +489,6 @@ public class PlayerController : MonoBehaviour
         inBounce = true;
         velocity = initVelocity * bounceForce;
         gravity = fallGravity;
-        initBounceX = velocity.x;
     }
     #endregion
 
