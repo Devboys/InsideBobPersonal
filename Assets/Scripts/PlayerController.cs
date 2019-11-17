@@ -73,6 +73,9 @@ public class PlayerController : MonoBehaviour
     [EventRef]
     public string placePad;
     
+    [EventRef]
+    public string bulletTimePath;
+    
 
     //private variables
     [Header("-- State")]
@@ -174,6 +177,7 @@ public class PlayerController : MonoBehaviour
         UpdateBulletTime();
         HandleShoot();
         PlayFootSound();
+        PlayInBulletTimeSound();
 
         _mover.Move(velocity * Time.deltaTime);
         //Apply corrected velocity changes
@@ -203,11 +207,19 @@ public class PlayerController : MonoBehaviour
             footsteps.start();
         }
     }
-    
-    /*private void OnDisable()
+
+    private void PlayInBulletTimeSound()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+             //RuntimeManager.PlayOneShot(bulletTimePath, transform.position);
+        }
+    }
+
+    private void OnDisable()
     { 
         footsteps.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-    }*/
+    }
     
 
     #region Update Handle methods
@@ -429,6 +441,7 @@ public class PlayerController : MonoBehaviour
                
                 // Play sound for placing bounce pads
                 RuntimeManager.PlayOneShot(placePad, transform.position);
+
             }
         }
         if (Input.GetMouseButtonUp(0))
