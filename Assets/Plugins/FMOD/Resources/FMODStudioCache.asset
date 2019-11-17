@@ -108,6 +108,24 @@ MonoBehaviour:
   LoadResult: 0
   FileSizes: []
   Exists: 0
+--- !u!114 &-6163859933386106124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: FMOD_InsideBob/Assets/Desktop/Master.bank
+  SubDir: 
+  lastModified: 637095861180659262
+  LoadResult: 0
+  FileSizes: []
+  Exists: 1
 --- !u!114 &-6161784594407016749
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -159,7 +177,8 @@ MonoBehaviour:
   Path: event:/Player/JumpSound
   guid: 31e8eab1f4e7a147813339077f99f1b9
   Banks:
-  - {fileID: 916673687287219738}
+  - {fileID: -2226025439010822182}
+  - {fileID: -6163859933386106124}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -415,7 +434,8 @@ MonoBehaviour:
   Path: event:/Player/TempFS
   guid: 90b0af378991de44963e2c75b910243f
   Banks:
-  - {fileID: 916673687287219738}
+  - {fileID: -2226025439010822182}
+  - {fileID: -6163859933386106124}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -423,6 +443,24 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 300
+--- !u!114 &-2226025439010822182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: FMOD_InsideBob/Assets/Desktop/Master.bank
+  SubDir: 
+  lastModified: 637095861180659262
+  LoadResult: 0
+  FileSizes: []
+  Exists: 1
 --- !u!114 &-2075074554139949038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -629,6 +667,23 @@ MonoBehaviour:
   Max: 1
   Default: 1
   Exists: 1
+--- !u!114 &-20879184627460727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/TempMusic/Fade
+  m_EditorClassIdentifier: 
+  Name: Fade
+  Min: 0
+  Max: 1
+  Default: 1
+  Exists: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -643,7 +698,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EditorBanks:
   - {fileID: 4728853067305826937}
-  - {fileID: 916673687287219738}
+  - {fileID: -6163859933386106124}
   EditorEvents:
   - {fileID: 4923791465478419629}
   - {fileID: 1137701075614973811}
@@ -653,10 +708,10 @@ MonoBehaviour:
   - {fileID: 3095968132020926351}
   EditorParameters: []
   MasterBanks:
-  - {fileID: 916673687287219738}
+  - {fileID: -6163859933386106124}
   StringsBanks:
   - {fileID: 4728853067305826937}
-  stringsBankWriteTime: 637095823632739542
+  stringsBankWriteTime: 637095861180689234
   cacheVersion: 3
 --- !u!114 &44213522212404649
 MonoBehaviour:
@@ -727,7 +782,8 @@ MonoBehaviour:
   Path: event:/Player/LandSound
   guid: 031ff3e291926946ae582e7cb0bb5ede
   Banks:
-  - {fileID: 916673687287219738}
+  - {fileID: -2226025439010822182}
+  - {fileID: -6163859933386106124}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -957,7 +1013,8 @@ MonoBehaviour:
   Path: event:/Music/BulletTime/BulletTimeTheme
   guid: 54be94965862ea46b914d72d9f830b99
   Banks:
-  - {fileID: 916673687287219738}
+  - {fileID: -2226025439010822182}
+  - {fileID: -6163859933386106124}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -1091,7 +1148,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: FMOD_InsideBob/Assets/Desktop/Master.strings.bank
   SubDir: 
-  lastModified: 637095823632739542
+  lastModified: 637095861180689234
   LoadResult: 0
   FileSizes:
   - Name: 
@@ -1130,7 +1187,8 @@ MonoBehaviour:
   Path: event:/Sfx/BouncePad
   guid: 307c5a61cb26c24c9a6e701db9195268
   Banks:
-  - {fileID: 916673687287219738}
+  - {fileID: -2226025439010822182}
+  - {fileID: -6163859933386106124}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -1153,12 +1211,13 @@ MonoBehaviour:
   Path: event:/Music/TempLvls/TempMusic
   guid: 6b45d19861e5d84e9a34bf5710927be9
   Banks:
-  - {fileID: 916673687287219738}
+  - {fileID: -2226025439010822182}
+  - {fileID: -6163859933386106124}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
   Parameters:
-  - {fileID: 5784706087652207613}
+  - {fileID: 6145284941158822702}
   MinDistance: 0
   MaxDistance: 0
   Length: 80496
@@ -1196,6 +1255,23 @@ MonoBehaviour:
   lastModified: 637093705990000000
   LoadResult: 0
   FileSizes: []
+  Exists: 1
+--- !u!114 &6145284941158822702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/TempMusic/Fade
+  m_EditorClassIdentifier: 
+  Name: Fade
+  Min: 0
+  Max: 1
+  Default: 1
   Exists: 1
 --- !u!114 &6346374653493264387
 MonoBehaviour:
