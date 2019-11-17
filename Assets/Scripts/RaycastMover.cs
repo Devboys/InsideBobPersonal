@@ -31,6 +31,7 @@ public class RaycastMover : MonoBehaviour
 
     //component cache.
     private BoxCollider2D _boxCollider;
+    private Rigidbody2D _rigidbody;
 
     //ray variables
     private RayCastOrigins rayOrigins;
@@ -74,6 +75,7 @@ public class RaycastMover : MonoBehaviour
     public void Awake()
     {
         _boxCollider = this.GetComponent<BoxCollider2D>();
+        _rigidbody = this.GetComponent<Rigidbody2D>();
         rayOrigins = new RayCastOrigins();
 
         RecalculateDistanceBetweenRays();
@@ -102,7 +104,8 @@ public class RaycastMover : MonoBehaviour
             collisionState.leftGroundThisFrame = true;
 
         deltaMovement.z = 0;
-        transform.Translate(deltaMovement, Space.World);
+        //transform.Translate(deltaMovement, Space.World);
+        _rigidbody.MovePosition((Vector2)transform.position + velocity);
         velocity = deltaMovement / Time.deltaTime;
     }
 
