@@ -93,6 +93,7 @@
           <e p="EnemyBounce.cs" t="Include" />
           <e p="EnemyBounceGravity.cs" t="Include" />
           <e p="LevelController.cs" t="Include" />
+          <e p="LevelGizmo.cs" t="Include" />
           <e p="LevelSelect.cs" t="Include" />
           <e p="Move.cs" t="Include" />
           <e p="Old" t="Include">

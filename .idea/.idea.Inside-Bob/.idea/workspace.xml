@@ -35,12 +35,14 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Assets/Scripts/PlayerController.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="343">
-              <caret line="82" column="34" lean-forward="true" selection-start-line="82" selection-start-column="34" selection-end-line="82" selection-end-column="34" />
+            <state relative-caret-position="75">
+              <caret line="5" column="40" selection-start-line="5" selection-end-line="5" selection-end-column="40" />
               <folding>
                 <marker date="1573997445534" expanded="true" signature="6:95" ph="..." />
                 <marker date="1573997445534" expanded="true" signature="183:16939" ph="{...}" />
-                <marker date="1573997445534" expanded="true" signature="3436:3805" ph="{...}" />
+                <marker date="1573997445534" expanded="true" signature="2516:2590" ph="Cached components" />
+                <marker date="1573997445534" expanded="true" signature="2596:2697" ph="Timers" />
+                <marker date="1573997445534" expanded="true" signature="2723:3805" ph="{...}" />
                 <marker date="1573997445534" expanded="true" signature="3690:3803" ph="{...}" />
                 <marker date="1573997445534" expanded="true" signature="4026:5598" ph="{...}" />
                 <marker date="1573997445534" expanded="true" signature="4635:4959" ph="{...}" />
@@ -104,14 +106,14 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Assets/Scripts/Audio/FMOD_LevelMusic.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="24" column="91" selection-start-line="24" selection-start-column="91" selection-end-line="24" selection-end-column="91" />
+            <state relative-caret-position="433">
+              <caret line="29" column="8" lean-forward="true" selection-start-line="29" selection-start-column="8" selection-end-line="29" selection-end-column="8" />
               <folding>
-                <marker date="1573997344394" expanded="true" signature="6:128" ph="..." />
-                <marker date="1573997344394" expanded="true" signature="174:678" ph="{...}" />
-                <marker date="1573997344394" expanded="true" signature="338:441" ph="{...}" />
-                <marker date="1573997344394" expanded="true" signature="468:572" ph="{...}" />
-                <marker date="1573997344394" expanded="true" signature="602:676" ph="{...}" />
+                <marker date="1573998437555" expanded="true" signature="6:161" ph="..." />
+                <marker date="1573998437555" expanded="true" signature="207:908" ph="{...}" />
+                <marker date="1573998437555" expanded="true" signature="429:602" ph="{...}" />
+                <marker date="1573998437555" expanded="true" signature="629:802" ph="{...}" />
+                <marker date="1573998437555" expanded="true" signature="832:906" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -181,9 +183,9 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="804" />
+    <option name="x" value="347" />
     <option name="y" value="23" />
-    <option name="width" value="876" />
+    <option name="width" value="1107" />
     <option name="height" value="1027" />
   </component>
   <component name="ProjectView">
@@ -250,12 +252,12 @@
       <updated>1572375648145</updated>
       <workItem from="1572375649329" duration="866000" />
       <workItem from="1573756726511" duration="5410000" />
-      <workItem from="1573992818018" duration="3818000" />
+      <workItem from="1573992818018" duration="4658000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="10094000" />
+    <option name="totallyTimeSpent" value="10934000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -267,7 +269,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="804" y="23" width="876" height="1027" extended-state="0" />
+    <frame x="347" y="23" width="1107" height="1027" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.24847375" />
@@ -596,12 +598,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Assets/Scripts/PlayerController.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="343">
-          <caret line="82" column="34" lean-forward="true" selection-start-line="82" selection-start-column="34" selection-end-line="82" selection-end-column="34" />
+        <state relative-caret-position="75">
+          <caret line="5" column="40" selection-start-line="5" selection-end-line="5" selection-end-column="40" />
           <folding>
             <marker date="1573997445534" expanded="true" signature="6:95" ph="..." />
             <marker date="1573997445534" expanded="true" signature="183:16939" ph="{...}" />
-            <marker date="1573997445534" expanded="true" signature="3436:3805" ph="{...}" />
+            <marker date="1573997445534" expanded="true" signature="2516:2590" ph="Cached components" />
+            <marker date="1573997445534" expanded="true" signature="2596:2697" ph="Timers" />
+            <marker date="1573997445534" expanded="true" signature="2723:3805" ph="{...}" />
             <marker date="1573997445534" expanded="true" signature="3690:3803" ph="{...}" />
             <marker date="1573997445534" expanded="true" signature="4026:5598" ph="{...}" />
             <marker date="1573997445534" expanded="true" signature="4635:4959" ph="{...}" />
@@ -663,14 +667,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Assets/Scripts/Audio/FMOD_LevelMusic.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="24" column="91" selection-start-line="24" selection-start-column="91" selection-end-line="24" selection-end-column="91" />
+        <state relative-caret-position="433">
+          <caret line="29" column="8" lean-forward="true" selection-start-line="29" selection-start-column="8" selection-end-line="29" selection-end-column="8" />
           <folding>
-            <marker date="1573997344394" expanded="true" signature="6:128" ph="..." />
-            <marker date="1573997344394" expanded="true" signature="174:678" ph="{...}" />
-            <marker date="1573997344394" expanded="true" signature="338:441" ph="{...}" />
-            <marker date="1573997344394" expanded="true" signature="468:572" ph="{...}" />
-            <marker date="1573997344394" expanded="true" signature="602:676" ph="{...}" />
+            <marker date="1573998437555" expanded="true" signature="6:161" ph="..." />
+            <marker date="1573998437555" expanded="true" signature="207:908" ph="{...}" />
+            <marker date="1573998437555" expanded="true" signature="429:602" ph="{...}" />
+            <marker date="1573998437555" expanded="true" signature="629:802" ph="{...}" />
+            <marker date="1573998437555" expanded="true" signature="832:906" ph="{...}" />
           </folding>
         </state>
       </provider>
