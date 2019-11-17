@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="ParameterPresetFolder" id="{52f48567-9380-431c-9d47-0cba7345fbc0}">
+		<property name="name">
+			<value>BulletTime</value>
+		</property>
+		<relationship name="folder">
+			<destination>{8139f479-809a-4848-9639-b26c21d15f4c}</destination>
+		</relationship>
+	</object>
+</objects>
