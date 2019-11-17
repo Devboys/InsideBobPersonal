@@ -5,7 +5,7 @@
 			<value>Fade</value>
 		</property>
 		<relationship name="folder">
-			<destination>{e40bd036-4780-4184-a943-e9453628ed14}</destination>
+			<destination>{52f48567-9380-431c-9d47-0cba7345fbc0}</destination>
 		</relationship>
 		<relationship name="parameter">
 			<destination>{bd274afa-2665-4487-b79b-a0883a91efe1}</destination>
