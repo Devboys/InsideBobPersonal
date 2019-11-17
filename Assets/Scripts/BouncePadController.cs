@@ -23,9 +23,9 @@ public class BouncePadController : MonoBehaviour
             PlayerController player = collision.GetComponent<PlayerController>();
             if (fixedDirection)
             {
-                direction = direction.normalized;
-                direction.x = Mathf.Sign(transform.up.x) * direction.x;
-                player.StartBounce(direction);
+                Vector2 dir = direction.normalized;
+                dir.x = Mathf.Sign(transform.up.x) * dir.x;
+                player.StartBounce(dir);
             }
             else
             {

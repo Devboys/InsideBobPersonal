@@ -154,7 +154,7 @@ public class PlayerController : MonoBehaviour
         foreach (var c in previewComponents) {
             if(c.GetType() != typeof(Transform) && c.GetType() != typeof(SpriteRenderer)) Destroy(c);
         }
-}
+    }
 
     void Update()
     {
@@ -553,6 +553,6 @@ public class PlayerController : MonoBehaviour
 
     public bool IsCannonBall()
     {
-        return velocity.magnitude > cannonballVelocity;
+        return inBounce;
     }
 }

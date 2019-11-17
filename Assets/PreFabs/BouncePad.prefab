@@ -98,9 +98,9 @@ BoxCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
-    border: {x: 0.22637442, y: 0.29105282, z: 0.23895077, w: 0.2641035}
+    border: {x: 0.4921875, y: 0.6328125, z: 0.51953125, w: 0.57421875}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.2996767, y: 0.45993534}
+    oldSize: {x: 5, y: 1}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -144,4 +144,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fixedDirection: 0
   bounceSound: event:/Sfx/BouncePad
-  direction: {x: 0.3, y: 0.7}
+  direction: {x: 0.4, y: 0.7}
