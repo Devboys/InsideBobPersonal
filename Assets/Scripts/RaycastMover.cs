@@ -9,7 +9,7 @@ using UnityEngine;
  */
 
 [RequireComponent(typeof(Collider2D))]
-[RequireComponent(typeof(Rigidbody2D))] //SHOULD(must?) BE KINEMATIC
+//[RequireComponent(typeof(Rigidbody2D))] //SHOULD(must?) BE KINEMATIC
 public class RaycastMover : MonoBehaviour
 {
 

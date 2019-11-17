@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
 {
     //Editor properties.
     [Header("-- Gravity")]
-    public float gravity = -20;
+    [HideInInspector] public float gravity = -20;
     public float maxGravity;
 
     [Header("-- Ground Movement")]
@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour
     public int surfaceIndex;
     
     public float footRate = 0.5f;
-    public float footDelay = 0.0f;
+    private float footDelay = 0.0f;
     
     
     [Space(20)] 
@@ -80,11 +80,11 @@ public class PlayerController : MonoBehaviour
 
     //private variables
     [Header("-- State")]
-    [ReadOnly] public Vector2 velocity;
+    [HideInInspector] public Vector2 velocity;
     private List<GameObject> padList;
     private bool postJumpApex;
 
-    [SerializeField] [ReadOnly] private bool inBounce;
+    [ReadOnly] private bool inBounce;
 
     private bool inBulletTime;
     private LineRenderer line;

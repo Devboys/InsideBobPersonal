@@ -5,10 +5,10 @@ using UnityEditor;
 
 public class LevelGizmo : MonoBehaviour
 {
-    public Color outlineColor;
-    public Vector2 levelSize;
-    public Vector2Int amountOfLevels;
-    private int iterations = 3;
+    public Color outlineColor = Color.white;
+    public Vector2 levelSize = new Vector2(50, 28);
+    public Vector2Int amountOfLevels = new Vector2Int(10, 10);
+
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
