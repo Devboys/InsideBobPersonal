@@ -73,7 +73,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 838cb6d5d3eae85498c2d54c647fe627, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e74a8f6f4ee6b5f48811538b5c9ba7ce, type: 3}
   m_Color: {r: 0.43173724, g: 0.713332, b: 0.9245283, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -121,8 +121,8 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    pivot: {x: 0.41078076, y: 0.41019955}
+    oldSize: {x: 2.2368166, y: 3.0000002}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -187,13 +187,12 @@ MonoBehaviour:
   bounceDeceleration: 2
   padPrefab: {fileID: 4840296420896782106, guid: 5f32f3a81d8845f4597b2d95192be694,
     type: 3}
-  padPreview: {fileID: 0}
   hitLayers:
     serializedVersion: 2
     m_Bits: 512
   shotCooldown: 0
   numPadsAllowed: 2
-  shader: {fileID: 4800000, guid: bbc6574f477e82347a155c593363a18a, type: 3}
+  shader: {fileID: 4800000, guid: 6e6090794941e8d4ab15944aae73eaa3, type: 3}
   timeCurve:
     serializedVersion: 2
     m_Curve:

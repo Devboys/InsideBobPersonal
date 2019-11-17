@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2678904177467453092}
   - component: {fileID: 2678904177467453089}
   m_Layer: 11
-  m_Name: EnemyBouncy
+  m_Name: EnemyBounceGravity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -73,7 +73,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 1e3ac719ee8c0ef47bc2f3ad26379134, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

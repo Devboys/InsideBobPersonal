@@ -9,16 +9,17 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1941726899162041555}
-  - component: {fileID: 2110636322187393994}
   - component: {fileID: 8300916735224314763}
   - component: {fileID: 2801036118116484648}
-  m_Layer: 0
+  - component: {fileID: 2110636322187393994}
+  - component: {fileID: 3233292216978771140}
+  m_Layer: 11
   m_Name: BlobZac
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1941726899162041555
 Transform:
   m_ObjectHideFlags: 0
@@ -33,18 +34,6 @@ Transform:
   m_Father: {fileID: 3459754274966294011}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2110636322187393994
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3137226154051318436}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6323d23a0e91449870ff4bc070a8a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!212 &8300916735224314763
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -115,6 +104,38 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &2110636322187393994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3137226154051318436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6323d23a0e91449870ff4bc070a8a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mother: {fileID: 6289760260810753715}
+  blobSpeed: 0
+  blobBurstSpeed: 0
+  startPos: {x: 0, y: 0, z: 0}
+--- !u!58 &3233292216978771140
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3137226154051318436}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &6289760260810753715
 GameObject:
   m_ObjectHideFlags: 0
@@ -128,7 +149,7 @@ GameObject:
   - component: {fileID: 6416438461746499984}
   - component: {fileID: 6785012659595345939}
   - component: {fileID: 2234219431183015037}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: EnemyZac
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -189,7 +210,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 1e3ac719ee8c0ef47bc2f3ad26379134, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -230,7 +251,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -248,5 +269,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27ba93197a43ae442ba76b38a1f51d07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   blobZac: {fileID: 3137226154051318436}
+  obstacles:
+    serializedVersion: 2
+    m_Bits: 512
+  size: 3
+  rangeMax: 8
+  rangeMin: 3
+  blobSpeed: 2
+  blobBurstSpeed: 15
