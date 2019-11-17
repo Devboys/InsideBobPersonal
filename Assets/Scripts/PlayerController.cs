@@ -165,7 +165,6 @@ public class PlayerController : MonoBehaviour
         {
             inBounce = false;
         }
-        isCannonBall = IsCannonBall();
         TickTimers();
     }
 
