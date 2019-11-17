@@ -182,13 +182,16 @@ public class PlayerController : MonoBehaviour
         {
             lastLanding = transform.position;
             inBounce = false;
+            
+            //Play landing sound
+            RuntimeManager.PlayOneShot(landSound, transform.position);
         }
         TickTimers();
     }
 
     private void PlayFootSound()
     {
-        //Checks if player is moving, grounded, and triggers footstep sounds.
+        //Checks if player is moving, grounded, and triggers footstep sounds
         if (Mathf.Abs(velocity.x) > 0.1f && _mover.IsGrounded && Time.time > footDelay)
         {
             footDelay = Time.time + footRate;
