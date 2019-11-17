@@ -1,7 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 public class LevelGizmo : MonoBehaviour
 {
@@ -9,7 +9,7 @@ public class LevelGizmo : MonoBehaviour
     public Vector2 levelSize;
     public Vector2Int amountOfLevels;
     private int iterations = 3;
-
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         if (IsMeOrChildRecursively(transform) && levelSize != Vector2.zero)
@@ -43,4 +43,5 @@ public class LevelGizmo : MonoBehaviour
         }
         return false;
     }
+#endif
 }
