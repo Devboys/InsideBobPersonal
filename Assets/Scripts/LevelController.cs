@@ -6,19 +6,16 @@ using UnityEngine.SceneManagement;
 public class LevelController : MonoBehaviour
 {
     public AnimationCurve screenTransition;
+    public Vector2 levelSize;
 
     private PlayerController player;
     private Camera mainCam;
-    private float verticalSize;
-    private float horizontalSize;
     private Vector2Int levelIndex = Vector2Int.zero;
 
     private void Awake()
     {
         player = FindObjectOfType<PlayerController>();
         mainCam = Camera.main;
-        verticalSize = mainCam.orthographicSize * 2;
-        horizontalSize = verticalSize * 16f / 9f;
     }
 
     // Update is called once per frame
@@ -26,13 +23,13 @@ public class LevelController : MonoBehaviour
     {
         if (player)
         {
-            if (player.transform.position.x > horizontalSize / 2 + levelIndex.x * horizontalSize)
+            if (player.transform.position.x > levelSize.x / 2 + levelIndex.x * levelSize.x)
                 MoveToLevel(Vector2Int.right);
-            else if (player.transform.position.x < -horizontalSize / 2 + levelIndex.x * horizontalSize)
+            else if (player.transform.position.x < -levelSize.x / 2 + levelIndex.x * levelSize.x)
                 MoveToLevel(Vector2Int.left);
-            else if (player.transform.position.y > horizontalSize / 2 + levelIndex.y * verticalSize)
+            else if (player.transform.position.y > levelSize.y / 2 + levelIndex.y * levelSize.y)
                 MoveToLevel(Vector2Int.up);
-            else if (player.transform.position.y < -horizontalSize / 2 + levelIndex.y * verticalSize)
+            else if (player.transform.position.y < -levelSize.y / 2 + levelIndex.y * levelSize.y)
                 MoveToLevel(Vector2Int.down);
         }
     }
@@ -50,7 +47,7 @@ public class LevelController : MonoBehaviour
         float curTime = 0;
         float endTime = screenTransition.keys[screenTransition.length - 1].time;
         Vector3 startPos = mainCam.transform.position;
-        Vector3 endPos = new Vector3(levelIndex.x * horizontalSize, levelIndex.y * verticalSize, -10);
+        Vector3 endPos = new Vector3(levelIndex.x * levelSize.x, levelIndex.y * levelSize.y, -10);
         while (curTime < endTime)
         {
             mainCam.transform.position = Vector3.LerpUnclamped(startPos, endPos, screenTransition.Evaluate(curTime));
