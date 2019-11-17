@@ -15,35 +15,28 @@ public class PlayerController : MonoBehaviour
 
     [Header("-- Ground Movement")]
     public float maxSpeed = 5;
-    public float acceleration;
-    public float dirChangeAcceleration;
-    public float deceleration;
+    public float groundDamping;
 
     [Header("-- Air movement")]
-    public float airAcceleration;
-    public float airDirChangeAcceleration;
-    public float airDeceleration;
+    public float airDamping;
+
 
     [Header("-- Jumping")]
     [Tooltip("Height of apex if player does not release button")]
     public float maxJumpHeight = 3f;
     [Tooltip("Jump height if player instantly releases button")]
     public float minJumpHeight = 0.5f;
-    [Tooltip("Distance covered before jump apex at max speed")]
-    public float JumpDistance1 = 5;
-    [Tooltip("Distance covered after jump apex at max speed")]
-    public float JumpDistance2 = 2;
+    [Tooltip("The time it takes to reach the apex of the jump-arc")]
+    public float timeToJumpApex = 0.5f;
+    [Tooltip("The time it takes to land after hitting the apex of the jump-arc ")]
+    public float timeToJumpLand = 0.2f;
     [Tooltip("How long to allow for jumping after walking off edges")]
-    public float edgeGraceTime = 0.1f;
-    [Tooltip("How early to allow for registering next jump before landing")]
-    public float bunnyGraceTime = 0.2f;
+    public float coyoteTime = 0.1f;
 
     [Header("-- Bouncing")]
-    public float bounceTime;
-    public float bounceMultiplier;
-    public float bounceAcceleration;
-    public float bounceDirChangeAcceleration;
-    public float bounceDeceleration;
+    public float bounceForce;
+    public float bounceDamping;
+    public float bounceVelocityCutoff;
     public float cannonballVelocity;
 
     [Header("-- Shooting")]
@@ -88,6 +81,7 @@ public class PlayerController : MonoBehaviour
     private bool postJumpApex;
 
     [SerializeField] [ReadOnly] private bool inBounce;
+    private float initBounceX;
 
     private bool inBulletTime;
     private LineRenderer line;
@@ -96,18 +90,36 @@ public class PlayerController : MonoBehaviour
     public float bulletTimePercentage;
     private GameObject padPreview;
 
+
+    //DEBUG
+    private Vector2 lastLanding;
+
     #region Cached components
     private RaycastMover _mover;
 
     #endregion
 
     #region Timers
-    Timer jumpGraceTimer;
+    Timer jumpCoyoteTimer;
     Timer bounceTimer;
     Timer shootTimer;
 
     #endregion
 
+    private float jumpGravity
+    {
+        get { return (-2 * maxJumpHeight) / Mathf.Pow(timeToJumpApex, 2); }
+    }
+    private float fallGravity
+    {
+        get { return (-2 * maxJumpHeight) / Mathf.Pow(timeToJumpLand, 2); }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(lastLanding, 0.2f);
+    }
     private void Start()
     {
         // FMOD
@@ -119,7 +131,7 @@ public class PlayerController : MonoBehaviour
         padList = new List<GameObject>();
 
         //init timers
-        jumpGraceTimer = new Timer();
+        jumpCoyoteTimer = new Timer();
         bounceTimer = new Timer();
         shootTimer = new Timer();
 
@@ -153,7 +165,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         //Do not attempt to move downwards if already grounded
-        if (_mover.IsGrounded && bounceTimer.IsFinished) velocity.y = 0;
+        if (_mover.IsGrounded && !inBounce) velocity.y = 0;
 
         //Order of movement events matter. Be mindful of changes.
         HandleGravity();
@@ -170,36 +182,13 @@ public class PlayerController : MonoBehaviour
         //Start grace timer on the same frame we leave ground.
         if (_mover.HasLeftGround)
         {
-            jumpGraceTimer.StartTimer(edgeGraceTime);
-            maxY = 0;
-            initX = transform.position.x;
-            totalX = transform.position.x;
-            preApex = true;
-            
-            //Play jump sound.
-            RuntimeManager.PlayOneShot(jumpSound, transform.position);
+            jumpCoyoteTimer.StartTimer(coyoteTime);
         }
-
-        if (transform.position.y > maxY) maxY = transform.position.y;
-
-        if(velocity.y < 0 && preApex)
-        {
-            postJumpApex = false;
-            preApex = false;
-            initX = transform.position.x - initX;
-        }
-
-        //When we land on group, we're no longer bouncing.
         if (_mover.HasLanded)
         {
-            bounceTimer.EndTimer();
-            
-            totalX = transform.position.x - totalX;
-            
-            //Play landing sound.
-            RuntimeManager.PlayOneShot(landSound, transform.position);
+            lastLanding = transform.position;
+            inBounce = false;
         }
-        isCannonBall = IsCannonBall();
         TickTimers();
     }
 
@@ -228,97 +217,75 @@ public class PlayerController : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
         //BoundValue(ref velocity.y, maxGravity);
     }
-
     private void HandleHorizontalMovement()
     {
-
         float horizontalMove = Input.GetAxisRaw("Horizontal");
-        float currentAcceleration;
-        float currentDeceleration;
-        float currentDirChange;
+        float targetVelocity = horizontalMove * maxSpeed;
 
-        if (_mover.IsGrounded && !bounceTimer.IsFinished)
+        if (!inBounce)
         {
-            currentAcceleration = acceleration;
-            currentDeceleration = deceleration;
-            currentDirChange = dirChangeAcceleration;
-        }
-        else if (bounceTimer.IsFinished)
-        {
-            currentAcceleration = airAcceleration;
-            currentDeceleration = airDeceleration;
-            currentDirChange = airDirChangeAcceleration;
-        }
-        else
-        {
-            currentAcceleration = bounceAcceleration;
-            currentDeceleration = bounceDeceleration;
-            currentDirChange = bounceDirChangeAcceleration;
-        }
-
-        //Temporary approach to all these is weighted average
-        if (Mathf.Abs(horizontalMove) != 0)
-        {
-            //Accelerate
-            if (Mathf.Sign(velocity.x) == Mathf.Sign(horizontalMove))
+            //regular ground/air movement
+            if (_mover.IsGrounded)
             {
-                float targetVelocity = Mathf.Sign(horizontalMove) * maxSpeed;
-                velocity.x += (targetVelocity - velocity.x) * Time.deltaTime * currentAcceleration;
+                //ground movement
+                velocity.x += (targetVelocity - velocity.x) * Time.deltaTime * groundDamping;
             }
-            //Direction change
             else
             {
-                float targetVelocity = Mathf.Sign(horizontalMove) * maxSpeed;
-                velocity.x += (targetVelocity - velocity.x) * Time.deltaTime * currentDirChange;
+                //air damping movement
+                velocity.x += (targetVelocity - velocity.x) * Time.deltaTime * airDamping;
             }
         }
         else
         {
-            //Decelerate
-            float decelerateForce = velocity.x * Time.deltaTime * currentDeceleration;
+            if (velocity.x > bounceVelocityCutoff)
+            {
+                //bounceDamp
+                velocity.x += (targetVelocity - velocity.x) * Time.deltaTime * bounceDamping;
+            }
+            else if (velocity.x > maxSpeed)//is this the right cutoff for 2nd phase???
+            {
+                //lerp between bounceDamp and airDamp
+                float dif = (bounceVelocityCutoff - velocity.x) / bounceVelocityCutoff - maxSpeed;
+                float lerpedDamping = Mathf.Lerp(bounceDamping, airDamping, 1 - dif);
 
-            if (Mathf.Abs(decelerateForce) > Mathf.Abs(velocity.x))
-                velocity.x = 0;
+                velocity.x += (targetVelocity - velocity.x) * Time.deltaTime * lerpedDamping;
+            }
             else
-                velocity.x -= decelerateForce;
+            {
+                inBounce = false; //full regular air damping
+            }
 
         }
-
-        //BoundValue(ref velocity.x, Mathf.Sign(velocity.x) * maxSpeed);
     }
 
     private void HandleJumpVariableGravity()
     {
-        if (Input.GetButtonDown("Jump") && (!jumpGraceTimer.IsFinished || _mover.IsGrounded))
+        if (Input.GetButtonDown("Jump") && (!jumpCoyoteTimer.IsFinished || _mover.IsGrounded))
         {
-            float initVelocity = (2 * maxJumpHeight * maxSpeed) / JumpDistance1;
-            float jumpGravity = (-2 * maxJumpHeight * Mathf.Pow(maxSpeed, 2)) / Mathf.Pow(JumpDistance1, 2);
 
+            //float jumpGravity = -(2 * maxJumpHeight) / Mathf.Pow(timeToJumpApex, 2);
+            float jumpVelocity = Mathf.Abs(jumpGravity) * timeToJumpApex;
             gravity = jumpGravity;
-            velocity.y = initVelocity;
+            velocity.y = jumpVelocity;
+            postJumpApex = false;
+
+            jumpCoyoteTimer.EndTimer();
         }
 
-        if(velocity.y < 0 && !postJumpApex)
+        float minJumpVel = Mathf.Sqrt(2 * Mathf.Abs(gravity) * minJumpHeight);
+        if (Input.GetButtonUp("Jump") && velocity.y > minJumpVel)
         {
-            //gravity = (-2 * maxJumpHeight * Mathf.Pow(maxSpeed, 2)) / Mathf.Pow(JumpDistance2, 2);
-            gravity = (-2 * maxJumpHeight * Mathf.Pow(maxSpeed, 2)) / Mathf.Pow(JumpDistance2, 2);
+            velocity.y = minJumpVel;
+        }
+
+        else if (velocity.y < 0 && !postJumpApex)
+        {
+            //float jumpGravity = (-2 * maxJumpHeight) / Mathf.Pow(timeToJumpLand, 2);
+            gravity = fallGravity;
             postJumpApex = true;
         }
-    }
-    private void HandleJumpConstantGravity()
-    {
-        //assumes constant gravity
-        if (Input.GetAxisRaw("Jump") != 0 && (!jumpGraceTimer.IsFinished || _mover.IsGrounded))
-        {
-            velocity.y = Mathf.Sqrt(2f * maxJumpHeight * -gravity);
 
-            jumpGraceTimer.EndTimer();
-        }
-
-        if (Input.GetButtonUp("Jump") && velocity.y > Mathf.Sqrt(2f * minJumpHeight * -gravity))
-        {
-            velocity.y = Mathf.Sqrt(2f * minJumpHeight * -gravity);
-        }
     }
 
     private void UpdateBulletTime()
@@ -509,7 +476,7 @@ public class PlayerController : MonoBehaviour
     }
     private void TickTimers()
     {
-        jumpGraceTimer.TickTimer(Time.deltaTime);
+        jumpCoyoteTimer.TickTimer(Time.deltaTime);
         bounceTimer.TickTimer(Time.deltaTime);
         shootTimer.TickTimer(Time.deltaTime);
     }
@@ -519,9 +486,10 @@ public class PlayerController : MonoBehaviour
     #region Public methods
     public void StartBounce(Vector2 initVelocity)
     {
-        //Debug.Log("pre: " + velocity.normalized + " post: " + initVelocity);
-        velocity = initVelocity * bounceMultiplier;
-        bounceTimer.StartTimer(bounceTime);
+        inBounce = true;
+        velocity = initVelocity * bounceForce;
+        gravity = fallGravity;
+        initBounceX = velocity.x;
     }
     #endregion
 

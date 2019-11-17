@@ -31,6 +31,7 @@ public class RaycastMover : MonoBehaviour
 
     //component cache.
     private BoxCollider2D _boxCollider;
+    private Rigidbody2D _rigidBody;
 
     //ray variables
     private RayCastOrigins rayOrigins;
@@ -74,13 +75,14 @@ public class RaycastMover : MonoBehaviour
     public void Awake()
     {
         _boxCollider = this.GetComponent<BoxCollider2D>();
+        _rigidBody = this.GetComponent<Rigidbody2D>();
         rayOrigins = new RayCastOrigins();
 
         RecalculateDistanceBetweenRays();
         collisionState = new CharacterCollisionState2D();
     }
 
-    public void Move(Vector3 deltaMovement)
+    public void Move(Vector2 deltaMovement)
     {
         collisionState.wasGroundedLastFrame = collisionState.below;
         collisionState.Reset();
@@ -101,8 +103,9 @@ public class RaycastMover : MonoBehaviour
         if (collisionState.wasGroundedLastFrame && !collisionState.below)
             collisionState.leftGroundThisFrame = true;
 
-        deltaMovement.z = 0;
+        //deltaMovement.z = 0;
         transform.Translate(deltaMovement, Space.World);
+        //_rigidBody.MovePosition(_rigidBody.position + deltaMovement);
         velocity = deltaMovement / Time.deltaTime;
     }
 
@@ -133,13 +136,11 @@ public class RaycastMover : MonoBehaviour
                 wallOnLeft = true;
                 break;
             }
-
-
         }
     }
 
     #region movement methods
-    private void MoveHorizontal(ref Vector3 deltaMovement)
+    private void MoveHorizontal(ref Vector2 deltaMovement)
     {
         bool isGoingRight = deltaMovement.x > 0;
         float rayDistance = Mathf.Abs(deltaMovement.x) + skinWidth;
@@ -172,7 +173,7 @@ public class RaycastMover : MonoBehaviour
         }
     }
 
-    private void MoveVertical(ref Vector3 deltaMovement)
+    private void MoveVertical(ref Vector2 deltaMovement)
     {
         bool isGoingUp = deltaMovement.y > 0;
         float rayDistance = Mathf.Abs(deltaMovement.y) + skinWidth;
