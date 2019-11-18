@@ -17,6 +17,16 @@ public class Move : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        HashSet<int> lastTiles = new HashSet<int>();
+        HashSet<int> currentTiles = new HashSet<int>();
+
+        var temp = lastTiles;
+        lastTiles = currentTiles;
+        temp.Clear();
+        currentTiles = temp;
+        
+
+
         rb.velocity = movement;
     }
 }

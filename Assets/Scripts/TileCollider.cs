@@ -35,13 +35,7 @@ public class TileCollider : MonoBehaviour
             }
         }
 
-        foreach (TileBase tile in lastCollidingTiles)
-        {
-            if (!collidingTiles.Contains(tile))
-            {
-                OnTileCollisionExit(tile.name);
-            }
-        }
+        CheckTileCollisoinExit();
 
         var temp = lastCollidingTiles;
         lastCollidingTiles = collidingTiles;
@@ -54,11 +48,7 @@ public class TileCollider : MonoBehaviour
         Tilemap tilemap = collision.collider.GetComponent<Tilemap>();
         if (tilemap)
         {
-            foreach (TileBase tile in lastCollidingTiles)
-            {
-                OnTileCollisionExit(tile.name);
-            }
-            lastCollidingTiles.Clear();
+            CheckTileCollisoinExit();
         }
     }
 
@@ -85,4 +75,16 @@ public class TileCollider : MonoBehaviour
     {
         Debug.Log("Exited collision with " + name);
     }
+
+    private void CheckTileCollisoinExit()
+    {
+        foreach (TileBase tile in lastCollidingTiles)
+        {
+            if (!collidingTiles.Contains(tile))
+            {
+                OnTileCollisionExit(tile.name);
+            }
+        }
+    }
+
 }

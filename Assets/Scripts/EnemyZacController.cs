@@ -96,6 +96,7 @@ public class EnemyZacController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+
         var pc = collision.gameObject.GetComponent<PlayerController>();
         if (!dead && pc)
         {
