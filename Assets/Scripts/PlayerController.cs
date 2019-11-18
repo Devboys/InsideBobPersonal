@@ -10,8 +10,9 @@ public class PlayerController : MonoBehaviour
 {
     //Editor properties.
     [Header("-- Gravity")]
-    [HideInInspector] public float gravity = -20;
-    public float maxGravity;
+    [ReadOnly] public float gravity;
+    [Tooltip("Maximal downwards velocity")]
+    public float maxGravityMultiplier = 1.5f;
 
     [Header("-- Ground Movement")]
     public float maxSpeed = 5;
@@ -23,7 +24,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("-- Jumping")]
     [Tooltip("Height of apex if player does not release button")]
-    public float maxJumpHeight = 3f;
+    public float maxJumpHeight = 3f;    
     [Tooltip("Jump height if player instantly releases button")]
     public float minJumpHeight = 0.5f;
     [Tooltip("The time it takes to reach the apex of the jump-arc")]
@@ -81,7 +82,7 @@ public class PlayerController : MonoBehaviour
     //private variables
     [Header("-- State")]
     [HideInInspector] public Vector2 velocity;
-    private List<GameObject> padList;
+    private List<GameObject> padList =  new List<GameObject>();
     private bool postJumpApex;
 
     private bool inBounce;
@@ -94,7 +95,7 @@ public class PlayerController : MonoBehaviour
     public float bulletTimePercentage;
     private GameObject padPreview;
 
-    private float bounceCoolDown;
+    private float bounceCoolDown = 0.001f;
 
 
     //DEBUG
@@ -107,10 +108,10 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region Timers
-    Timer jumpCoyoteTimer;
-    Timer shootTimer;
-    Timer cannonballTimer;
-    Timer bounceCoolDownTimer;
+    Timer jumpCoyoteTimer = new Timer();
+    Timer shootTimer = new Timer();
+    Timer cannonballTimer = new Timer();
+    Timer bounceCoolDownTimer = new Timer();
 
     #endregion
 
@@ -121,6 +122,11 @@ public class PlayerController : MonoBehaviour
     private float fallGravity
     {
         get { return (-2 * maxJumpHeight) / Mathf.Pow(timeToJumpLand, 2); }
+    }
+
+    private float maxGravity
+    {
+        get { return (fallGravity * timeToJumpLand) * maxGravityMultiplier; }
     }
 
     private void OnDrawGizmos()
@@ -136,17 +142,6 @@ public class PlayerController : MonoBehaviour
         //cache components
         _mover = this.GetComponent<RaycastMover>();
         _anim = GetComponent<Animator>();
-
-        padList = new List<GameObject>();
-
-        //init timers
-        jumpCoyoteTimer = new Timer();
-        shootTimer = new Timer();
-        cannonballTimer = new Timer();
-        bounceCoolDownTimer = new Timer();
-
-        // init private cooldown
-        bounceCoolDown = 0.001f;
 
         // init Bullet Time
         inBulletTime = false;
@@ -180,7 +175,6 @@ public class PlayerController : MonoBehaviour
         UpdateBulletTime();
         HandleShoot();
         PlayFootSound();
-        PlayInBulletTimeSound();
 
         _mover.Move(velocity * Time.deltaTime);
         //Apply corrected velocity changes
@@ -191,7 +185,7 @@ public class PlayerController : MonoBehaviour
         {
             jumpCoyoteTimer.StartTimer(coyoteTime);
         }
-        if (_mover.HasLanded)
+        if (_mover.HasLanded) //is true only on the single frame in which the player landed
         {
             lastLanding = transform.position;
             inBounce = false;
@@ -243,7 +237,11 @@ public class PlayerController : MonoBehaviour
     {
         //REMEMBER TO ENABLE AUTOSYNC TRANSFORMS, OTHERWISE BOUNCINESS
         velocity.y += gravity * Time.deltaTime;
-        //BoundValue(ref velocity.y, maxGravity);
+
+        if (velocity.y < maxGravity)
+        {
+            velocity.y = maxGravity;
+        }
     }
     private void HandleHorizontalMovement()
     {
@@ -323,7 +321,9 @@ public class PlayerController : MonoBehaviour
                 EnterBulletTime();
             }
             else {
-                DrawBulletLine();
+                var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                var dir = (mousePos - transform.position).normalized;
+                DrawBulletLine(dir);
             }
         }
         else
@@ -339,30 +339,6 @@ public class PlayerController : MonoBehaviour
 
             Time.timeScale = 1f;
         }
-
-        /*Vector2 rightInput = new Vector2(Input.GetAxisRaw("RightHorizontal"), Input.GetAxisRaw("RightVertical"));
-        if (rightInput.magnitude > 0.1f && Input.GetAxisRaw("Cancel") == 0 && !cancelBulletTime)
-        {
-            if (!inBulletTime)
-            {
-                EnterBulletTime();
-            }
-            else
-            {
-                DrawBulletLine(rightInput);
-            }
-        }
-        else
-        {
-            if (inBulletTime)
-            {
-                if (Input.GetAxisRaw("Cancel") != 0)
-                {
-                    cancelBulletTime = true;
-                }
-                ExitBulletTime();
-            }
-        }*/
     }
 
     private void EnterBulletTime()
@@ -395,13 +371,6 @@ public class PlayerController : MonoBehaviour
         padPreview.SetActive(false);
     }
 
-    private void DrawBulletLine()
-    {
-        var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        var dir = (mousePos - transform.position).normalized;
-        DrawBulletLine(dir);
-    }
-
     private void DrawBulletLine(Vector2 dir)
     {
         //dir.z = 0;
@@ -427,92 +396,62 @@ public class PlayerController : MonoBehaviour
 
     private void HandleShoot()
     {
-        if (Input.GetMouseButtonUp(0) && shootTimer.IsFinished && !cancelBulletTime)
+        if (Input.GetMouseButtonUp(0) && !Input.GetMouseButton(1))
         {
             //calculate inverse of vector between mouse and player
             Vector2 clickPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 direction = clickPos - (Vector2)transform.position;
 
-            //normalize direction for ease-of-use.
-            direction = direction.normalized;
-            shootTimer.StartTimer(shotCooldown);
+            if(!cancelBulletTime)
+                PlacePadInDirection(direction);
 
-            //cast ray to calculate platform position.
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, Mathf.Infinity, hitLayers);
-
-            if (hit)
-            {
-                //instantiate platform
-                GameObject platform = Instantiate(padPrefab, hit.point, Quaternion.identity);
-                float angle = Mathf.Atan2(hit.normal.x, hit.normal.y) * Mathf.Rad2Deg;
-                platform.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -angle));
-
-                float dot = Mathf.Abs(Vector2.Dot(hit.normal, Vector2.up));
-                if (dot > 0.95f && dot < 1.05f)
-                {
-                    //bouncepad is horizontal, so regular bounce
-                    platform.GetComponent<BouncePadController>().fixedDirection = false;
-                }
-                else
-                {
-                    //bouncepad is vertical, so upwards velocity only 
-                    platform.GetComponent<BouncePadController>().fixedDirection = true;
-                }
-
-                padList.Add(platform);
-                if(padList.Count > numPadsAllowed)
-                {
-                    Destroy(padList[0]);
-                    padList.RemoveAt(0);
-                }
-               
-                // Play sound for placing bounce pads
-                RuntimeManager.PlayOneShot(placePad, transform.position);
-
-            }
-        }
-        if (Input.GetMouseButtonUp(0))
-        {
             cancelBulletTime = false;
             bulletTime = 0.0f;
             bulletTimePercentage = 0;
         }
 
-        /*// Controller input
-        Vector2 rightInput = new Vector2(Input.GetAxisRaw("RightHorizontal"), Input.GetAxisRaw("RightVertical"));
-        if (rightInput.magnitude > 0.1f && shootTimer.IsFinished && !cancelBulletTime)
+    }
+
+    private void PlacePadInDirection(Vector2 direction)
+    {
+        shootTimer.StartTimer(shotCooldown);
+
+        //normalize direction for ease-of-use.
+        direction = direction.normalized;
+
+        //cast ray to calculate platform position.
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, Mathf.Infinity, hitLayers);
+
+        if (hit && shootTimer.IsFinished)
         {
-            Vector2 direction = rightInput;
+            //instantiate platform
+            GameObject platform = Instantiate(padPrefab, hit.point, Quaternion.identity);
+            float angle = Mathf.Atan2(hit.normal.x, hit.normal.y) * Mathf.Rad2Deg;
+            platform.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -angle));
 
-            //normalize direction for ease-of-use.
-            direction = direction.normalized;
-            shootTimer.StartTimer(shotCooldown);
-
-            //cast ray to calculate platform position.
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, Mathf.Infinity, hitLayers);
-
-            if (hit)
+            float dot = Mathf.Abs(Vector2.Dot(hit.normal, Vector2.up));
+            if (dot > 0.95f && dot < 1.05f)
             {
-                //instantiate platform
-                GameObject platform = Instantiate(padPrefab, hit.point, Quaternion.identity);
-                float angle = Mathf.Atan2(hit.normal.x, hit.normal.y) * Mathf.Rad2Deg;
-                platform.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -angle));
-                padList.Add(platform);
-                if (padList.Count > numPadsAllowed)
-                {
-                    Destroy(padList[0]);
-                    padList.RemoveAt(0);
-                }
-
+                //bouncepad is horizontal, so regular bounce
+                platform.GetComponent<BouncePadController>().fixedDirection = false;
             }
-        }
-        if (Input.GetAxisRaw("Cancel") != 0)
-        {
-            cancelBulletTime = false;
-            bulletTime = 0.0f;
-            bulletTimePercentage = 0;
-        }*/
+            else
+            {
+                //bouncepad is vertical, so upwards velocity only 
+                platform.GetComponent<BouncePadController>().fixedDirection = true;
+            }
 
+            padList.Add(platform);
+            if (padList.Count > numPadsAllowed)
+            {
+                Destroy(padList[0]);
+                padList.RemoveAt(0);
+            }
+
+            // Play sound for placing bounce pads
+            RuntimeManager.PlayOneShot(placePad, transform.position);
+
+        }
     }
     private void TickTimers()
     {
@@ -533,16 +472,18 @@ public class PlayerController : MonoBehaviour
         jumping = false;
         velocity = initVelocity * bounceForce;
         gravity = fallGravity;
+
         cannonballTimer.StartTimer(cannonballTime);
         bounceCoolDownTimer.StartTimer(bounceCoolDown);
+    }
+
+    public bool IsCannonBall()
+    {
+        return !cannonballTimer.IsFinished;
     }
     #endregion
 
     #region Utilities
-    private void BoundValue(ref float value, float max)
-    {
-        if (Mathf.Abs(value) > Mathf.Abs(max)) value = max;
-    }
 
     private class Timer
     {
@@ -580,9 +521,4 @@ public class PlayerController : MonoBehaviour
     }
 
     #endregion
-
-    public bool IsCannonBall()
-    {
-        return !cannonballTimer.IsFinished;
-    }
 }
