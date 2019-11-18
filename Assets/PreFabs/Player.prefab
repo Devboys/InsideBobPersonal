@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5457290457146480782}
   - component: {fileID: 5457290457146480770}
   - component: {fileID: 5457290457146480769}
+  - component: {fileID: 232158605}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -175,10 +176,10 @@ MonoBehaviour:
   timeToJumpApex: 0.3
   timeToJumpLand: 0.2
   coyoteTime: 0.1
-  bounceForce: 50
+  bounceForce: 45
   bounceDamping: 1.3
   bounceVelocityCutoff: 12
-  cannonballVelocity: 0
+  cannonballTime: 0.5
   padPrefab: {fileID: 4840296420896782106, guid: 5f32f3a81d8845f4597b2d95192be694,
     type: 3}
   hitLayers:
@@ -259,3 +260,22 @@ MonoBehaviour:
   bulletTimePath: event:/Sfx/InBulletTime
   velocity: {x: -0.000008005669, y: -0.000026955631}
   bulletTimePercentage: 0
+--- !u!95 &232158605
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5457290457146480783}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 52815b5f054cee945888388dfabf05c7, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
