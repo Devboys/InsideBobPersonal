@@ -94,6 +94,8 @@ public class PlayerController : MonoBehaviour
     public float bulletTimePercentage;
     private GameObject padPreview;
 
+    private float bounceCoolDown;
+
 
     //DEBUG
     private Vector2 lastLanding;
@@ -108,6 +110,7 @@ public class PlayerController : MonoBehaviour
     Timer jumpCoyoteTimer;
     Timer shootTimer;
     Timer cannonballTimer;
+    Timer bounceCoolDownTimer;
 
     #endregion
 
@@ -140,6 +143,10 @@ public class PlayerController : MonoBehaviour
         jumpCoyoteTimer = new Timer();
         shootTimer = new Timer();
         cannonballTimer = new Timer();
+        bounceCoolDownTimer = new Timer();
+
+        // init private cooldown
+        bounceCoolDown = 0.001f;
 
         // init Bullet Time
         inBulletTime = false;
@@ -512,6 +519,7 @@ public class PlayerController : MonoBehaviour
         jumpCoyoteTimer.TickTimer(Time.deltaTime);
         shootTimer.TickTimer(Time.deltaTime);
         cannonballTimer.TickTimer(Time.deltaTime);
+        bounceCoolDownTimer.TickTimer(Time.deltaTime);
     }
 
     #endregion
@@ -519,11 +527,14 @@ public class PlayerController : MonoBehaviour
     #region Public methods
     public void StartBounce(Vector2 initVelocity)
     {
+        if (!bounceCoolDownTimer.IsFinished) return;
+
         inBounce = true;
         jumping = false;
         velocity = initVelocity * bounceForce;
         gravity = fallGravity;
         cannonballTimer.StartTimer(cannonballTime);
+        bounceCoolDownTimer.StartTimer(bounceCoolDown);
     }
     #endregion
 
