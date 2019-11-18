@@ -84,7 +84,8 @@ public class PlayerController : MonoBehaviour
     private List<GameObject> padList;
     private bool postJumpApex;
 
-    [ReadOnly] private bool inBounce;
+    private bool inBounce;
+    private bool jumping;
 
     private bool inBulletTime;
     private LineRenderer line;
@@ -187,6 +188,7 @@ public class PlayerController : MonoBehaviour
         {
             lastLanding = transform.position;
             inBounce = false;
+            jumping = false;
             
             //Play landing sound
             RuntimeManager.PlayOneShot(landSound, transform.position);
@@ -286,12 +288,13 @@ public class PlayerController : MonoBehaviour
             gravity = jumpGravity;
             velocity.y = jumpVelocity;
             postJumpApex = false;
+            jumping = true;
 
             jumpCoyoteTimer.EndTimer();
         }
 
         float minJumpVel = Mathf.Sqrt(2 * Mathf.Abs(gravity) * minJumpHeight);
-        if (Input.GetButtonUp("Jump") && velocity.y > minJumpVel)
+        if (Input.GetButtonUp("Jump") && velocity.y > minJumpVel && jumping)
         {
             velocity.y = minJumpVel;
         }
@@ -517,6 +520,7 @@ public class PlayerController : MonoBehaviour
     public void StartBounce(Vector2 initVelocity)
     {
         inBounce = true;
+        jumping = false;
         velocity = initVelocity * bounceForce;
         gravity = fallGravity;
         cannonballTimer.StartTimer(cannonballTime);
