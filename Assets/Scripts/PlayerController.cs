@@ -84,7 +84,8 @@ public class PlayerController : MonoBehaviour
     private List<GameObject> padList;
     private bool postJumpApex;
 
-    [ReadOnly] private bool inBounce;
+    private bool inBounce;
+    private bool jumping;
 
     private bool inBulletTime;
     private LineRenderer line;
@@ -92,6 +93,8 @@ public class PlayerController : MonoBehaviour
     private float bulletTime;
     public float bulletTimePercentage;
     private GameObject padPreview;
+
+    private float bounceCoolDown;
 
 
     //DEBUG
@@ -107,6 +110,7 @@ public class PlayerController : MonoBehaviour
     Timer jumpCoyoteTimer;
     Timer shootTimer;
     Timer cannonballTimer;
+    Timer bounceCoolDownTimer;
 
     #endregion
 
@@ -139,6 +143,10 @@ public class PlayerController : MonoBehaviour
         jumpCoyoteTimer = new Timer();
         shootTimer = new Timer();
         cannonballTimer = new Timer();
+        bounceCoolDownTimer = new Timer();
+
+        // init private cooldown
+        bounceCoolDown = 0.001f;
 
         // init Bullet Time
         inBulletTime = false;
@@ -187,6 +195,7 @@ public class PlayerController : MonoBehaviour
         {
             lastLanding = transform.position;
             inBounce = false;
+            jumping = false;
             
             //Play landing sound
             RuntimeManager.PlayOneShot(landSound, transform.position);
@@ -286,12 +295,13 @@ public class PlayerController : MonoBehaviour
             gravity = jumpGravity;
             velocity.y = jumpVelocity;
             postJumpApex = false;
+            jumping = true;
 
             jumpCoyoteTimer.EndTimer();
         }
 
         float minJumpVel = Mathf.Sqrt(2 * Mathf.Abs(gravity) * minJumpHeight);
-        if (Input.GetButtonUp("Jump") && velocity.y > minJumpVel)
+        if (Input.GetButtonUp("Jump") && velocity.y > minJumpVel && jumping)
         {
             velocity.y = minJumpVel;
         }
@@ -509,6 +519,7 @@ public class PlayerController : MonoBehaviour
         jumpCoyoteTimer.TickTimer(Time.deltaTime);
         shootTimer.TickTimer(Time.deltaTime);
         cannonballTimer.TickTimer(Time.deltaTime);
+        bounceCoolDownTimer.TickTimer(Time.deltaTime);
     }
 
     #endregion
@@ -516,10 +527,14 @@ public class PlayerController : MonoBehaviour
     #region Public methods
     public void StartBounce(Vector2 initVelocity)
     {
+        if (!bounceCoolDownTimer.IsFinished) return;
+
         inBounce = true;
+        jumping = false;
         velocity = initVelocity * bounceForce;
         gravity = fallGravity;
         cannonballTimer.StartTimer(cannonballTime);
+        bounceCoolDownTimer.StartTimer(bounceCoolDown);
     }
     #endregion
 
