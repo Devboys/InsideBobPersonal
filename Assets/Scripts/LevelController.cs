@@ -36,7 +36,6 @@ public class LevelController : MonoBehaviour
 
     private void MoveToLevel(Vector2Int dir)
     {
-        Debug.Log("Changed level");
         StopAllCoroutines();
         levelIndex += dir;
         StartCoroutine(TransitionCamera());
