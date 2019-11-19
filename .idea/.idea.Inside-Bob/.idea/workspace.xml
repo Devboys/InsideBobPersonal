@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d5316cca-873b-42fb-acd9-14797aec2b1c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PlayerController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/StreamingAssets/Master.bank" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Master.bank" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FMOD_InsideBob/Assets/Desktop/Master.bank" beforeDir="false" afterPath="$PROJECT_DIR$/FMOD_InsideBob/Assets/Desktop/Master.bank" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FMOD_InsideBob/Metadata/Event/{e2f31f03-9291-4669-ae58-2e7cb0bb5ede}.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FMOD_InsideBob/Metadata/Event/{e2f31f03-9291-4669-ae58-2e7cb0bb5ede}.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Inside-Bob/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Inside-Bob/.idea/indexLayout.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Inside-Bob/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Inside-Bob/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -40,29 +39,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Assets/Scripts/PlayerController.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="311">
-              <caret line="186" column="32" lean-forward="true" selection-start-line="186" selection-start-column="32" selection-end-line="186" selection-end-column="32" />
+            <state relative-caret-position="416">
+              <caret line="193" column="32" selection-start-line="193" selection-start-column="32" selection-end-line="193" selection-end-column="32" />
               <folding>
-                <marker date="1574019807406" expanded="true" signature="6:147" ph="..." />
-                <marker date="1574019807406" expanded="true" signature="235:16373" ph="{...}" />
-                <marker date="1574019807406" expanded="true" signature="12968:13335" ph="{...}" />
-                <marker date="1574019807406" expanded="true" signature="12968:13345" ph="{...}" />
-                <marker date="1574019807406" expanded="true" signature="12968:14870" ph="{...}" />
-                <marker date="1574019807406" expanded="true" signature="12968:15025" ph="Update Handle methods" />
-                <marker date="1574019807406" expanded="true" signature="13058:13176" ph="{...}" />
-                <marker date="1574019807406" expanded="true" signature="13384:13511" ph="{...}" />
-                <marker date="1574019807406" expanded="true" signature="13521:14863" ph="/* Controller input ... */" />
-                <marker date="1574019807406" expanded="true" signature="14900:15009" ph="{...}" />
-                <marker date="1574019807406" expanded="true" signature="15031:15233" ph="Public methods" />
-                <marker date="1574019807406" expanded="true" signature="15103:15218" ph="{...}" />
-                <marker date="1574019807406" expanded="false" signature="15239:16271" ph="Utilities" />
-                <marker date="1574019807406" expanded="true" signature="15312:15384" ph="{...}" />
-                <marker date="1574019807406" expanded="true" signature="15409:16175" ph="{...}" />
-                <marker date="1574019807406" expanded="true" signature="15587:15646" ph="{...}" />
-                <marker date="1574019807406" expanded="true" signature="15681:15780" ph="{...}" />
-                <marker date="1574019807406" expanded="true" signature="15819:15970" ph="{...}" />
-                <marker date="1574019807406" expanded="true" signature="16211:16255" ph="{...}" />
-                <marker date="1574019807406" expanded="true" signature="16303:16371" ph="{...}" />
+                <marker date="1574154792773" expanded="true" signature="6:147" ph="..." />
+                <marker date="1574154792773" expanded="true" signature="235:15174" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -71,8 +52,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$USER_HOME$/Dropbox/RSM Documents/RSM BA MA/ITU Games/Courses/Games &amp; Culture/Assignments/03 Term Paper/Portotype/FootstepPrototype.0.01/Assets/Scripts/PlayerController.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="880">
-              <caret line="154" column="12" selection-start-line="154" selection-start-column="12" selection-end-line="154" selection-end-column="51" />
+            <state relative-caret-position="752">
+              <caret line="178" column="9" selection-start-line="151" selection-start-column="8" selection-end-line="178" selection-end-column="9" />
               <folding>
                 <element signature="e#0#108#0" expanded="true" />
               </folding>
@@ -101,6 +82,7 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>_mover</find>
+      <find>haslan</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -192,12 +174,12 @@
       <workItem from="1572375649329" duration="866000" />
       <workItem from="1573756726511" duration="5410000" />
       <workItem from="1573992818018" duration="8144000" />
-      <workItem from="1574005927706" duration="2170000" />
+      <workItem from="1574005927706" duration="2586000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="16590000" />
+    <option name="totallyTimeSpent" value="17006000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -210,7 +192,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="347" y="23" width="1107" height="1027" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.24847375" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -530,37 +511,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Assets/Scripts/PlayerController.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="311">
-          <caret line="186" column="32" lean-forward="true" selection-start-line="186" selection-start-column="32" selection-end-line="186" selection-end-column="32" />
+        <state relative-caret-position="416">
+          <caret line="193" column="32" selection-start-line="193" selection-start-column="32" selection-end-line="193" selection-end-column="32" />
           <folding>
-            <marker date="1574019807406" expanded="true" signature="6:147" ph="..." />
-            <marker date="1574019807406" expanded="true" signature="235:16373" ph="{...}" />
-            <marker date="1574019807406" expanded="true" signature="12968:13335" ph="{...}" />
-            <marker date="1574019807406" expanded="true" signature="12968:13345" ph="{...}" />
-            <marker date="1574019807406" expanded="true" signature="12968:14870" ph="{...}" />
-            <marker date="1574019807406" expanded="true" signature="12968:15025" ph="Update Handle methods" />
-            <marker date="1574019807406" expanded="true" signature="13058:13176" ph="{...}" />
-            <marker date="1574019807406" expanded="true" signature="13384:13511" ph="{...}" />
-            <marker date="1574019807406" expanded="true" signature="13521:14863" ph="/* Controller input ... */" />
-            <marker date="1574019807406" expanded="true" signature="14900:15009" ph="{...}" />
-            <marker date="1574019807406" expanded="true" signature="15031:15233" ph="Public methods" />
-            <marker date="1574019807406" expanded="true" signature="15103:15218" ph="{...}" />
-            <marker date="1574019807406" expanded="false" signature="15239:16271" ph="Utilities" />
-            <marker date="1574019807406" expanded="true" signature="15312:15384" ph="{...}" />
-            <marker date="1574019807406" expanded="true" signature="15409:16175" ph="{...}" />
-            <marker date="1574019807406" expanded="true" signature="15587:15646" ph="{...}" />
-            <marker date="1574019807406" expanded="true" signature="15681:15780" ph="{...}" />
-            <marker date="1574019807406" expanded="true" signature="15819:15970" ph="{...}" />
-            <marker date="1574019807406" expanded="true" signature="16211:16255" ph="{...}" />
-            <marker date="1574019807406" expanded="true" signature="16303:16371" ph="{...}" />
+            <marker date="1574154792773" expanded="true" signature="6:147" ph="..." />
+            <marker date="1574154792773" expanded="true" signature="235:15174" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/Dropbox/RSM Documents/RSM BA MA/ITU Games/Courses/Games &amp; Culture/Assignments/03 Term Paper/Portotype/FootstepPrototype.0.01/Assets/Scripts/PlayerController.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="880">
-          <caret line="154" column="12" selection-start-line="154" selection-start-column="12" selection-end-line="154" selection-end-column="51" />
+        <state relative-caret-position="752">
+          <caret line="178" column="9" selection-start-line="151" selection-start-column="8" selection-end-line="178" selection-end-column="9" />
           <folding>
             <element signature="e#0#108#0" expanded="true" />
           </folding>
