@@ -51,7 +51,6 @@ public class PlayerController : MonoBehaviour
     public AnimationCurve timeCurve;
     
     // Audio variables
-    //[FormerlySerializedAs("footsteps")]
     [Header("-- FMOD Events")] 
     [Space(20)] 
     [EventRef]
@@ -64,13 +63,13 @@ public class PlayerController : MonoBehaviour
     public float footRate = 0.5f;
     private float footDelay = 0.0f;
     
+    [EventRef] 
+    public string landPath;
+    private EventInstance landSound;
     
     [Space(20)] 
     [EventRef] 
     public string jumpSound;
-    
-    [EventRef] 
-    public string landSound;
 
     [EventRef]
     public string placePad;
@@ -139,6 +138,7 @@ public class PlayerController : MonoBehaviour
     {
         // FMOD
         footsteps = RuntimeManager.CreateInstance(footstepsPath);
+        landSound = RuntimeManager.CreateInstance(landPath);
        
         //cache components
         _mover = this.GetComponent<RaycastMover>();
@@ -196,7 +196,9 @@ public class PlayerController : MonoBehaviour
             jumping = false;
             
             //Play landing sound
-            RuntimeManager.PlayOneShot(landSound, transform.position);
+            //RuntimeManager.PlayOneShot(landSound, transform.position);
+            landSound.setParameterByName("SurfaceIndex", surfaceIndex);
+            landSound.start();
         }
         UpdateAnimation();
         TickTimers();
@@ -249,6 +251,7 @@ public class PlayerController : MonoBehaviour
     private void OnDisable()
     { 
         footsteps.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        landSound.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
     }
     
 
