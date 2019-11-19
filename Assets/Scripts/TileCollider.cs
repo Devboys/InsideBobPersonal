@@ -54,7 +54,6 @@ public class TileCollider : MonoBehaviour
 
     private void OnTileCollisionEnter(string name)
     {
-        Debug.Log("Entered collision with " + name);
         switch (name)
         {
             case "Spike":
@@ -73,7 +72,7 @@ public class TileCollider : MonoBehaviour
 
     private void OnTileCollisionExit(string name)
     {
-        Debug.Log("Exited collision with " + name);
+
     }
 
     private void CheckTileCollisoinExit()

@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("-- Jumping")]
     [Tooltip("Height of apex if player does not release button")]
-    public float maxJumpHeight = 3f;    
+    public float maxJumpHeight = 3f;
     [Tooltip("Jump height if player instantly releases button")]
     public float minJumpHeight = 0.5f;
     [Tooltip("The time it takes to reach the apex of the jump-arc")]
@@ -45,44 +45,45 @@ public class PlayerController : MonoBehaviour
     public LayerMask hitLayers;
     public float shotCooldown;
     public float numPadsAllowed;
+    public float offset;
     public Gradient lineGradient;
     public Material lineMaterial;
     public Shader shader;
     public AnimationCurve timeCurve;
-    
+
     // Audio variables
     //[FormerlySerializedAs("footsteps")]
-    [Header("-- FMOD Events")] 
-    [Space(20)] 
+    [Header("-- FMOD Events")]
+    [Space(20)]
     [EventRef]
     public string footstepsPath;
     private EventInstance footsteps;
-    
+
     [Range(0, 10)]
     public int surfaceIndex;
-    
+
     public float footRate = 0.5f;
     private float footDelay = 0.0f;
-    
-    
-    [Space(20)] 
-    [EventRef] 
+
+
+    [Space(20)]
+    [EventRef]
     public string jumpSound;
-    
-    [EventRef] 
+
+    [EventRef]
     public string landSound;
 
     [EventRef]
     public string placePad;
-    
+
     [EventRef]
     public string bulletTimePath;
-    
+
 
     //private variables
     [Header("-- State")]
     [HideInInspector] public Vector2 velocity;
-    private List<GameObject> padList =  new List<GameObject>();
+    private List<GameObject> padList = new List<GameObject>();
     private bool postJumpApex;
 
     private bool inBounce;
@@ -92,7 +93,7 @@ public class PlayerController : MonoBehaviour
     private LineRenderer line;
     private bool cancelBulletTime;
     private float bulletTime;
-    public float bulletTimePercentage;
+    public float bulletTimePercentage; // Public because the audio stuff uses this, can be property
     private GameObject padPreview;
 
     private float bounceCoolDown = 0.001f;
@@ -139,7 +140,7 @@ public class PlayerController : MonoBehaviour
     {
         // FMOD
         footsteps = RuntimeManager.CreateInstance(footstepsPath);
-       
+
         //cache components
         _mover = this.GetComponent<RaycastMover>();
         _anim = GetComponent<Animator>();
@@ -161,8 +162,9 @@ public class PlayerController : MonoBehaviour
         padPreview.transform.parent = transform;
         padPreview.SetActive(false);
         var previewComponents = padPreview.GetComponents(typeof(Component));
-        foreach (var c in previewComponents) {
-            if(c.GetType() != typeof(Transform) && c.GetType() != typeof(SpriteRenderer)) Destroy(c);
+        foreach (var c in previewComponents)
+        {
+            if (c.GetType() != typeof(Transform) && c.GetType() != typeof(SpriteRenderer)) Destroy(c);
         }
     }
 
@@ -193,7 +195,7 @@ public class PlayerController : MonoBehaviour
             lastLanding = transform.position;
             inBounce = false;
             jumping = false;
-            
+
             //Play landing sound
             RuntimeManager.PlayOneShot(landSound, transform.position);
         }
@@ -241,15 +243,15 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-             //RuntimeManager.PlayOneShot(bulletTimePath, transform.position);
+            //RuntimeManager.PlayOneShot(bulletTimePath, transform.position);
         }
     }
 
     private void OnDisable()
-    { 
+    {
         footsteps.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
     }
-    
+
 
     #region Update Handle methods
     private void HandleGravity()
@@ -341,7 +343,8 @@ public class PlayerController : MonoBehaviour
             {
                 EnterBulletTime();
             }
-            else {
+            else
+            {
                 var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 var dir = (mousePos - transform.position).normalized;
                 DrawBulletLine(dir);
@@ -362,6 +365,35 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void BulletTime(bool bulletTimeStatus, Vector2 dir)
+    {
+        if (bulletTimeStatus)
+        {
+            if (!inBulletTime)
+            {
+                EnterBulletTime();
+            }
+            else
+            {
+                DrawBulletLine(dir);
+            }
+        }
+        else
+        {
+            if (inBulletTime)
+            {
+                ExitBulletTime();
+            }
+
+            Time.timeScale = 1f;
+        }
+    }
+
+    public void CancelBulletTime()
+    {
+        ExitBulletTime();
+    }
+
     private void EnterBulletTime()
     {
         var endTime = timeCurve.keys[timeCurve.length - 1].time;
@@ -375,12 +407,13 @@ public class PlayerController : MonoBehaviour
         Time.timeScale = curValue;
         bulletTimePercentage = (1 - curValue) * (1 / (1 - endBulletTimeValue));
 
-        if (currentTime == timeCurve.keys[timeCurve.length - 1].time) {
+        if (currentTime == timeCurve.keys[timeCurve.length - 1].time)
+        {
             bulletTime = 0.0f;
             inBulletTime = true;
             line.enabled = true;
         }
-        
+
     }
 
     private void ExitBulletTime()
@@ -396,14 +429,14 @@ public class PlayerController : MonoBehaviour
     {
         //dir.z = 0;
 
-        var hit = Physics2D.Raycast(transform.position, dir, int.MaxValue, hitLayers);
+        var hit = Physics2D.Raycast(transform.position, dir, Mathf.Infinity, hitLayers);
         if (hit)
         {
             padPreview.SetActive(true);
             line.SetPosition(0, transform.position);
             line.SetPosition(1, hit.point);
 
-            padPreview.transform.position = hit.point;
+            padPreview.transform.position = hit.point + hit.normal * offset;
             Quaternion rot = Quaternion.FromToRotation(Vector2.up, hit.normal);
             padPreview.transform.rotation = rot;
         }
@@ -423,14 +456,23 @@ public class PlayerController : MonoBehaviour
             Vector2 clickPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 direction = clickPos - (Vector2)transform.position;
 
-            if(!cancelBulletTime)
+            if (!cancelBulletTime)
                 PlacePadInDirection(direction);
 
             cancelBulletTime = false;
             bulletTime = 0.0f;
             bulletTimePercentage = 0;
         }
+    }
 
+    public void ShootController(Vector2 dir)
+    {
+        if (!cancelBulletTime)
+            PlacePadInDirection(dir);
+
+        cancelBulletTime = false;
+        bulletTime = 0.0f;
+        bulletTimePercentage = 0;
     }
 
     private void PlacePadInDirection(Vector2 direction)
@@ -446,7 +488,7 @@ public class PlayerController : MonoBehaviour
         if (hit && shootTimer.IsFinished)
         {
             //instantiate platform
-            GameObject platform = Instantiate(padPrefab, hit.point, Quaternion.identity);
+            GameObject platform = Instantiate(padPrefab, hit.point + hit.normal * offset, Quaternion.identity);
             float angle = Mathf.Atan2(hit.normal.x, hit.normal.y) * Mathf.Rad2Deg;
             platform.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -angle));
 
@@ -537,7 +579,8 @@ public class PlayerController : MonoBehaviour
         public void EndTimer() { timer = 0; }
     }
 
-    public float IsInBulletTime() {
+    public float IsInBulletTime()
+    {
         return bulletTimePercentage;
     }
 
