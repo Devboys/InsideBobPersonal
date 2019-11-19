@@ -15,6 +15,7 @@
     <explicitExcludes>
       <Path>.git</Path>
       <Path>.idea</Path>
+      <Path>Build</Path>
       <Path>FMOD_InsideBob</Path>
       <Path>Library</Path>
       <Path>Temp</Path>

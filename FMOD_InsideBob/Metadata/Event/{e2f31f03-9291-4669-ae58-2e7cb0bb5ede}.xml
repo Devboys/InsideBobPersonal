@@ -92,6 +92,7 @@
 		<property name="length">
 			<value>0.20283333333333334</value>
 		</property>
+		<property name="name" />
 		<relationship name="modulators">
 			<destination>{f30446d8-a44d-4a01-87f7-3236a482055f}</destination>
 		</relationship>
@@ -153,7 +154,7 @@
 	<object class="MixerBusFader" id="{b2e5c65f-1e40-427a-a87a-1e451d3cde35}" />
 	<object class="ThreeEQEffect" id="{bde08a81-db9b-48ca-9ca4-8ad49d950622}">
 		<property name="lowGain">
-			<value>-6</value>
+			<value>-18.5</value>
 		</property>
 		<property name="midGain">
 			<value>-17.5</value>
