@@ -104,6 +104,7 @@ public class PlayerController : MonoBehaviour
     #region Cached components
     private RaycastMover _mover;
     private Animator _anim;
+    private SpriteRenderer _spriteRenderer;
 
     #endregion
 
@@ -142,6 +143,8 @@ public class PlayerController : MonoBehaviour
         //cache components
         _mover = this.GetComponent<RaycastMover>();
         _anim = GetComponent<Animator>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+
 
         // init Bullet Time
         inBulletTime = false;
@@ -203,7 +206,16 @@ public class PlayerController : MonoBehaviour
         _anim.SetBool("IsInCannonball", IsCannonBall());
         _anim.SetBool("Grounded", _mover.IsGrounded);
         Vector2 movement = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        _anim.SetFloat("Horizontal Speed", movement.x);
+        if (movement.x > 0.1f)
+        {
+            _spriteRenderer.flipX = false;
+        }
+        else if (movement.x < -0.1f)
+        {
+            _spriteRenderer.flipX = true;
+        }
+
+        _anim.SetFloat("Horizontal Speed", Mathf.Abs(movement.x));
         _anim.SetFloat("Vertical Speed", Mathf.Abs(movement.y));
     }
 
@@ -303,6 +315,8 @@ public class PlayerController : MonoBehaviour
             jumping = true;
 
             jumpCoyoteTimer.EndTimer();
+
+            RuntimeManager.PlayOneShot(jumpSound, transform.position);
         }
 
         float minJumpVel = Mathf.Sqrt(2 * Mathf.Abs(gravity) * minJumpHeight);
