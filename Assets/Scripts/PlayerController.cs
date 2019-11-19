@@ -61,9 +61,10 @@ public class PlayerController : MonoBehaviour
     [Range(0, 10)]
     public int surfaceIndex;
 
-    public float footRate = 0.5f;
-    private float footDelay = 0.0f;
-
+    //public float footRate = 0.5f;
+    //private float footDelay = 0.0f;
+    
+    [Space(20)]
     [EventRef]
     public string landPath;
     private EventInstance landSound;
