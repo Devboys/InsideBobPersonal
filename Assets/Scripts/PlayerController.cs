@@ -94,6 +94,7 @@ public class PlayerController : MonoBehaviour
     private float bulletTime;
     public float bulletTimePercentage; // Public because the audio stuff uses this, can be property
     private GameObject padPreview;
+    private bool playedInBulletTime;
 
     private float bounceCoolDown = 0.001f;
 
@@ -105,6 +106,7 @@ public class PlayerController : MonoBehaviour
     private RaycastMover _mover;
     private Animator _anim;
     private SpriteRenderer _spriteRenderer;
+    private ControllerInput _controllerInput;
 
     #endregion
 
@@ -145,6 +147,7 @@ public class PlayerController : MonoBehaviour
         _mover = this.GetComponent<RaycastMover>();
         _anim = GetComponent<Animator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _controllerInput = GetComponent<ControllerInput>();
 
 
         // init Bullet Time
@@ -177,9 +180,11 @@ public class PlayerController : MonoBehaviour
         HandleGravity();
         HandleHorizontalMovement();
         HandleJumpVariableGravity();
-        UpdateBulletTime();
-        HandleShoot();
-        PlayInBulletTimeSound();
+        if (_controllerInput && !_controllerInput.enabled)
+        {
+            UpdateBulletTime();
+            HandleShoot();
+        }
         //PlayFootSound();
 
         _mover.Move(velocity * Time.deltaTime);
@@ -240,14 +245,6 @@ public class PlayerController : MonoBehaviour
     {
         footsteps.setParameterByName("SurfaceIndex", surfaceIndex);
         footsteps.start();
-    }
-
-    private void PlayInBulletTimeSound()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-             RuntimeManager.PlayOneShot(bulletTimePath, transform.position);
-        }
     }
 
     private void OnDisable()
@@ -413,6 +410,12 @@ public class PlayerController : MonoBehaviour
 
         if (currentTime == timeCurve.keys[timeCurve.length - 1].time)
         {
+            if (!playedInBulletTime)
+            {
+                RuntimeManager.PlayOneShot(bulletTimePath, transform.position);
+                playedInBulletTime = true;
+            }
+
             bulletTime = 0.0f;
             inBulletTime = true;
             line.enabled = true;
@@ -426,6 +429,7 @@ public class PlayerController : MonoBehaviour
         inBulletTime = false;
         Time.timeScale = 1.0f;
         line.enabled = false;
+        playedInBulletTime = false;
         padPreview.SetActive(false);
     }
 

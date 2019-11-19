@@ -14,7 +14,7 @@ public class ControllerInput : MonoBehaviour
 
     private bool doBulletTime;
     private bool cancelBulletTime;
-    private float lastBulletTimeInput;
+    private bool lastBulletTimeInput;
     private Vector2 lastRightStickInput = Vector2.right;
     private PlayerController player;
 
@@ -25,8 +25,8 @@ public class ControllerInput : MonoBehaviour
 
     void Update()
     {
-        float bulletTimeInput = Input.GetAxisRaw("BulletTime");
-        float bulletTimeCancelInput = Input.GetAxisRaw("BulletTimeCancel");
+        bool bulletTimeInput = Input.GetAxisRaw("BulletTime") > 0.5f;
+        bool bulletTimeCancelInput = Input.GetAxisRaw("BulletTimeCancel") > 0.5f;
 
         Vector2 direction = new Vector2(Input.GetAxis("HorizontalRight"), Input.GetAxis("VerticalRight"));
 
@@ -37,44 +37,55 @@ public class ControllerInput : MonoBehaviour
 
         if (useBulletTimeButton)
         {
-            player.BulletTime(!cancelBulletTime && bulletTimeInput > 0.5f, lastRightStickInput);
-
-            if (bulletTimeInput < 0.5f)
-            {
-                if (!cancelBulletTime && lastBulletTimeInput > 0.5f)
-                    player.ShootController(direction);
-                cancelBulletTime = false;
-            }
-
-            if (bulletTimeCancelInput > 0.5f)
-            {
-                player.CancelBulletTime();
-                cancelBulletTime = true;
-            }
-
-            lastBulletTimeInput = bulletTimeInput;
+            HandleBulletTimeButton(direction, bulletTimeInput, bulletTimeCancelInput);
         }
         else
         {
-            if (direction.magnitude > enterBulletTimeDeadzone)
-            {
-                doBulletTime = true;
-            }
-            else if (direction.magnitude < exitBulletTimeDeadzone && doBulletTime)
-            {
-                if (!cancelBulletTime)
-                    player.ShootController(lastRightStickInput);
-                doBulletTime = false;
-                cancelBulletTime = false;
-            }
+            HandleBulletTime(direction, bulletTimeInput);
+        }
+    }
 
-            player.BulletTime(!cancelBulletTime && doBulletTime, lastRightStickInput);
+    private void HandleBulletTimeButton(Vector2 direction, bool bulletTimeInput, bool bulletTimeCancelInput)
+    {
+        player.BulletTime(!cancelBulletTime && bulletTimeInput, lastRightStickInput);
 
-            if (bulletTimeInput > 0.5f)
-            {
-                player.CancelBulletTime();
-                cancelBulletTime = true;
-            }
+        if (!bulletTimeInput)
+        {
+            if (!cancelBulletTime && lastBulletTimeInput)
+                player.ShootController(direction);
+            cancelBulletTime = false;
+        }
+
+        if (bulletTimeCancelInput)
+        {
+            player.CancelBulletTime();
+            cancelBulletTime = true;
+        }
+
+        lastBulletTimeInput = bulletTimeInput;
+    }
+
+    private void HandleBulletTime(Vector2 direction, bool bulletTimeCancelInput)
+    {
+
+        if (direction.magnitude > enterBulletTimeDeadzone)
+        {
+            doBulletTime = true;
+        }
+        else if (direction.magnitude < exitBulletTimeDeadzone && doBulletTime)
+        {
+            if (!cancelBulletTime)
+                player.ShootController(lastRightStickInput);
+            doBulletTime = false;
+            cancelBulletTime = false;
+        }
+
+        player.BulletTime(!cancelBulletTime && doBulletTime, lastRightStickInput);
+
+        if (bulletTimeCancelInput)
+        {
+            player.CancelBulletTime();
+            cancelBulletTime = true;
         }
     }
 }

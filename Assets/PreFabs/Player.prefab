@@ -169,11 +169,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30739da3b8fb0474fab3be408b41ea19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controls: 0
   gravity: -124.99999
   maxGravityMultiplier: 1.5
   maxSpeed: 10
-  groundDamping: 7
+  groundDamping: 10
   airDamping: 7
   maxJumpHeight: 2.5
   minJumpHeight: 0.5
@@ -257,10 +256,10 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   footstepsPath: event:/Player/Footsteps
-  surfaceIndex: 1
+  surfaceIndex: 2
   footRate: 0.25
+  landPath: event:/Player/LandSound
   jumpSound: event:/Player/JumpSound
-  landSound: event:/Player/LandSound
   placePad: event:/Sfx/PlacePad
   bulletTimePath: event:/Sfx/InBulletTime
   velocity: {x: -0.000008005669, y: -0.000026955631}
@@ -303,7 +302,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5457290457146480783}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 07cc9f435d68cb249a2785eed2551d06, type: 3}
   m_Name: 
