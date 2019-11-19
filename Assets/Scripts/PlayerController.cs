@@ -174,7 +174,7 @@ public class PlayerController : MonoBehaviour
         HandleJumpVariableGravity();
         UpdateBulletTime();
         HandleShoot();
-        PlayFootSound();
+        //PlayFootSound();
 
         _mover.Move(velocity * Time.deltaTime);
         //Apply corrected velocity changes
@@ -202,11 +202,12 @@ public class PlayerController : MonoBehaviour
     {
         _anim.SetBool("IsInCannonball", IsCannonBall());
         _anim.SetBool("Grounded", _mover.IsGrounded);
-        _anim.SetFloat("Horizontal Speed", Mathf.Abs(velocity.x));
-        _anim.SetFloat("Vertical Speed", Mathf.Abs(velocity.y));
+        Vector2 movement = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        _anim.SetFloat("Horizontal Speed", movement.x);
+        _anim.SetFloat("Vertical Speed", Mathf.Abs(movement.y));
     }
 
-    private void PlayFootSound()
+    /*private void PlayFootSound()
     {
         //Checks if player is moving, grounded, and triggers footstep sounds
         if (Mathf.Abs(velocity.x) > 0.1f && _mover.IsGrounded && Time.time > footDelay)
@@ -216,6 +217,12 @@ public class PlayerController : MonoBehaviour
             footsteps.setParameterByName("SurfaceIndex", surfaceIndex);
             footsteps.start();
         }
+    }*/
+
+    public void PlayFootSound()
+    {
+        footsteps.setParameterByName("SurfaceIndex", surfaceIndex);
+        footsteps.start();
     }
 
     private void PlayInBulletTimeSound()
