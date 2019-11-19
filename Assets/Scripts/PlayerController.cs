@@ -177,6 +177,7 @@ public class PlayerController : MonoBehaviour
         HandleJumpVariableGravity();
         UpdateBulletTime();
         HandleShoot();
+        PlayInBulletTimeSound();
         //PlayFootSound();
 
         _mover.Move(velocity * Time.deltaTime);
@@ -241,7 +242,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-             //RuntimeManager.PlayOneShot(bulletTimePath, transform.position);
+             RuntimeManager.PlayOneShot(bulletTimePath, transform.position);
         }
     }
 
