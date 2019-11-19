@@ -85,6 +85,7 @@
           </e>
           <e p="BlobZacController.cs" t="Include" />
           <e p="BouncePadController.cs" t="Include" />
+          <e p="ControllerInput.cs" t="Include" />
           <e p="Editor" t="Include">
             <e p="ReadOnlyDrawer.cs" t="Include" />
           </e>
