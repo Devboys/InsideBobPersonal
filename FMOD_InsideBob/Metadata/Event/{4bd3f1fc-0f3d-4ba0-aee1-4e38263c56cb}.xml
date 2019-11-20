@@ -90,7 +90,7 @@
 	<object class="MixerBusPanner" id="{b1f8dc01-ba90-47b3-8b76-9a13f9b36748}" />
 	<object class="MultiSound" id="{df40ddb4-4b14-46ef-8d4f-219164ee317c}">
 		<property name="length">
-			<value>0.20283333333333334</value>
+			<value>0.20283333333333337</value>
 		</property>
 		<property name="pitch">
 			<value>24</value>
@@ -105,7 +105,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{90c41037-010c-49f7-9240-d4f3ea750f76}">
 		<property name="volume">
-			<value>-12</value>
+			<value>-23.5</value>
 		</property>
 		<property name="name">
 			<value>Placing Pad</value>
@@ -171,7 +171,7 @@
 			<value>38</value>
 		</property>
 		<property name="feedback">
-			<value>18</value>
+			<value>20</value>
 		</property>
 	</object>
 </objects>

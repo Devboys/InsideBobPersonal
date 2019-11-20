@@ -145,3 +145,4 @@ MonoBehaviour:
   fixedDirection: 0
   bounceSound: event:/Sfx/BouncePad
   direction: {x: 0.4, y: 0.7}
+  dotCutoff: 0.005

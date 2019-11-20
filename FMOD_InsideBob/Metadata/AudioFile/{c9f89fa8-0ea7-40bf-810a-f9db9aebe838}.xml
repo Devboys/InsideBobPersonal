@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.00.00">
 	<object class="AudioFile" id="{c9f89fa8-0ea7-40bf-810a-f9db9aebe838}">
 		<property name="assetPath">
-			<value>Player/FS_Landing/Land_Temp_01.wav</value>
+			<value>Player/Footsteps/FS_Landing/Land_Temp_01.wav</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>48</value>

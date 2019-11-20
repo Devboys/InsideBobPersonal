@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="ParameterPreset" id="{62a156cf-c5a7-4235-8175-db36a878a13d}">
+		<property name="name">
+			<value>JumpWhoosh</value>
+		</property>
+		<relationship name="folder">
+			<destination>{3c0cef58-83c4-4ba3-be30-142897bdf6ca}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{91e3c374-e8bf-405b-968a-352b201db5ab}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{91e3c374-e8bf-405b-968a-352b201db5ab}">
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>
