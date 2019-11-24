@@ -139,6 +139,13 @@ public class RaycastMover : MonoBehaviour
         }
     }
 
+    public void MoveTo(Vector2 position)
+    {
+        transform.position = position;
+        velocity = Vector2.zero;
+        collisionState.Reset();
+    }
+
     #region movement methods
     private void MoveHorizontal(ref Vector2 deltaMovement)
     {

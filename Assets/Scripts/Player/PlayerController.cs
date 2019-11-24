@@ -93,11 +93,13 @@ public class PlayerController : MonoBehaviour
     private LineRenderer line;
     private bool cancelBulletTime;
     private float bulletTime;
-    public float bulletTimePercentage; // Public because the audio stuff uses this, can be property
+    [HideInInspector] public float bulletTimePercentage; // Public because the audio stuff uses this, can be property
     private GameObject padPreview;
     private bool playedInBulletTime;
 
     private float bounceCoolDown = 0.001f;
+
+    private Vector2 checkpointPos;
 
 
     //DEBUG
@@ -170,6 +172,9 @@ public class PlayerController : MonoBehaviour
         {
             if (c.GetType() != typeof(Transform) && c.GetType() != typeof(SpriteRenderer)) Destroy(c);
         }
+
+        //set init checkpoint
+        checkpointPos = transform.position;
     }
 
     void Update()
@@ -552,6 +557,21 @@ public class PlayerController : MonoBehaviour
     public bool IsCannonBall()
     {
         return !cannonballTimer.IsFinished;
+    }
+
+    public void SetCheckpoint(Vector2 position)
+    {
+        checkpointPos = position;
+    }
+
+    public void Die()
+    {
+        //reset velocity
+        velocity = Vector2.zero;
+
+        //'respawn' at checkpoint
+        _mover.MoveTo(checkpointPos);
+
     }
     #endregion
 
