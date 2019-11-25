@@ -146,3 +146,17 @@ MonoBehaviour:
   bounceSound: event:/Sfx/BouncePad
   direction: {x: 0.4, y: 0.7}
   dotCutoff: 0.005
+  contacts:
+    useTriggers: 1
+    useLayerMask: 1
+    useDepth: 0
+    useOutsideDepth: 0
+    useNormalAngle: 0
+    useOutsideNormalAngle: 0
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 256
+    minDepth: 0
+    maxDepth: 0
+    minNormalAngle: 0
+    maxNormalAngle: 0

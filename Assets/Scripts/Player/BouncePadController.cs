@@ -16,9 +16,29 @@ public class BouncePadController : MonoBehaviour
     public Vector2 direction;
     public float dotCutoff = 0.05f;
 
+    private Collider2D _col;
+    public ContactFilter2D contacts;
+
     private void Start()
     {
         dotCutoff = Mathf.Abs(dotCutoff);
+        _col = GetComponent<Collider2D>();
+
+        Collider2D[] overlapResults = new Collider2D[1000];
+        _col.OverlapCollider(contacts, overlapResults);
+
+        if (overlapResults[0] != null && !fixedDirection)
+        {
+            PlayerController player = overlapResults[0].GetComponent<PlayerController>();
+            Vector2 dir = new Vector2(player.velocity.x, player.maxSpeed).normalized;
+            player.StartBounce(dir);
+
+            Debug.Log((player.maxSpeed - player.velocity.x) / player.maxSpeed);
+
+            //Play bounce sound.
+            RuntimeManager.PlayOneShot(bounceSound, transform.position);
+        }
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -38,7 +58,7 @@ public class BouncePadController : MonoBehaviour
                 //Play bounce sound.
                 RuntimeManager.PlayOneShot(bounceSound, transform.position);
             }
-            else if(dot < 1 - dotCutoff || dot > 1 + dotCutoff) 
+            else if(dot < 1 - dotCutoff) 
             {
                 player.StartBounce(reflectedVelocity);
 
