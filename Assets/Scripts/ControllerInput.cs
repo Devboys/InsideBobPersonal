@@ -82,7 +82,7 @@ public class ControllerInput : MonoBehaviour
 
         player.BulletTime(!cancelBulletTime && doBulletTime, lastRightStickInput);
 
-        if (bulletTimeCancelInput)
+        if (doBulletTime && bulletTimeCancelInput)
         {
             player.CancelBulletTime();
             cancelBulletTime = true;
