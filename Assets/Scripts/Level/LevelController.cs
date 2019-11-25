@@ -11,13 +11,14 @@ public class LevelController : MonoBehaviour
     private PlayerController player;
     private Camera mainCam;
 
-    [HideInInspector]
+    //[HideInInspector]
     public Vector2Int levelIndex = Vector2Int.zero;
 
     private void Awake()
     {
         player = FindObjectOfType<PlayerController>();
         mainCam = Camera.main;
+        levelIndex = GetCurrentPlayerLevelIndex();
     }
 
     // Update is called once per frame
@@ -56,5 +57,12 @@ public class LevelController : MonoBehaviour
             curTime += Time.deltaTime;
         }
         mainCam.transform.position = endPos;
+    }
+
+    private Vector2Int GetCurrentPlayerLevelIndex()
+    {
+        int x = (int)((player.transform.position.x - levelSize.x / 2) / levelSize.x);
+        int y = (int)((player.transform.position.y - levelSize.y / 2) / levelSize.y);
+        return new Vector2Int(x, y);
     }
 }

@@ -33,10 +33,10 @@ public class TileCollider : MonoBehaviour
         Vector2 levelSize = levelController.levelSize;
         float xInit = -levelSize.x / 2;
         float yInit = -levelSize.y / 2;
-
-        for (float i = xInit + levelIndex.x * levelSize.x; i < xInit + levelIndex.x * levelSize.x + levelSize.x; i += map.cellSize.x)
+        Debug.Log(levelIndex);
+        for (float i = xInit + levelIndex.x * levelSize.x; i < xInit + levelIndex.x * levelSize.x + levelSize.x; i++)
         {
-            for (float j = yInit + levelIndex.y * levelSize.y; j < yInit + levelIndex.y * levelSize.y + levelSize.y; j += map.cellSize.y)
+            for (float j = yInit + levelIndex.y * levelSize.y; j < yInit + levelIndex.y * levelSize.y + levelSize.y; j++)
             {
                 var pos = map.WorldToCell(new Vector3(i, j, transform.position.z));
                 map.SetTile(pos, null);
