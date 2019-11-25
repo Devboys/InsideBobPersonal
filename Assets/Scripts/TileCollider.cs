@@ -5,6 +5,15 @@ using UnityEngine.Tilemaps;
 
 public class TileCollider : MonoBehaviour
 {
+    [System.Serializable]
+    public class PowerUpTile
+    {
+        public TileBase powerupName;
+        public TileBase spikeName;
+    }
+
+    public List<PowerUpTile> powerupPairs = new List<PowerUpTile>();
+
     public HashSet<TileBase> collidingTiles = new HashSet<TileBase>();
     public HashSet<TileBase> lastCollidingTiles = new HashSet<TileBase>();
 
@@ -58,23 +67,17 @@ public class TileCollider : MonoBehaviour
 
     private void OnTileCollisionEnter(Vector3Int pos, TileBase tile)
     {
-        switch (tile.name)
+        foreach (PowerUpTile pair in powerupPairs)
         {
-            case "Spike":
-                Debug.Log("Hit Spike");
-                break;
-            case "PowerUP":
-                Debug.Log("Hit PowerUP");
+            if (tile == pair.powerupName)
+            {
                 tilemap.SetTile(pos, null);
-                RemoveSpikes("Spike");
-                break;
-            case "Ground":
-            default:
-                break;
+                RemoveSpikes(pair.spikeName);
+            }
         }
     }
 
-    private void RemoveSpikes(string name) {
+    private void RemoveSpikes(TileBase name) {
         Vector2Int levelIndex = levelController.levelIndex;
         Vector2 levelSize = levelController.levelSize;
         float xInit = -levelSize.x / 2;
@@ -84,7 +87,7 @@ public class TileCollider : MonoBehaviour
             for (float j = yInit + levelIndex.y * levelSize.y; j < yInit + levelIndex.y * levelSize.y + levelSize.y; j += tilemap.cellSize.y) {
                 var pos = tilemap.WorldToCell(new Vector3(i, j, transform.position.z));
                 var tile = tilemap.GetTile(pos);
-                if (tile && tile.name == name) {
+                if (tile && tile == name) {
                     tilemap.SetTile(pos, null);
                 }
             }

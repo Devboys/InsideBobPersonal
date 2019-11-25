@@ -186,7 +186,7 @@ public class PlayerController : MonoBehaviour
         HandleGravity();
         HandleHorizontalMovement();
         HandleJumpVariableGravity();
-        if (_controllerInput && !_controllerInput.enabled)
+        if (!_controllerInput || !_controllerInput.enabled)
         {
             UpdateBulletTime();
             HandleShoot();
