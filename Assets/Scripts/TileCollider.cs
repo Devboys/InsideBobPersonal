@@ -10,6 +10,8 @@ public class TileCollider : MonoBehaviour
 
     public Tilemap tilemap;
 
+    public LevelController levelController;
+
     private void OnCollisionStay2D(Collision2D collision)
     {
         if (tilemap)
@@ -64,7 +66,7 @@ public class TileCollider : MonoBehaviour
             case "PowerUP":
                 Debug.Log("Hit PowerUP");
                 tilemap.SetTile(pos, null);
-                RemoveSpikes();
+                RemoveSpikes("Spike");
                 break;
             case "Ground":
             default:
@@ -72,9 +74,9 @@ public class TileCollider : MonoBehaviour
         }
     }
 
-    private void RemoveSpikes() {
-        Vector2Int levelIndex = Camera.main.transform.GetComponent<LevelController>().levelIndex;
-        Vector2 levelSize = Camera.main.transform.GetComponent<LevelController>().levelSize;
+    private void RemoveSpikes(string name) {
+        Vector2Int levelIndex = levelController.levelIndex;
+        Vector2 levelSize = levelController.levelSize;
         float xInit = -levelSize.x / 2;
         float yInit = -levelSize.y / 2;
 
@@ -82,7 +84,7 @@ public class TileCollider : MonoBehaviour
             for (float j = yInit + levelIndex.y * levelSize.y; j < yInit + levelIndex.y * levelSize.y + levelSize.y; j += tilemap.cellSize.y) {
                 var pos = tilemap.WorldToCell(new Vector3(i, j, transform.position.z));
                 var tile = tilemap.GetTile(pos);
-                if (tile && tile.name == "Spike") {
+                if (tile && tile.name == name) {
                     tilemap.SetTile(pos, null);
                 }
             }

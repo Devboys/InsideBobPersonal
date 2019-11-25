@@ -10,6 +10,8 @@ public class LevelController : MonoBehaviour
 
     private PlayerController player;
     private Camera mainCam;
+
+    [HideInInspector]
     public Vector2Int levelIndex = Vector2Int.zero;
 
     private void Awake()
