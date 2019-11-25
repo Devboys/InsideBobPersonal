@@ -6,10 +6,20 @@ using UnityEngine.Tilemaps;
 public class TileCollider : MonoBehaviour
 {
     public Tilemap tilemap;
+
+    public Tilemap[] spikeTilemaps;
+
     public LevelController levelController;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        var tilemap = collision.gameObject.GetComponent<Tilemap>();
+        if (tilemap) {
+            foreach (Tilemap map in spikeTilemaps) {
+                if (map == tilemap) GetComponent<PlayerController>().Die();
+            }
+        }
+
         var handler = collision.gameObject.GetComponent<PowerUpHandler>();
         if (handler) {
             RemoveSpikes(handler.tilemap);
