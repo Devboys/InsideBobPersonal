@@ -552,6 +552,7 @@ public class PlayerController : MonoBehaviour
 
         cannonballTimer.StartTimer(cannonballTime);
         bounceCoolDownTimer.StartTimer(bounceCoolDown);
+        jumpCoyoteTimer.EndTimer();
     }
 
     public bool IsCannonBall()
