@@ -12,7 +12,7 @@ public class ControllerInput : MonoBehaviour
 
     public bool useBulletTimeButton;
 
-    private bool doBulletTime;
+    public bool doBulletTime;
     private bool cancelBulletTime;
     private bool lastBulletTimeInput;
     private Vector2 lastRightStickInput = Vector2.right;
@@ -80,7 +80,7 @@ public class ControllerInput : MonoBehaviour
             cancelBulletTime = false;
         }
 
-        player.BulletTime(!cancelBulletTime && doBulletTime, lastRightStickInput);
+        if(Input.GetMouseButton(0) || Input.GetMouseButton(1)) player.BulletTime(!cancelBulletTime && doBulletTime, lastRightStickInput);
 
         if (doBulletTime && bulletTimeCancelInput)
         {
