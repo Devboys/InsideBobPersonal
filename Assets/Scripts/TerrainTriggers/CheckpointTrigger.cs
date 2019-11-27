@@ -12,7 +12,6 @@ public class CheckpointTrigger : MonoBehaviour
             PlayerController player = collision.GetComponent<PlayerController>();
 
             Vector2 pos = transform.position;
-            Debug.Log("checkpointed");
             player.SetCheckpoint(pos);
         }
     }

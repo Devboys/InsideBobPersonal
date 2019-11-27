@@ -33,8 +33,6 @@ public class BouncePadController : MonoBehaviour
             Vector2 dir = new Vector2(player.velocity.x, player.maxSpeed).normalized;
             player.StartBounce(dir);
 
-            Debug.Log((player.maxSpeed - player.velocity.x) / player.maxSpeed);
-
             //Play bounce sound.
             RuntimeManager.PlayOneShot(bounceSound, transform.position);
         }
