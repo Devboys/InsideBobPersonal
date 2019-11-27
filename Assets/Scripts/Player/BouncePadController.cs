@@ -30,11 +30,14 @@ public class BouncePadController : MonoBehaviour
         if (overlapResults[0] != null && !fixedDirection)
         {
             PlayerController player = overlapResults[0].GetComponent<PlayerController>();
-            Vector2 dir = new Vector2(player.velocity.x, player.maxSpeed).normalized;
-            player.StartBounce(dir);
+            if (player)
+            {
+                Vector2 dir = new Vector2(player.velocity.x, player.maxSpeed).normalized;
+                player.StartBounce(dir);
 
-            //Play bounce sound.
-            RuntimeManager.PlayOneShot(bounceSound, transform.position);
+                //Play bounce sound.
+                RuntimeManager.PlayOneShot(bounceSound, transform.position);
+            }
         }
 
     }
