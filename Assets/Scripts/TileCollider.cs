@@ -5,85 +5,42 @@ using UnityEngine.Tilemaps;
 
 public class TileCollider : MonoBehaviour
 {
-    public HashSet<TileBase> collidingTiles = new HashSet<TileBase>();
-    public HashSet<TileBase> lastCollidingTiles = new HashSet<TileBase>();
+    public Tilemap tilemap;
 
-    private void OnCollisionStay2D(Collision2D collision)
+    public Tilemap[] spikeTilemaps;
+
+    public LevelController levelController;
+
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        Tilemap tilemap = collision.collider.GetComponent<Tilemap>();
-        if (tilemap)
-        {
-            foreach (ContactPoint2D contactPoint in collision.contacts)
-            {
-                Vector3 hitPosition = new Vector3(contactPoint.point.x - 0.01f * contactPoint.normal.x, contactPoint.point.y - 0.01f * contactPoint.normal.y, 0);
-                TileBase t = tilemap.GetTile(tilemap.WorldToCell(hitPosition));
-
-                if (t)
-                {
-                    collidingTiles.Add(t);
-
-                    if (!lastCollidingTiles.Contains(t))
-                    {
-                        lastCollidingTiles.Add(t);
-                        OnTileCollisionEnter(t.name);
-                    }
-                    else
-                    {
-                        OnTileCollisoinStay(t.name);
-                    }
-                }
+        var tilemap = collision.gameObject.GetComponent<Tilemap>();
+        if (tilemap) {
+            foreach (Tilemap map in spikeTilemaps) {
+                if (map == tilemap) GetComponent<PlayerController>().Die();
             }
         }
 
-        CheckTileCollisoinExit();
-
-        var temp = lastCollidingTiles;
-        lastCollidingTiles = collidingTiles;
-        temp.Clear();
-        collidingTiles = temp;
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        Tilemap tilemap = collision.collider.GetComponent<Tilemap>();
-        if (tilemap)
-        {
-            CheckTileCollisoinExit();
+        var handler = collision.gameObject.GetComponent<PowerUpHandler>();
+        if (handler) {
+            RemoveSpikes(handler.tilemap);
+            Destroy(collision.gameObject);
         }
     }
 
-    private void OnTileCollisionEnter(string name)
+    private void RemoveSpikes(Tilemap map)
     {
-        switch (name)
+        Vector2Int levelIndex = levelController.levelIndex;
+        Vector2 levelSize = levelController.levelSize;
+        float xInit = -levelSize.x / 2;
+        float yInit = -levelSize.y / 2;
+
+        for (float i = xInit + levelIndex.x * levelSize.x; i < xInit + levelIndex.x * levelSize.x + levelSize.x; i++)
         {
-            case "Spike":
-
-                break;
-            case "Ground":
-            default:
-                break;
-        }
-    }
-
-    private void OnTileCollisoinStay(string name)
-    {
-
-    }
-
-    private void OnTileCollisionExit(string name)
-    {
-
-    }
-
-    private void CheckTileCollisoinExit()
-    {
-        foreach (TileBase tile in lastCollidingTiles)
-        {
-            if (!collidingTiles.Contains(tile))
+            for (float j = yInit + levelIndex.y * levelSize.y; j < yInit + levelIndex.y * levelSize.y + levelSize.y; j++)
             {
-                OnTileCollisionExit(tile.name);
+                var pos = map.WorldToCell(new Vector3(i, j, transform.position.z));
+                map.SetTile(pos, null);
             }
         }
     }
-
 }
