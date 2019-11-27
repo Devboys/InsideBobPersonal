@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.00.00">
 	<object class="AudioFile" id="{c1b82fc2-073e-4925-b6b7-7d2b88170d33}">
 		<property name="assetPath">
-			<value>Music/zTemp/TempLoops/Music_Playground_RhytmLoop_01.wav</value>
+			<value>Music/zTemp/TempLoops/ReflectiveWedness/Music_Playground_RhytmLoop_01.wav</value>
 		</property>
 		<property name="isStreaming">
 			<value>true</value>
