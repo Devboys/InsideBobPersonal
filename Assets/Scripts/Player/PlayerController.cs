@@ -4,6 +4,30 @@ using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
 using UnityEngine.Serialization;
+using UnityEngine.Tilemaps;
+
+// Helper structs
+struct PowerUpPair
+{
+    public int id;
+    public bool active;
+    public PowerUpPair(int id, bool active)
+    {
+        this.id = id;
+        this.active = active;
+    }
+}
+
+struct TilemapPair
+{
+    public int id;
+    public TileBase[] tiles;
+    public TilemapPair(int id, TileBase[] tiles)
+    {
+        this.id = id;
+        this.tiles = tiles;
+    }
+}
 
 [RequireComponent(typeof(RaycastMover))]
 public class PlayerController : MonoBehaviour
@@ -99,8 +123,10 @@ public class PlayerController : MonoBehaviour
 
     private float bounceCoolDown = 0.001f;
 
+    private GameObject lastCheckpoint;
     private Vector2 checkpointPos;
-
+    private List<TilemapPair> tilemaps;
+    private List<PowerUpPair> powerUps;
 
     //DEBUG
     private Vector2 lastLanding;
@@ -175,6 +201,8 @@ public class PlayerController : MonoBehaviour
 
         //set init checkpoint
         checkpointPos = transform.position;
+        tilemaps = new List<TilemapPair>();
+        powerUps = new List<PowerUpPair>();
     }
 
     void Update()
@@ -565,20 +593,78 @@ public class PlayerController : MonoBehaviour
         return !cannonballTimer.IsFinished;
     }
 
-    public void SetCheckpoint(Vector2 position)
+    public void SetCheckpoint(GameObject gameObject)
     {
-        checkpointPos = position;
+        if(!lastCheckpoint || lastCheckpoint.GetInstanceID() != gameObject.GetInstanceID())
+        {
+            lastCheckpoint = gameObject;
+            checkpointPos = gameObject.transform.position;
+            tilemaps.Clear();
+            var cTilemaps = FindObjectsOfType<Tilemap>();
+            for(int i = 0; i < cTilemaps.Length; i++)
+            {
+                tilemaps.Add(new TilemapPair(cTilemaps[i].gameObject.GetInstanceID(), cTilemaps[i].GetTilesBlock(cTilemaps[i].cellBounds)));
+            }
+            powerUps.Clear();
+            var cPowerUps = Resources.FindObjectsOfTypeAll<PowerUpHandler>();
+            for (int i = 0; i < cPowerUps.Length; i++)
+            {
+                powerUps.Add(new PowerUpPair(cPowerUps[i].gameObject.GetInstanceID(), cPowerUps[i].gameObject.activeSelf));
+            }
+        }
     }
 
     public void Die()
     {
+        //Refresh tilemap       
+        if (tilemaps != null)
+        {
+            var cTilemaps = FindObjectsOfType<Tilemap>();
+            for (int i = 0; i < tilemaps.Count; i++) {
+                for(int j = 0; j < cTilemaps.Length; j++)
+                {
+                    if(tilemaps[i].id == cTilemaps[j].gameObject.GetInstanceID())
+                    {
+                        TileBase[] tiles = tilemaps[i].tiles;
+                        var pos = EnumeratorToArray(cTilemaps[j].cellBounds.allPositionsWithin);
+                        cTilemaps[i].SetTiles(pos, tiles);
+                        break;
+                    }
+                }
+            }
+            var cPowerUps = Resources.FindObjectsOfTypeAll<PowerUpHandler>();
+            for (int i = 0; i < powerUps.Count; i++)
+            {
+                for (int j = 0; j < cPowerUps.Length; j++)
+                {
+                    if (powerUps[i].id == cPowerUps[j].gameObject.GetInstanceID())
+                    {
+                        var powerUp = cPowerUps[j].gameObject;
+                        powerUp.SetActive(powerUps[i].active);
+                    }
+                }
+            }
+        }
+
         //reset velocity
         velocity = Vector2.zero;
 
         //'respawn' at checkpoint
         _mover.MoveTo(checkpointPos);
 
+        
+
     }
+
+    private Vector3Int[] EnumeratorToArray(BoundsInt.PositionEnumerator enumerator) {
+        List<Vector3Int> positions = new List<Vector3Int>();
+        while (enumerator.MoveNext())
+        {
+            positions.Add(enumerator.Current);
+        }
+
+        return positions.ToArray();
+    } 
     #endregion
 
     #region Utilities

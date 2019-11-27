@@ -23,7 +23,8 @@ public class TileCollider : MonoBehaviour
         var handler = collision.gameObject.GetComponent<PowerUpHandler>();
         if (handler) {
             RemoveSpikes(handler.tilemap);
-            Destroy(collision.gameObject);
+            //Destroy(collision.gameObject);
+            collision.gameObject.SetActive(false);
         }
     }
 
