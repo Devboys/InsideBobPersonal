@@ -14,60 +14,53 @@ public class BouncePadController : MonoBehaviour
     public string bounceSound;
 
     public Vector2 direction;
-    public float dotCutoff = 0.05f;
 
-    private Collider2D _col;
-    public ContactFilter2D contacts;
-
-    private void Start()
-    {
-        dotCutoff = Mathf.Abs(dotCutoff);
-        _col = GetComponent<Collider2D>();
-
-        Collider2D[] overlapResults = new Collider2D[1000];
-        _col.OverlapCollider(contacts, overlapResults);
-
-        if (overlapResults[0] != null && !fixedDirection)
-        {
-            PlayerController player = overlapResults[0].GetComponent<PlayerController>();
-            if (player)
-            {
-                Vector2 dir = new Vector2(player.velocity.x, player.maxSpeed).normalized;
-                player.StartBounce(dir);
-
-                //Play bounce sound.
-                RuntimeManager.PlayOneShot(bounceSound, transform.position);
-            }
-        }
-
-    }
+    [Tooltip("Minimum angle that the bounce pad will send you in (relative to straight along the ground)")]
+    [Range(0, 90)]
+    public float minimumBounceAngle = 45;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
             PlayerController player = collision.GetComponent<PlayerController>();
-            Vector2 reflectedVelocity = Vector2.Reflect(player.velocity, transform.up).normalized;
-            float dot = Vector2.Dot(player.velocity.normalized, reflectedVelocity);
+            Vector2 dir;
 
             if (fixedDirection)
             {
-                Vector2 dir = direction.normalized;
+                dir = direction.normalized;
                 dir.x = Mathf.Sign(transform.up.x) * dir.x;
                 player.StartBounce(dir);
-
-                //Play bounce sound.
-                RuntimeManager.PlayOneShot(bounceSound, transform.position);
             }
-            else if(dot < 1 - dotCutoff) 
+            else
             {
-                player.StartBounce(reflectedVelocity);
+                Vector2 reflectedVelocity = Vector2.Reflect(player.velocity, transform.up).normalized;
 
-                //Play bounce sound.
-                RuntimeManager.PlayOneShot(bounceSound, transform.position);
+                dir = reflectedVelocity;
+
+                if (Vector2.Angle(transform.up, reflectedVelocity) > minimumBounceAngle)
+                {
+                    //correct velocity to be within bounds
+                    dir = Vector2FromAngle(minimumBounceAngle);
+                    dir.x *= Mathf.Sign(player.velocity.x);
+                }
             }
-            
+
+            player.StartBounce(dir);
+
+            //Play bounce sound.
+            RuntimeManager.PlayOneShot(bounceSound, transform.position);
         }
+    }
+
+
+    /// <summary>
+    /// generate a normalized vector pointing in a given direction
+    /// </summary>
+    private Vector2 Vector2FromAngle(float angle)
+    {
+        angle *= Mathf.Deg2Rad;
+        return new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
     }
 
 }
