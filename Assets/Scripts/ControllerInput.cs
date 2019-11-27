@@ -80,7 +80,7 @@ public class ControllerInput : MonoBehaviour
             cancelBulletTime = false;
         }
 
-        if(Input.GetMouseButton(0) || Input.GetMouseButton(1)) player.BulletTime(!cancelBulletTime && doBulletTime, lastRightStickInput);
+        if(!Input.GetMouseButton(0) && !Input.GetMouseButton(1)) player.BulletTime(!cancelBulletTime && doBulletTime, lastRightStickInput);
 
         if (doBulletTime && bulletTimeCancelInput)
         {
