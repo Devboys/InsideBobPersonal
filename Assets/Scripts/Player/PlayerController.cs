@@ -280,7 +280,7 @@ public class PlayerController : MonoBehaviour
             footsteps.start();
         }
     }*/
-
+q
     public void PlayFootSound()
     {
         footsteps.setParameterByName("SurfaceIndex", surfaceIndex);
