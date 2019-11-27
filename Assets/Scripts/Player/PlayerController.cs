@@ -186,11 +186,17 @@ public class PlayerController : MonoBehaviour
         HandleGravity();
         HandleHorizontalMovement();
         HandleJumpVariableGravity();
+        /*
         if (!_controllerInput || !_controllerInput.enabled)
         {
             UpdateBulletTime();
             HandleShoot();
         }
+        */
+
+        UpdateBulletTime();
+        HandleShoot();
+
         //PlayFootSound();
 
         _mover.Move(velocity * Time.deltaTime);
@@ -357,7 +363,7 @@ public class PlayerController : MonoBehaviour
                 DrawBulletLine(dir);
             }
         }
-        else
+        else if(!_controllerInput.doBulletTime)
         {
             if (inBulletTime)
             {
