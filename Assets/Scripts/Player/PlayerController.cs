@@ -57,6 +57,8 @@ public class PlayerController : MonoBehaviour
     public float timeToJumpLand = 0.2f;
     [Tooltip("How long to allow for jumping after walking off edges")]
     public float coyoteTime = 0.1f;
+    [Tooltip("Allows player to queue jumps before landing")]
+    public float graceTime = 0.2f;
 
     [Header("-- Bouncing")]
     public float bounceForce;
@@ -96,13 +98,10 @@ public class PlayerController : MonoBehaviour
     [Space(20)]
     [EventRef]
     public string jumpSound;
-
     [EventRef]
     public string placePad;
-
     [EventRef]
     public string bulletTimePath;
-
 
     //private variables
     [Header("-- State")]
@@ -145,6 +144,7 @@ public class PlayerController : MonoBehaviour
     Timer shootTimer = new Timer();
     Timer cannonballTimer = new Timer();
     Timer bounceCoolDownTimer = new Timer();
+    Timer jumpGraceTimer = new Timer();
 
     #endregion
 
@@ -214,7 +214,7 @@ public class PlayerController : MonoBehaviour
         //Order of movement events matter. Be mindful of changes.
         HandleGravity();
         HandleHorizontalMovement();
-        HandleJumpVariableGravity();
+        HandleJump();
         /*
         if (!_controllerInput || !_controllerInput.enabled)
         {
@@ -333,7 +333,7 @@ public class PlayerController : MonoBehaviour
                 //bounceDamp
                 velocity.x += (targetVelocity - velocity.x) * Time.deltaTime * bounceDamping;
             }
-            else if (Mathf.Abs(velocity.x) > maxSpeed)//is maxSpeed this the right cutoff for 2nd phase???
+            else if (Mathf.Abs(velocity.x) > maxSpeed)
             {
                 //lerp between bounceDamping and airDamping
                 float dif = (bounceVelocityCutoff - Mathf.Abs(velocity.x)) / (bounceVelocityCutoff - maxSpeed);
@@ -341,7 +341,7 @@ public class PlayerController : MonoBehaviour
 
                 velocity.x += (targetVelocity - velocity.x) * Time.deltaTime * lerpedDamping;
             }
-            else
+            else 
             {
                 inBounce = false; //full regular air damping
             }
@@ -349,9 +349,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void HandleJumpVariableGravity()
+    private void HandleJump()
     {
-        if (Input.GetButtonDown("Jump") && (!jumpCoyoteTimer.IsFinished || _mover.IsGrounded))
+        if (Input.GetButtonDown("Jump"))
+        {
+            jumpGraceTimer.StartTimer(graceTime);
+        }
+
+        if (!jumpGraceTimer.IsFinished && (!jumpCoyoteTimer.IsFinished || _mover.IsGrounded))
         {
             float jumpVelocity = Mathf.Abs(jumpGravity) * timeToJumpApex;
             gravity = jumpGravity;
@@ -365,7 +370,7 @@ public class PlayerController : MonoBehaviour
         }
 
         float minJumpVel = Mathf.Sqrt(2 * Mathf.Abs(gravity) * minJumpHeight);
-        if (Input.GetButtonUp("Jump") && velocity.y > minJumpVel && jumping)
+        if (!Input.GetButton("Jump") && velocity.y > minJumpVel && jumping)
         {
             velocity.y = minJumpVel;
         }
@@ -572,6 +577,7 @@ public class PlayerController : MonoBehaviour
         shootTimer.TickTimer(Time.deltaTime);
         cannonballTimer.TickTimer(Time.deltaTime);
         bounceCoolDownTimer.TickTimer(Time.deltaTime);
+        jumpGraceTimer.TickTimer(Time.deltaTime);
     }
 
     #endregion
