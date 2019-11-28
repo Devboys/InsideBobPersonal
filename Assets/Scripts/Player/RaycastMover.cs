@@ -15,6 +15,7 @@ public class RaycastMover : MonoBehaviour
 
     [Tooltip("The layers that are considered in collisions")]
     [SerializeField] private LayerMask groundMask;
+    [SerializeField] private LayerMask bouncePadMask; //
     [SerializeField] private int numHorizontalRays = 3;
     [SerializeField] private int numVerticalRays = 3;
     [SerializeField] public float skinWidth = 0.02f;

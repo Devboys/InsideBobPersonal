@@ -87,7 +87,7 @@ public class PlayerController : MonoBehaviour
 
     //public float footRate = 0.5f;
     //private float footDelay = 0.0f;
-    
+
     [Space(20)]
     [EventRef]
     public string landPath;
@@ -109,6 +109,7 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public Vector2 velocity;
     private List<GameObject> padList = new List<GameObject>();
     private bool postJumpApex;
+    [HideInInspector] public float horizontalMove; //binary movement input float. 0=none, 1=right, -1=left.
 
     private bool inBounce;
     private bool jumping;
@@ -307,7 +308,7 @@ public class PlayerController : MonoBehaviour
     }
     private void HandleHorizontalMovement()
     {
-        float horizontalMove = Input.GetAxisRaw("Horizontal");
+        horizontalMove = Input.GetAxisRaw("Horizontal");
         float targetVelocity = horizontalMove * maxSpeed;
 
         if (!inBounce)

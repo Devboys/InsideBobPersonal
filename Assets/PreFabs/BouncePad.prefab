@@ -146,3 +146,4 @@ MonoBehaviour:
   bounceSound: event:/Sfx/BouncePad
   direction: {x: 0.4, y: 0.7}
   minimumBounceAngle: 45
+  magnitudeCutoff: 0.2
