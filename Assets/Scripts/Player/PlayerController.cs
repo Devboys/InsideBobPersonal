@@ -229,6 +229,7 @@ public class PlayerController : MonoBehaviour
         //PlayFootSound();
 
         _mover.Move(velocity * Time.deltaTime);
+
         //Apply corrected velocity changes
         velocity = _mover.velocity;
 

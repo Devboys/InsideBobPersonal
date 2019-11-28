@@ -34,7 +34,7 @@ public class BouncePadController : MonoBehaviour
             }
             else
             {
-                Vector2 reflectedVelocity = Vector2.Reflect(player.velocity, transform.up);
+                Vector2 reflectedVelocity = Vector2.Reflect(player.velocity, transform.up).normalized;
                 dir = reflectedVelocity;
 
                 if (Vector2.Angle(transform.up, reflectedVelocity) > minimumBounceAngle)

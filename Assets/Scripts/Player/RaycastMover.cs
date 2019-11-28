@@ -15,7 +15,7 @@ public class RaycastMover : MonoBehaviour
 
     [Tooltip("The layers that are considered in collisions")]
     [SerializeField] private LayerMask groundMask;
-    [SerializeField] private LayerMask bouncePadMask; //
+    [SerializeField] private LayerMask padMask; //
     [SerializeField] private int numHorizontalRays = 3;
     [SerializeField] private int numVerticalRays = 3;
     [SerializeField] public float skinWidth = 0.02f;
@@ -195,7 +195,8 @@ public class RaycastMover : MonoBehaviour
             Vector2 rayOrigin = initialRayOrigin;
             rayOrigin.x += rayWidth * i;
 
-            RaycastHit2D rayHit = Physics2D.Raycast(rayOrigin, rayDirection, rayDistance, groundMask);
+            LayerMask effectiveMask = groundMask | padMask; //combine groundMask and padMask into one mask.
+            RaycastHit2D rayHit = Physics2D.Raycast(rayOrigin, rayDirection, rayDistance, effectiveMask);
 
             if (rayHit)
             {
@@ -210,7 +211,10 @@ public class RaycastMover : MonoBehaviour
                 else
                 {
                     deltaMovement.y += skinWidth;
-                    collisionState.below = true;
+
+                    // this means: IF (layer of hit object NOT IN padMask)
+                    if (padMask != (padMask | 1 << rayHit.transform.gameObject.layer))
+                        collisionState.below = true; //we dont become grounded if we hit bouncepads
 
                     //record last grounded position on rayhit for more accuracy than transform
                     lastGroundedPosition = rayHit.point;
