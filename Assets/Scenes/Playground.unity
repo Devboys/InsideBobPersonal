@@ -1107,6 +1107,16 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.5195
       objectReference: {fileID: 0}
+    - target: {fileID: 5457290457146480769, guid: 4b1b8f11ba0674f44a529e628f860ebc,
+        type: 3}
+      propertyPath: offset
+      value: -0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5457290457146480769, guid: 4b1b8f11ba0674f44a529e628f860ebc,
+        type: 3}
+      propertyPath: groundDamping
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 232158606, guid: 4b1b8f11ba0674f44a529e628f860ebc, type: 3}
       propertyPath: spikeTilemaps.Array.size
       value: 3
@@ -1134,16 +1144,6 @@ PrefabInstance:
     - target: {fileID: 232158607, guid: 4b1b8f11ba0674f44a529e628f860ebc, type: 3}
       propertyPath: m_Enabled
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5457290457146480769, guid: 4b1b8f11ba0674f44a529e628f860ebc,
-        type: 3}
-      propertyPath: offset
-      value: -0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 5457290457146480769, guid: 4b1b8f11ba0674f44a529e628f860ebc,
-        type: 3}
-      propertyPath: groundDamping
-      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4b1b8f11ba0674f44a529e628f860ebc, type: 3}
@@ -1708,6 +1708,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 507087788}
+  - {fileID: 1419350807}
   m_Father: {fileID: 1587906835}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7540,6 +7541,60 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2015928262}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1419350806
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1419350807}
+  - component: {fileID: 1419350808}
+  m_Layer: 0
+  m_Name: CozyPiano
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1419350807
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1419350806}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 653068397}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1419350808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1419350806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  Event: event:/Music/CozyPiano
+  PlayEvent: 1
+  StopEvent: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 0
+  OverrideMaxDistance: 0
 --- !u!4 &1487920754 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3201271145015296744, guid: 4a82ff438f3ad5c4091486db34183c02,
@@ -46216,7 +46271,7 @@ Tilemap:
       m_TileColorIndex: 1
       m_ObjectToInstantiate: {fileID: 0}
       m_TileFlags: 1
-      m_ColliderType: 1
+      m_ColliderType: 2
   - first: {x: -4, y: -14, z: 0}
     second:
       m_TileIndex: 0
@@ -46225,7 +46280,7 @@ Tilemap:
       m_TileColorIndex: 1
       m_ObjectToInstantiate: {fileID: 0}
       m_TileFlags: 1
-      m_ColliderType: 1
+      m_ColliderType: 2
   - first: {x: -3, y: -14, z: 0}
     second:
       m_TileIndex: 0
@@ -46234,7 +46289,7 @@ Tilemap:
       m_TileColorIndex: 1
       m_ObjectToInstantiate: {fileID: 0}
       m_TileFlags: 1
-      m_ColliderType: 1
+      m_ColliderType: 2
   - first: {x: -2, y: -14, z: 0}
     second:
       m_TileIndex: 0
@@ -46243,7 +46298,7 @@ Tilemap:
       m_TileColorIndex: 1
       m_ObjectToInstantiate: {fileID: 0}
       m_TileFlags: 1
-      m_ColliderType: 1
+      m_ColliderType: 2
   - first: {x: -1, y: -14, z: 0}
     second:
       m_TileIndex: 0
@@ -46252,7 +46307,7 @@ Tilemap:
       m_TileColorIndex: 1
       m_ObjectToInstantiate: {fileID: 0}
       m_TileFlags: 1
-      m_ColliderType: 1
+      m_ColliderType: 2
   - first: {x: 0, y: -14, z: 0}
     second:
       m_TileIndex: 0
@@ -46261,7 +46316,7 @@ Tilemap:
       m_TileColorIndex: 1
       m_ObjectToInstantiate: {fileID: 0}
       m_TileFlags: 1
-      m_ColliderType: 1
+      m_ColliderType: 2
   - first: {x: 1, y: -14, z: 0}
     second:
       m_TileIndex: 0
@@ -46270,7 +46325,7 @@ Tilemap:
       m_TileColorIndex: 1
       m_ObjectToInstantiate: {fileID: 0}
       m_TileFlags: 1
-      m_ColliderType: 1
+      m_ColliderType: 2
   - first: {x: 2, y: -14, z: 0}
     second:
       m_TileIndex: 0
@@ -46279,7 +46334,7 @@ Tilemap:
       m_TileColorIndex: 1
       m_ObjectToInstantiate: {fileID: 0}
       m_TileFlags: 1
-      m_ColliderType: 1
+      m_ColliderType: 2
   - first: {x: 3, y: -14, z: 0}
     second:
       m_TileIndex: 0
@@ -46288,7 +46343,7 @@ Tilemap:
       m_TileColorIndex: 1
       m_ObjectToInstantiate: {fileID: 0}
       m_TileFlags: 1
-      m_ColliderType: 1
+      m_ColliderType: 2
   - first: {x: 142, y: -11, z: 0}
     second:
       m_TileIndex: 1
