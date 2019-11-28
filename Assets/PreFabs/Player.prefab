@@ -154,6 +154,9 @@ MonoBehaviour:
   numVerticalRays: 100
   skinWidth: 0.02
   wallCheckWidth: 0.02
+  padMask:
+    serializedVersion: 2
+    m_Bits: 1024
   wallOnRight: 0
   wallOnLeft: 0
   lastGroundedPosition: {x: 0, y: 0}
@@ -179,6 +182,7 @@ MonoBehaviour:
   timeToJumpApex: 0.3
   timeToJumpLand: 0.2
   coyoteTime: 0.1
+  graceTime: 0.2
   bounceForce: 45
   bounceDamping: 1.3
   bounceVelocityCutoff: 12
@@ -262,6 +266,7 @@ MonoBehaviour:
   placePad: event:/Sfx/PlacePad
   bulletTimePath: event:/Sfx/InBulletTime
   velocity: {x: -0.000008005669, y: -0.000026955631}
+  horizontalMove: 0
   bulletTimePercentage: 0
 --- !u!95 &232158605
 Animator:
@@ -314,3 +319,4 @@ MonoBehaviour:
   enterBulletTimeDeadzone: 0.8
   exitBulletTimeDeadzone: 0.2
   useBulletTimeButton: 0
+  doBulletTime: 0

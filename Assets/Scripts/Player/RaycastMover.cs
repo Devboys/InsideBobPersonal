@@ -13,15 +13,18 @@ using UnityEngine;
 public class RaycastMover : MonoBehaviour
 {
 
+    [Header("Collision Checks")]
     [Tooltip("The layers that are considered in collisions")]
     [SerializeField] private LayerMask groundMask;
-    [SerializeField] private LayerMask padMask; //
     [SerializeField] private int numHorizontalRays = 3;
     [SerializeField] private int numVerticalRays = 3;
     [SerializeField] public float skinWidth = 0.02f;
 
     [Tooltip("Distance considered to be 'next to wall' from left/right raycast origins")]
     [SerializeField] private float wallCheckWidth;
+
+    [Header("Pad Checking")]
+    [SerializeField] private LayerMask padMask;
 
     [HideInInspector]
     public Vector2 velocity
@@ -200,26 +203,28 @@ public class RaycastMover : MonoBehaviour
 
             if (rayHit)
             {
-                deltaMovement.y = rayHit.point.y - rayOrigin.y;
-                rayDistance = Mathf.Abs(deltaMovement.y);
-
-                if (isGoingUp)
+                // this means: IF (layer of hit object NOT IN padMask)
+                if (padMask != (padMask | 1 << rayHit.transform.gameObject.layer))
                 {
-                    deltaMovement.y -= skinWidth;
-                    collisionState.above = true;
+                    deltaMovement.y = rayHit.point.y - rayOrigin.y;
+                    rayDistance = Mathf.Abs(deltaMovement.y);
+
+                    if (isGoingUp)
+                    {
+                        deltaMovement.y -= skinWidth;
+                        collisionState.above = true;
+                    }
+                    else
+                    {
+
+                        deltaMovement.y += skinWidth;
+                        collisionState.below = true;
+
+                        //record last grounded position on rayhit for more accuracy than transform
+                        lastGroundedPosition = rayHit.point;
+                    }
+
                 }
-                else
-                {
-                    deltaMovement.y += skinWidth;
-
-                    // this means: IF (layer of hit object NOT IN padMask)
-                    if (padMask != (padMask | 1 << rayHit.transform.gameObject.layer))
-                        collisionState.below = true; //we dont become grounded if we hit bouncepads
-
-                    //record last grounded position on rayhit for more accuracy than transform
-                    lastGroundedPosition = rayHit.point;
-                }
-
             }
         }
     }
