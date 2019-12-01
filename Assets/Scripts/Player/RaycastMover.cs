@@ -13,6 +13,7 @@ using UnityEngine;
 public class RaycastMover : MonoBehaviour
 {
 
+    [Header("Collision Checks")]
     [Tooltip("The layers that are considered in collisions")]
     [SerializeField] private LayerMask groundMask;
     [SerializeField] private int numHorizontalRays = 3;
@@ -21,6 +22,9 @@ public class RaycastMover : MonoBehaviour
 
     [Tooltip("Distance considered to be 'next to wall' from left/right raycast origins")]
     [SerializeField] private float wallCheckWidth;
+
+    [Header("Pad Checking")]
+    [SerializeField] private LayerMask padMask;
 
     [HideInInspector]
     public Vector2 velocity
@@ -194,27 +198,33 @@ public class RaycastMover : MonoBehaviour
             Vector2 rayOrigin = initialRayOrigin;
             rayOrigin.x += rayWidth * i;
 
-            RaycastHit2D rayHit = Physics2D.Raycast(rayOrigin, rayDirection, rayDistance, groundMask);
+            LayerMask effectiveMask = groundMask | padMask; //combine groundMask and padMask into one mask.
+            RaycastHit2D rayHit = Physics2D.Raycast(rayOrigin, rayDirection, rayDistance, effectiveMask);
 
             if (rayHit)
             {
-                deltaMovement.y = rayHit.point.y - rayOrigin.y;
-                rayDistance = Mathf.Abs(deltaMovement.y);
-
-                if (isGoingUp)
+                // this means: IF (layer of hit object NOT IN padMask)
+                if (padMask != (padMask | 1 << rayHit.transform.gameObject.layer))
                 {
-                    deltaMovement.y -= skinWidth;
-                    collisionState.above = true;
-                }
-                else
-                {
-                    deltaMovement.y += skinWidth;
-                    collisionState.below = true;
+                    deltaMovement.y = rayHit.point.y - rayOrigin.y;
+                    rayDistance = Mathf.Abs(deltaMovement.y);
 
-                    //record last grounded position on rayhit for more accuracy than transform
-                    lastGroundedPosition = rayHit.point;
-                }
+                    if (isGoingUp)
+                    {
+                        deltaMovement.y -= skinWidth;
+                        collisionState.above = true;
+                    }
+                    else
+                    {
 
+                        deltaMovement.y += skinWidth;
+                        collisionState.below = true;
+
+                        //record last grounded position on rayhit for more accuracy than transform
+                        lastGroundedPosition = rayHit.point;
+                    }
+
+                }
             }
         }
     }

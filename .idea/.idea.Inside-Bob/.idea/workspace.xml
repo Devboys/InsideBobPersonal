@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d5316cca-873b-42fb-acd9-14797aec2b1c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Inside-Bob/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Inside-Bob/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FMOD_InsideBob/Assets/Desktop/Master.bank" beforeDir="false" afterPath="$PROJECT_DIR$/FMOD_InsideBob/Assets/Desktop/Master.bank" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FMOD_InsideBob/Metadata/Event/{86f9f0e8-b5cc-40e2-9b02-84c88404d88b}.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FMOD_InsideBob/Metadata/Event/{86f9f0e8-b5cc-40e2-9b02-84c88404d88b}.xml" afterDir="false" />
-    </list>
+    <list default="true" id="d5316cca-873b-42fb-acd9-14797aec2b1c" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,37 +33,20 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Assets/Scripts/PlayerController.cs">
+        <entry file="file://$PROJECT_DIR$/Assets/Scripts/Player/PlayerController.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="373">
-              <caret line="64" column="6" selection-start-line="64" selection-start-column="6" selection-end-line="64" selection-end-column="6" />
+            <state relative-caret-position="962">
+              <caret line="283" column="4" selection-start-line="283" selection-start-column="4" selection-end-line="283" selection-end-column="4" />
               <folding>
-                <marker date="1574178469984" expanded="true" signature="6:147" ph="..." />
-                <marker date="1574178469984" expanded="true" signature="235:17131" ph="{...}" />
-                <marker date="1574178469984" expanded="true" signature="1840:1909" ph="/* public float footRate = 0.5f; ... */" />
-                <marker date="1574178469984" expanded="true" signature="12394:12446" ph="{...}" />
-                <marker date="1574178469984" expanded="true" signature="12394:15731" ph="Update Handle methods" />
-                <marker date="1574178469984" expanded="true" signature="12492:13167" ph="{...}" />
-                <marker date="1574178469984" expanded="true" signature="12626:12990" ph="{...}" />
-                <marker date="1574178469984" expanded="true" signature="13003:13161" ph="{...}" />
-                <marker date="1574178469984" expanded="true" signature="13199:13713" ph="{...}" />
-                <marker date="1574178469984" expanded="true" signature="13272:13707" ph="{...}" />
-                <marker date="1574178469984" expanded="true" signature="13759:13936" ph="{...}" />
-                <marker date="1574178469984" expanded="true" signature="13993:15470" ph="{...}" />
-                <marker date="1574178469984" expanded="true" signature="14333:15464" ph="{...}" />
-                <marker date="1574178469984" expanded="true" signature="14777:14951" ph="{...}" />
-                <marker date="1574178469984" expanded="true" signature="14968:15146" ph="{...}" />
-                <marker date="1574178469984" expanded="true" signature="15230:15332" ph="{...}" />
-                <marker date="1574178469984" expanded="true" signature="15500:15715" ph="{...}" />
-                <marker date="1574178469984" expanded="true" signature="15737:16215" ph="Public methods" />
-                <marker date="1574178469984" expanded="true" signature="15809:16112" ph="{...}" />
-                <marker date="1574178469984" expanded="true" signature="16144:16200" ph="{...}" />
-                <marker date="1574178469984" expanded="true" signature="16221:17129" ph="Utilities" />
-                <marker date="1574178469984" expanded="true" signature="16263:17029" ph="{...}" />
-                <marker date="1574178469984" expanded="true" signature="16441:16500" ph="{...}" />
-                <marker date="1574178469984" expanded="true" signature="16535:16634" ph="{...}" />
-                <marker date="1574178469984" expanded="true" signature="16673:16824" ph="{...}" />
-                <marker date="1574178469984" expanded="true" signature="17064:17113" ph="{...}" />
+                <marker date="1574865778366" expanded="false" signature="6:147" ph="..." />
+                <marker date="1574865778366" expanded="false" signature="19651:19666" ph="Public methods" />
+                <marker date="1574865778366" expanded="true" signature="19651:20582" ph="{...}" />
+                <marker date="1574865778366" expanded="false" signature="19672:20580" ph="Utilities" />
+                <marker date="1574865778366" expanded="true" signature="19714:20480" ph="{...}" />
+                <marker date="1574865778366" expanded="true" signature="19892:19951" ph="{...}" />
+                <marker date="1574865778366" expanded="true" signature="19986:20085" ph="{...}" />
+                <marker date="1574865778366" expanded="true" signature="20124:20275" ph="{...}" />
+                <marker date="1574865778366" expanded="true" signature="20515:20564" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -88,7 +67,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Assets/Scripts/Audio/FMOD_LevelMusic.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
+            <state relative-caret-position="165">
               <caret line="21" column="43" selection-start-line="21" selection-start-column="43" selection-end-line="21" selection-end-column="43" />
               <folding>
                 <marker date="1574008832281" expanded="true" signature="6:161" ph="..." />
@@ -115,8 +94,6 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/LevelController.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/BouncePadController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/Desktop/FMOD Scripts fra Jeppe/FMOD_BasicAmbience2D.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../Game_martin 2/martinfdk-firstpersonlistener-523696cff42b/Assets/Scripts/_Triggers/ImpulseTrigger.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/Desktop/FMOD Scripts fra Jeppe/FmodEvent.cs" root0="SKIP_HIGHLIGHTING" />
@@ -124,7 +101,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Audio/FMOD_LevelMusic.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Plugins/FMOD/src/Runtime/RuntimeManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/Dropbox/RSM Documents/RSM BA MA/ITU Games/Courses/Games &amp; Culture/Assignments/03 Term Paper/Portotype/FootstepPrototype.0.01/Assets/Scripts/PlayerController.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/PlayerController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Player/PlayerController.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -201,12 +178,14 @@
       <workItem from="1573756726511" duration="5410000" />
       <workItem from="1573992818018" duration="8144000" />
       <workItem from="1574005927706" duration="2586000" />
-      <workItem from="1574166867360" duration="3069000" />
+      <workItem from="1574166867360" duration="3273000" />
+      <workItem from="1574254980054" duration="385000" />
+      <workItem from="1574865428895" duration="436000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="20075000" />
+    <option name="totallyTimeSpent" value="21100000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -219,7 +198,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="347" y="23" width="1107" height="1027" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.24847375" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -535,7 +513,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Assets/Scripts/Audio/FMOD_LevelMusic.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
+        <state relative-caret-position="165">
           <caret line="21" column="43" selection-start-line="21" selection-start-column="43" selection-end-line="21" selection-end-column="43" />
           <folding>
             <marker date="1574008832281" expanded="true" signature="6:161" ph="..." />
@@ -549,35 +527,25 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Assets/Scripts/PlayerController.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="373">
-          <caret line="64" column="6" selection-start-line="64" selection-start-column="6" selection-end-line="64" selection-end-column="6" />
+        <state relative-caret-position="587">
+          <caret line="244" selection-start-line="244" selection-end-line="244" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Scripts/Player/PlayerController.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="962">
+          <caret line="283" column="4" selection-start-line="283" selection-start-column="4" selection-end-line="283" selection-end-column="4" />
           <folding>
-            <marker date="1574178469984" expanded="true" signature="6:147" ph="..." />
-            <marker date="1574178469984" expanded="true" signature="235:17131" ph="{...}" />
-            <marker date="1574178469984" expanded="true" signature="1840:1909" ph="/* public float footRate = 0.5f; ... */" />
-            <marker date="1574178469984" expanded="true" signature="12394:12446" ph="{...}" />
-            <marker date="1574178469984" expanded="true" signature="12394:15731" ph="Update Handle methods" />
-            <marker date="1574178469984" expanded="true" signature="12492:13167" ph="{...}" />
-            <marker date="1574178469984" expanded="true" signature="12626:12990" ph="{...}" />
-            <marker date="1574178469984" expanded="true" signature="13003:13161" ph="{...}" />
-            <marker date="1574178469984" expanded="true" signature="13199:13713" ph="{...}" />
-            <marker date="1574178469984" expanded="true" signature="13272:13707" ph="{...}" />
-            <marker date="1574178469984" expanded="true" signature="13759:13936" ph="{...}" />
-            <marker date="1574178469984" expanded="true" signature="13993:15470" ph="{...}" />
-            <marker date="1574178469984" expanded="true" signature="14333:15464" ph="{...}" />
-            <marker date="1574178469984" expanded="true" signature="14777:14951" ph="{...}" />
-            <marker date="1574178469984" expanded="true" signature="14968:15146" ph="{...}" />
-            <marker date="1574178469984" expanded="true" signature="15230:15332" ph="{...}" />
-            <marker date="1574178469984" expanded="true" signature="15500:15715" ph="{...}" />
-            <marker date="1574178469984" expanded="true" signature="15737:16215" ph="Public methods" />
-            <marker date="1574178469984" expanded="true" signature="15809:16112" ph="{...}" />
-            <marker date="1574178469984" expanded="true" signature="16144:16200" ph="{...}" />
-            <marker date="1574178469984" expanded="true" signature="16221:17129" ph="Utilities" />
-            <marker date="1574178469984" expanded="true" signature="16263:17029" ph="{...}" />
-            <marker date="1574178469984" expanded="true" signature="16441:16500" ph="{...}" />
-            <marker date="1574178469984" expanded="true" signature="16535:16634" ph="{...}" />
-            <marker date="1574178469984" expanded="true" signature="16673:16824" ph="{...}" />
-            <marker date="1574178469984" expanded="true" signature="17064:17113" ph="{...}" />
+            <marker date="1574865778366" expanded="false" signature="6:147" ph="..." />
+            <marker date="1574865778366" expanded="false" signature="19651:19666" ph="Public methods" />
+            <marker date="1574865778366" expanded="true" signature="19651:20582" ph="{...}" />
+            <marker date="1574865778366" expanded="false" signature="19672:20580" ph="Utilities" />
+            <marker date="1574865778366" expanded="true" signature="19714:20480" ph="{...}" />
+            <marker date="1574865778366" expanded="true" signature="19892:19951" ph="{...}" />
+            <marker date="1574865778366" expanded="true" signature="19986:20085" ph="{...}" />
+            <marker date="1574865778366" expanded="true" signature="20124:20275" ph="{...}" />
+            <marker date="1574865778366" expanded="true" signature="20515:20564" ph="{...}" />
           </folding>
         </state>
       </provider>

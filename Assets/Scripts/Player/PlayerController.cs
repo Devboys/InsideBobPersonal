@@ -4,6 +4,30 @@ using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
 using UnityEngine.Serialization;
+using UnityEngine.Tilemaps;
+
+// Helper structs
+struct PowerUpPair
+{
+    public int id;
+    public bool active;
+    public PowerUpPair(int id, bool active)
+    {
+        this.id = id;
+        this.active = active;
+    }
+}
+
+struct TilemapPair
+{
+    public int id;
+    public TileBase[] tiles;
+    public TilemapPair(int id, TileBase[] tiles)
+    {
+        this.id = id;
+        this.tiles = tiles;
+    }
+}
 
 [RequireComponent(typeof(RaycastMover))]
 public class PlayerController : MonoBehaviour
@@ -33,6 +57,8 @@ public class PlayerController : MonoBehaviour
     public float timeToJumpLand = 0.2f;
     [Tooltip("How long to allow for jumping after walking off edges")]
     public float coyoteTime = 0.1f;
+    [Tooltip("Allows player to queue jumps before landing")]
+    public float graceTime = 0.2f;
 
     [Header("-- Bouncing")]
     public float bounceForce;
@@ -63,7 +89,7 @@ public class PlayerController : MonoBehaviour
 
     //public float footRate = 0.5f;
     //private float footDelay = 0.0f;
-    
+
     [Space(20)]
     [EventRef]
     public string landPath;
@@ -72,19 +98,17 @@ public class PlayerController : MonoBehaviour
     [Space(20)]
     [EventRef]
     public string jumpSound;
-
     [EventRef]
     public string placePad;
-
     [EventRef]
     public string bulletTimePath;
-
 
     //private variables
     [Header("-- State")]
     [HideInInspector] public Vector2 velocity;
     private List<GameObject> padList = new List<GameObject>();
     private bool postJumpApex;
+    [HideInInspector] public float horizontalMove; //binary movement input float. 0=none, 1=right, -1=left.
 
     private bool inBounce;
     private bool jumping;
@@ -99,8 +123,10 @@ public class PlayerController : MonoBehaviour
 
     private float bounceCoolDown = 0.001f;
 
+    private GameObject lastCheckpoint;
     private Vector2 checkpointPos;
-
+    private List<TilemapPair> tilemaps;
+    private List<PowerUpPair> powerUps;
 
     //DEBUG
     private Vector2 lastLanding;
@@ -118,6 +144,7 @@ public class PlayerController : MonoBehaviour
     Timer shootTimer = new Timer();
     Timer cannonballTimer = new Timer();
     Timer bounceCoolDownTimer = new Timer();
+    Timer jumpGraceTimer = new Timer();
 
     #endregion
 
@@ -175,6 +202,8 @@ public class PlayerController : MonoBehaviour
 
         //set init checkpoint
         checkpointPos = transform.position;
+        tilemaps = new List<TilemapPair>();
+        powerUps = new List<PowerUpPair>();
     }
 
     void Update()
@@ -185,7 +214,7 @@ public class PlayerController : MonoBehaviour
         //Order of movement events matter. Be mindful of changes.
         HandleGravity();
         HandleHorizontalMovement();
-        HandleJumpVariableGravity();
+        HandleJump();
         /*
         if (!_controllerInput || !_controllerInput.enabled)
         {
@@ -200,6 +229,7 @@ public class PlayerController : MonoBehaviour
         //PlayFootSound();
 
         _mover.Move(velocity * Time.deltaTime);
+
         //Apply corrected velocity changes
         velocity = _mover.velocity;
 
@@ -279,7 +309,7 @@ public class PlayerController : MonoBehaviour
     }
     private void HandleHorizontalMovement()
     {
-        float horizontalMove = Input.GetAxisRaw("Horizontal");
+        horizontalMove = Input.GetAxisRaw("Horizontal");
         float targetVelocity = horizontalMove * maxSpeed;
 
         if (!inBounce)
@@ -303,7 +333,7 @@ public class PlayerController : MonoBehaviour
                 //bounceDamp
                 velocity.x += (targetVelocity - velocity.x) * Time.deltaTime * bounceDamping;
             }
-            else if (Mathf.Abs(velocity.x) > maxSpeed)//is maxSpeed this the right cutoff for 2nd phase???
+            else if (Mathf.Abs(velocity.x) > maxSpeed)
             {
                 //lerp between bounceDamping and airDamping
                 float dif = (bounceVelocityCutoff - Mathf.Abs(velocity.x)) / (bounceVelocityCutoff - maxSpeed);
@@ -311,7 +341,7 @@ public class PlayerController : MonoBehaviour
 
                 velocity.x += (targetVelocity - velocity.x) * Time.deltaTime * lerpedDamping;
             }
-            else
+            else 
             {
                 inBounce = false; //full regular air damping
             }
@@ -319,9 +349,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void HandleJumpVariableGravity()
+    private void HandleJump()
     {
-        if (Input.GetButtonDown("Jump") && (!jumpCoyoteTimer.IsFinished || _mover.IsGrounded))
+        if (Input.GetButtonDown("Jump"))
+        {
+            jumpGraceTimer.StartTimer(graceTime);
+        }
+
+        if (!jumpGraceTimer.IsFinished && (!jumpCoyoteTimer.IsFinished || _mover.IsGrounded))
         {
             float jumpVelocity = Mathf.Abs(jumpGravity) * timeToJumpApex;
             gravity = jumpGravity;
@@ -335,7 +370,7 @@ public class PlayerController : MonoBehaviour
         }
 
         float minJumpVel = Mathf.Sqrt(2 * Mathf.Abs(gravity) * minJumpHeight);
-        if (Input.GetButtonUp("Jump") && velocity.y > minJumpVel && jumping)
+        if (!Input.GetButton("Jump") && velocity.y > minJumpVel && jumping)
         {
             velocity.y = minJumpVel;
         }
@@ -542,6 +577,7 @@ public class PlayerController : MonoBehaviour
         shootTimer.TickTimer(Time.deltaTime);
         cannonballTimer.TickTimer(Time.deltaTime);
         bounceCoolDownTimer.TickTimer(Time.deltaTime);
+        jumpGraceTimer.TickTimer(Time.deltaTime);
     }
 
     #endregion
@@ -566,20 +602,78 @@ public class PlayerController : MonoBehaviour
         return !cannonballTimer.IsFinished;
     }
 
-    public void SetCheckpoint(Vector2 position)
+    public void SetCheckpoint(GameObject gameObject)
     {
-        checkpointPos = position;
+        if(!lastCheckpoint || lastCheckpoint.GetInstanceID() != gameObject.GetInstanceID())
+        {
+            lastCheckpoint = gameObject;
+            checkpointPos = gameObject.transform.position;
+            tilemaps.Clear();
+            var cTilemaps = FindObjectsOfType<Tilemap>();
+            for(int i = 0; i < cTilemaps.Length; i++)
+            {
+                tilemaps.Add(new TilemapPair(cTilemaps[i].gameObject.GetInstanceID(), cTilemaps[i].GetTilesBlock(cTilemaps[i].cellBounds)));
+            }
+            powerUps.Clear();
+            var cPowerUps = Resources.FindObjectsOfTypeAll<PowerUpHandler>();
+            for (int i = 0; i < cPowerUps.Length; i++)
+            {
+                powerUps.Add(new PowerUpPair(cPowerUps[i].gameObject.GetInstanceID(), cPowerUps[i].gameObject.activeSelf));
+            }
+        }
     }
 
     public void Die()
     {
+        //Refresh tilemap       
+        if (tilemaps != null)
+        {
+            var cTilemaps = FindObjectsOfType<Tilemap>();
+            for (int i = 0; i < tilemaps.Count; i++) {
+                for(int j = 0; j < cTilemaps.Length; j++)
+                {
+                    if(tilemaps[i].id == cTilemaps[j].gameObject.GetInstanceID())
+                    {
+                        TileBase[] tiles = tilemaps[i].tiles;
+                        var pos = EnumeratorToArray(cTilemaps[j].cellBounds.allPositionsWithin);
+                        cTilemaps[i].SetTiles(pos, tiles);
+                        break;
+                    }
+                }
+            }
+            var cPowerUps = Resources.FindObjectsOfTypeAll<PowerUpHandler>();
+            for (int i = 0; i < powerUps.Count; i++)
+            {
+                for (int j = 0; j < cPowerUps.Length; j++)
+                {
+                    if (powerUps[i].id == cPowerUps[j].gameObject.GetInstanceID())
+                    {
+                        var powerUp = cPowerUps[j].gameObject;
+                        powerUp.SetActive(powerUps[i].active);
+                    }
+                }
+            }
+        }
+
         //reset velocity
         velocity = Vector2.zero;
 
         //'respawn' at checkpoint
         _mover.MoveTo(checkpointPos);
 
+        
+
     }
+
+    private Vector3Int[] EnumeratorToArray(BoundsInt.PositionEnumerator enumerator) {
+        List<Vector3Int> positions = new List<Vector3Int>();
+        while (enumerator.MoveNext())
+        {
+            positions.Add(enumerator.Current);
+        }
+
+        return positions.ToArray();
+    } 
     #endregion
 
     #region Utilities

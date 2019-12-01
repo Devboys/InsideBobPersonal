@@ -28,14 +28,13 @@ public class BouncePadController : MonoBehaviour
 
             if (fixedDirection)
             {
-                dir = direction.normalized;
+                dir = direction;
                 dir.x = Mathf.Sign(transform.up.x) * dir.x;
                 player.StartBounce(dir);
             }
             else
             {
                 Vector2 reflectedVelocity = Vector2.Reflect(player.velocity, transform.up).normalized;
-
                 dir = reflectedVelocity;
 
                 if (Vector2.Angle(transform.up, reflectedVelocity) > minimumBounceAngle)
@@ -43,10 +42,17 @@ public class BouncePadController : MonoBehaviour
                     //correct velocity to be within bounds
                     dir = Vector2FromAngle(minimumBounceAngle);
                     dir.x *= Mathf.Sign(player.velocity.x);
+                    dir.y *= Mathf.Sign(transform.up.y);
+
+                    if (player.horizontalMove == 0)
+                    {
+                        //bounce is directly upwards if 
+                        dir = transform.up;
+                    }
                 }
             }
 
-            player.StartBounce(dir);
+            player.StartBounce(dir.normalized);
 
             //Play bounce sound.
             RuntimeManager.PlayOneShot(bounceSound, transform.position);
@@ -55,7 +61,7 @@ public class BouncePadController : MonoBehaviour
 
 
     /// <summary>
-    /// generate a normalized vector pointing in a given direction
+    /// generate a normalized vector, rotated a given angle
     /// </summary>
     private Vector2 Vector2FromAngle(float angle)
     {
