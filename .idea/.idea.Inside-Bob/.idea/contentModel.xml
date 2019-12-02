@@ -76,6 +76,7 @@
             </e>
           </e>
         </e>
+        <e p="PowerUpHandler.cs" t="Include" />
         <e p="Scripts" t="Include">
           <e p="Attributes" t="Include">
             <e p="ReadOnlyAttribute.cs" t="Include" />
@@ -83,28 +84,37 @@
           <e p="Audio" t="Include">
             <e p="FMOD_LevelMusic.cs" t="Include" />
           </e>
-          <e p="BlobZacController.cs" t="Include" />
-          <e p="BouncePadController.cs" t="Include" />
+          <e p="CheatScript.cs" t="Include" />
           <e p="ControllerInput.cs" t="Include" />
           <e p="Editor" t="Include">
+            <e p="MoveToViewEditor.cs" t="Include" />
+            <e p="PlayerEditor.cs" t="Include" />
             <e p="ReadOnlyDrawer.cs" t="Include" />
           </e>
-          <e p="EnemyBounce.cs" t="Include" />
-          <e p="EnemyBounceGravity.cs" t="Include" />
-          <e p="EnemyZacController.cs" t="Include" />
-          <e p="LevelController.cs" t="Include" />
-          <e p="LevelGizmo.cs" t="Include" />
-          <e p="LevelSelect.cs" t="Include" />
-          <e p="Move.cs" t="Include" />
-          <e p="Old" t="Include">
-            <e p="OLDPlatformController.cs" t="Include" />
-            <e p="OldPlayerController.cs" t="Include" />
-            <e p="PlayerControllerFloaty.cs" t="Include" />
+          <e p="Enemies" t="Include">
+            <e p="BlobZacController.cs" t="Include" />
+            <e p="EnemyBounce.cs" t="Include" />
+            <e p="EnemyBounceGravity.cs" t="Include" />
+            <e p="EnemyZacController.cs" t="Include" />
+            <e p="SplinterMonster.cs" t="Include" />
           </e>
-          <e p="PlayerController.cs" t="Include" />
+          <e p="Level" t="Include">
+            <e p="LevelController.cs" t="Include" />
+            <e p="LevelGizmo.cs" t="Include" />
+            <e p="LevelSelect.cs" t="Include" />
+          </e>
+          <e p="MessageSystem.cs" t="Include" />
+          <e p="Move.cs" t="Include" />
+          <e p="Player" t="Include">
+            <e p="BouncePadController.cs" t="Include" />
+            <e p="PlayerController.cs" t="Include" />
+            <e p="RaycastMover.cs" t="Include" />
+          </e>
           <e p="PostProcessingCamera.cs" t="Include" />
-          <e p="RaycastMover.cs" t="Include" />
-          <e p="SplinterMonster.cs" t="Include" />
+          <e p="TerrainTriggers" t="Include">
+            <e p="CheckpointTrigger.cs" t="Include" />
+            <e p="SpikeTrigger.cs" t="Include" />
+          </e>
           <e p="TileCollider.cs" t="Include" />
         </e>
         <e p="Shaders" t="Include">
