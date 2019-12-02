@@ -19,6 +19,7 @@ public class LevelController : MonoBehaviour
         player = FindObjectOfType<PlayerController>();
         mainCam = Camera.main;
         levelIndex = GetCurrentPlayerLevelIndex();
+        StartCoroutine(TransitionCamera());
     }
 
     // Update is called once per frame
