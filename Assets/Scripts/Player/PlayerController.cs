@@ -604,11 +604,11 @@ public class PlayerController : MonoBehaviour
         velocity = initVelocity * bounceForce;
         gravity = bounceGravity;
 
-        Debug.Log("Init Velocity:" + velocity.x);
-
         cannonballTimer.StartTimer(cannonballTime);
         bounceCoolDownTimer.StartTimer(bounceCoolDown);
-        bounceDurationTimer.StartTimer(bounceDuration);
+
+        if(isVertical) 
+            bounceDurationTimer.StartTimer(bounceDuration);
 
         jumpCoyoteTimer.EndTimer();
     }
