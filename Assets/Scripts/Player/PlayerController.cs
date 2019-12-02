@@ -33,6 +33,13 @@ struct TilemapPair
 public class PlayerController : MonoBehaviour
 {
     //Editor properties.
+    [Header("-- Properties")]
+    public float maxHP = 100f;
+    [ReadOnly]public float health;
+    public float spikeDamageInitial = 10f;
+    [Tooltip("Damage pr Second")]
+    public float spikeDamageStay = 100f;
+
     [Header("-- Gravity")]
     [ReadOnly] public float gravity;
     [Tooltip("Maximal downwards velocity")]
@@ -173,6 +180,9 @@ public class PlayerController : MonoBehaviour
     }
     private void Start()
     {
+        // Init properties
+        health = maxHP;
+
         // FMOD
         footsteps = RuntimeManager.CreateInstance(footstepsPath);
         landSound = RuntimeManager.CreateInstance(landPath);
@@ -617,6 +627,7 @@ public class PlayerController : MonoBehaviour
     {
         if(!lastCheckpoint || lastCheckpoint.GetInstanceID() != gameObject.GetInstanceID())
         {
+            ResetHP();
             lastCheckpoint = gameObject;
             checkpointPos = gameObject.transform.position;
             tilemaps.Clear();
@@ -634,11 +645,27 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void TakeDamage(float damage) {
+        GetHP(-damage);
+    }
+
+    public void GetHP(float hp) {
+        health += hp;
+        if (health <= 0) {
+            health = 0;
+            Die();
+        }
+    }
+
+    public void ResetHP() {
+        health = maxHP;
+    }
+
     public void Die()
     {
         if (!Application.isPlaying)
             return;
-        
+        ResetHP();
         //Refresh tilemap       
         if (tilemaps != null)
         {

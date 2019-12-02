@@ -14,12 +14,19 @@ public class TileCollider : MonoBehaviour
     private float cooldown = 0.01f;
     private float lastHit = 0;
 
+    private PlayerController playerController;
+
+    private void Awake()
+    {
+        playerController = GetComponent<PlayerController>();
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         var tilemap = collision.gameObject.GetComponent<Tilemap>();
         if (tilemap) {
             foreach (Tilemap map in spikeTilemaps) {
-                if (map == tilemap) GetComponent<PlayerController>().Die();
+                if (map == tilemap) playerController.TakeDamage(playerController.spikeDamageInitial); //GetComponent<PlayerController>().Die();
             }
         }
 
@@ -28,6 +35,18 @@ public class TileCollider : MonoBehaviour
             RemoveSpikes(handler.tilemap);
             //Destroy(collision.gameObject);
             collision.gameObject.SetActive(false);
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        var tilemap = collision.gameObject.GetComponent<Tilemap>();
+        if (tilemap)
+        {
+            foreach (Tilemap map in spikeTilemaps)
+            {
+                if (map == tilemap) playerController.TakeDamage(playerController.spikeDamageStay * Time.fixedDeltaTime); //GetComponent<PlayerController>().Die();
+            }
         }
     }
 
