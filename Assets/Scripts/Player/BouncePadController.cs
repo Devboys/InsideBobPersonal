@@ -30,7 +30,7 @@ public class BouncePadController : MonoBehaviour
             {
                 dir = direction;
                 dir.x = Mathf.Sign(transform.up.x) * dir.x;
-                player.StartBounce(dir);
+                player.StartBounce(dir, true);
             }
             else
             {
@@ -52,7 +52,7 @@ public class BouncePadController : MonoBehaviour
                 }
             }
 
-            player.StartBounce(dir.normalized);
+            player.StartBounce(dir.normalized, false);
 
             //Play bounce sound.
             RuntimeManager.PlayOneShot(bounceSound, transform.position);

@@ -62,9 +62,11 @@ public class PlayerController : MonoBehaviour
 
     [Header("-- Bouncing")]
     public float bounceForce;
+    public float bounceGravity;
     public float bounceDamping;
     public float bounceVelocityCutoff;
     public float cannonballTime;
+    public float bounceDuration;
 
     [Header("-- Shooting")]
     public GameObject padPrefab;
@@ -110,7 +112,8 @@ public class PlayerController : MonoBehaviour
     private bool postJumpApex;
     [HideInInspector] public float horizontalMove; //binary movement input float. 0=none, 1=right, -1=left.
 
-    private bool inBounce;
+    private bool inBounceX;
+    private bool bouncingVertically;
     private bool jumping;
 
     private bool inBulletTime;
@@ -144,6 +147,7 @@ public class PlayerController : MonoBehaviour
     Timer shootTimer = new Timer();
     Timer cannonballTimer = new Timer();
     Timer bounceCoolDownTimer = new Timer();
+    Timer bounceDurationTimer = new Timer(); 
     Timer jumpGraceTimer = new Timer();
 
     #endregion
@@ -156,7 +160,6 @@ public class PlayerController : MonoBehaviour
     {
         get { return (-2 * maxJumpHeight) / Mathf.Pow(timeToJumpLand, 2); }
     }
-
     private float maxGravity
     {
         get { return (fallGravity * timeToJumpLand) * maxGravityMultiplier; }
@@ -209,7 +212,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         //Do not attempt to move downwards if already grounded
-        if (_mover.IsGrounded && !inBounce) velocity.y = 0;
+        if (_mover.IsGrounded && !inBounceX) velocity.y = 0;
 
         //Order of movement events matter. Be mindful of changes.
         HandleGravity();
@@ -241,7 +244,7 @@ public class PlayerController : MonoBehaviour
         if (_mover.HasLanded) //is true only on the single frame in which the player landed
         {
             lastLanding = transform.position;
-            inBounce = false;
+            inBounceX = false;
             jumping = false;
 
             //Play landing sound
@@ -300,6 +303,12 @@ public class PlayerController : MonoBehaviour
     private void HandleGravity()
     {
         //REMEMBER TO ENABLE AUTOSYNC TRANSFORMS, OTHERWISE BOUNCINESS
+
+        if (velocity.y <= 0)
+        {
+            gravity = fallGravity;
+        }
+        
         velocity.y += gravity * Time.deltaTime;
 
         if (velocity.y < maxGravity)
@@ -312,7 +321,7 @@ public class PlayerController : MonoBehaviour
         horizontalMove = Input.GetAxisRaw("Horizontal");
         float targetVelocity = horizontalMove * maxSpeed;
 
-        if (!inBounce)
+        if (!inBounceX)
         {
             //regular ground/air movement
             if (_mover.IsGrounded)
@@ -328,7 +337,8 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            if (Mathf.Abs(velocity.x) > bounceVelocityCutoff)
+            //if (Mathf.Abs(velocity.x) > bounceVelocityCutoff)
+            if(!bounceDurationTimer.IsFinished && bouncingVertically)
             {
                 //bounceDamp
                 velocity.x += (targetVelocity - velocity.x) * Time.deltaTime * bounceDamping;
@@ -341,9 +351,9 @@ public class PlayerController : MonoBehaviour
 
                 velocity.x += (targetVelocity - velocity.x) * Time.deltaTime * lerpedDamping;
             }
-            else 
+            else
             {
-                inBounce = false; //full regular air damping
+                inBounceX = false; //full regular air damping
             }
 
         }
@@ -375,7 +385,7 @@ public class PlayerController : MonoBehaviour
             velocity.y = minJumpVel;
         }
 
-        else if (velocity.y < 0 && !postJumpApex)
+        else if (velocity.y < 0 && !postJumpApex && jumping)
         {
             gravity = fallGravity;
             postJumpApex = true;
@@ -578,22 +588,28 @@ public class PlayerController : MonoBehaviour
         cannonballTimer.TickTimer(Time.deltaTime);
         bounceCoolDownTimer.TickTimer(Time.deltaTime);
         jumpGraceTimer.TickTimer(Time.deltaTime);
+        bounceDurationTimer.TickTimer(Time.deltaTime);
     }
 
     #endregion
 
     #region Public methods
-    public void StartBounce(Vector2 initVelocity)
+    public void StartBounce(Vector2 initVelocity, bool isVertical)
     {
         if (!bounceCoolDownTimer.IsFinished) return;
 
-        inBounce = true;
+        inBounceX = true;
+        bouncingVertically = isVertical;
         jumping = false;
         velocity = initVelocity * bounceForce;
-        gravity = fallGravity;
+        gravity = bounceGravity;
+
+        Debug.Log("Init Velocity:" + velocity.x);
 
         cannonballTimer.StartTimer(cannonballTime);
         bounceCoolDownTimer.StartTimer(bounceCoolDown);
+        bounceDurationTimer.StartTimer(bounceDuration);
+
         jumpCoyoteTimer.EndTimer();
     }
 
