@@ -103,6 +103,10 @@ public class PlayerController : MonoBehaviour
     [EventRef]
     public string bulletTimePath;
 
+    // Variable Enable Movement
+    [HideInInspector]
+    public bool canMove;
+
     //private variables
     [Header("-- State")]
     [HideInInspector] public Vector2 velocity;
@@ -204,6 +208,9 @@ public class PlayerController : MonoBehaviour
         checkpointPos = transform.position;
         tilemaps = new List<TilemapPair>();
         powerUps = new List<PowerUpPair>();
+
+        // Can move variable
+        canMove = true;
     }
 
     void Update()
@@ -213,18 +220,21 @@ public class PlayerController : MonoBehaviour
 
         //Order of movement events matter. Be mindful of changes.
         HandleGravity();
-        HandleHorizontalMovement();
-        HandleJump();
-        /*
-        if (!_controllerInput || !_controllerInput.enabled)
+        if (canMove)
         {
+            HandleHorizontalMovement();
+            HandleJump();
+            /*
+            if (!_controllerInput || !_controllerInput.enabled)
+            {
+                UpdateBulletTime();
+                HandleShoot();
+            }
+            */
+
             UpdateBulletTime();
             HandleShoot();
         }
-        */
-
-        UpdateBulletTime();
-        HandleShoot();
 
         //PlayFootSound();
 
@@ -249,7 +259,8 @@ public class PlayerController : MonoBehaviour
             landSound.setParameterByName("SurfaceIndex", surfaceIndex);
             landSound.start();
         }
-        UpdateAnimation();
+        if(canMove) UpdateAnimation();
+        else _anim.SetBool("Grounded", _mover.IsGrounded);
         TickTimers();
     }
 
