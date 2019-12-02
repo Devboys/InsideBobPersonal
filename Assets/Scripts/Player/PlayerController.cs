@@ -625,6 +625,9 @@ public class PlayerController : MonoBehaviour
 
     public void Die()
     {
+        if (!Application.isPlaying)
+            return;
+        
         //Refresh tilemap       
         if (tilemaps != null)
         {
