@@ -25,6 +25,8 @@ public class RaycastMover : MonoBehaviour
 
     [Header("Pad Checking")]
     [SerializeField] private LayerMask padMask;
+    [SerializeField] private int numHoriPadRays = 3;
+    [SerializeField] private int numVertPadRays = 3;
 
     [HideInInspector]
     public Vector2 velocity
@@ -35,7 +37,6 @@ public class RaycastMover : MonoBehaviour
 
     //component cache.
     private BoxCollider2D _boxCollider;
-    private Rigidbody2D _rigidBody;
 
     //ray variables
     private RayCastOrigins rayOrigins;
@@ -48,6 +49,7 @@ public class RaycastMover : MonoBehaviour
 
     //collision state
     private CharacterCollisionState2D collisionState;
+    private CharacterCollisionState2D padCheckState;
 
     #region Read only properties
     //Collision state Read-Only properties
@@ -79,19 +81,22 @@ public class RaycastMover : MonoBehaviour
     public void Awake()
     {
         _boxCollider = this.GetComponent<BoxCollider2D>();
-        _rigidBody = this.GetComponent<Rigidbody2D>();
         rayOrigins = new RayCastOrigins();
 
         RecalculateDistanceBetweenRays();
         collisionState = new CharacterCollisionState2D();
+        padCheckState = new CharacterCollisionState2D();
     }
 
     public void Move(Vector2 deltaMovement)
     {
         collisionState.wasGroundedLastFrame = collisionState.below;
         collisionState.Reset();
+        padCheckState.Reset();
 
         PrimeRayCastOrigins();
+
+        CheckPads(deltaMovement);
 
         CheckIsNextToWall();
 
@@ -102,14 +107,12 @@ public class RaycastMover : MonoBehaviour
             MoveVertical(ref deltaMovement);
 
         //update post-movement collisonState.
-        if (!collisionState.wasGroundedLastFrame && collisionState.below)
+        if (!collisionState.wasGroundedLastFrame && collisionState.below && !padCheckState.below)
             collisionState.becameGroundedThisFrame = true;
         if (collisionState.wasGroundedLastFrame && !collisionState.below)
             collisionState.leftGroundThisFrame = true;
 
-        //deltaMovement.z = 0;
         transform.Translate(deltaMovement, Space.World);
-        //_rigidBody.MovePosition(_rigidBody.position + deltaMovement);
         velocity = deltaMovement / Time.deltaTime;
     }
 
@@ -198,35 +201,78 @@ public class RaycastMover : MonoBehaviour
             Vector2 rayOrigin = initialRayOrigin;
             rayOrigin.x += rayWidth * i;
 
-            LayerMask effectiveMask = groundMask | padMask; //combine groundMask and padMask into one mask.
-            RaycastHit2D rayHit = Physics2D.Raycast(rayOrigin, rayDirection, rayDistance, effectiveMask);
+            RaycastHit2D rayHit = Physics2D.Raycast(rayOrigin, rayDirection, rayDistance, groundMask);
 
             if (rayHit)
             {
-                // this means: IF (layer of hit object NOT IN padMask)
-                if (padMask != (padMask | 1 << rayHit.transform.gameObject.layer))
+                deltaMovement.y = rayHit.point.y - rayOrigin.y;
+                rayDistance = Mathf.Abs(deltaMovement.y);
+
+                if (isGoingUp)
                 {
-                    deltaMovement.y = rayHit.point.y - rayOrigin.y;
-                    rayDistance = Mathf.Abs(deltaMovement.y);
+                    deltaMovement.y -= skinWidth;
+                    collisionState.above = true;
+                }
+                else
+                {
 
-                    if (isGoingUp)
-                    {
-                        deltaMovement.y -= skinWidth;
-                        collisionState.above = true;
-                    }
-                    else
-                    {
-
-                        deltaMovement.y += skinWidth;
+                    deltaMovement.y += skinWidth;
+                    if(padCheckState.below == false)
                         collisionState.below = true;
 
-                        //record last grounded position on rayhit for more accuracy than transform
+                    //record last grounded position on rayhit for more accuracy than transform
+                    if (padCheckState.below == false)
+                    {
+                        
                         lastGroundedPosition = rayHit.point;
                     }
-
                 }
             }
         }
+    }
+
+    private void CheckPads(in Vector2 deltaMovement)
+    {
+        //check Vertical
+        bool isGoingUp = deltaMovement.y > 0;
+        float rayDistance = Mathf.Abs(deltaMovement.y) + skinWidth;
+        Vector2 rayDirection = isGoingUp ? Vector2.up : Vector2.down;
+        Vector2 initialRayOrigin = isGoingUp ? rayOrigins.topLeft : rayOrigins.bottomLeft;
+
+        initialRayOrigin.x += deltaMovement.x;
+
+        for (int i = 0; i < numHorizontalRays; i++)
+        {
+            Vector2 rayOrigin = initialRayOrigin;
+            rayOrigin.x += rayWidth * i;
+
+            //we 'back-up' rayOrigin a bit to handle when the player is inside the pad collider at checktime
+            //this is because raycasts do not hit colliders they originate within.
+            float rayOffset = _boxCollider.size.y * Mathf.Abs(transform.localScale.y) - (2f * skinWidth);
+            Ray2D ray = new Ray2D(rayOrigin, rayDirection);
+            rayOrigin = ray.GetPoint( -rayOffset);
+            rayDistance += rayOffset; 
+
+            LayerMask effectiveMask = padMask; //| groundMask; //combine groundMask and padMask into one mask.
+            RaycastHit2D rayHit = Physics2D.Raycast(rayOrigin, rayDirection, 10, effectiveMask);
+
+            //DEBUG
+            Vector2 currentPosition = transform.position;
+            
+
+            if (rayHit)
+            {
+                if (isGoingUp)
+                {
+                    padCheckState.above = true;
+                }
+                else
+                {
+                    padCheckState.below = true;
+                }
+            }
+        }
+
     }
     #endregion
 
