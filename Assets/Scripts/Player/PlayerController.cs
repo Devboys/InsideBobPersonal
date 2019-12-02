@@ -33,6 +33,14 @@ struct TilemapPair
 public class PlayerController : MonoBehaviour
 {
     //Editor properties.
+    [Header("-- Properties")]
+    public float maxHP = 100f;
+    [ReadOnly]public float health;
+    [ReadOnly] public bool isDead;
+    public float spikeDamageInitial = 10f;
+    [Tooltip("Damage pr Second")]
+    public float spikeDamageStay = 100f;
+
     [Header("-- Gravity")]
     [ReadOnly] public float gravity;
     [Tooltip("Maximal downwards velocity")]
@@ -105,6 +113,10 @@ public class PlayerController : MonoBehaviour
     [EventRef]
     public string bulletTimePath;
 
+    // Variable Enable Movement
+    [HideInInspector]
+    public bool canMove;
+
     //private variables
     [Header("-- State")]
     [HideInInspector] public Vector2 velocity;
@@ -172,6 +184,9 @@ public class PlayerController : MonoBehaviour
     }
     private void Start()
     {
+        // Init properties
+        health = maxHP;
+
         // FMOD
         footsteps = RuntimeManager.CreateInstance(footstepsPath);
         landSound = RuntimeManager.CreateInstance(landPath);
@@ -207,6 +222,9 @@ public class PlayerController : MonoBehaviour
         checkpointPos = transform.position;
         tilemaps = new List<TilemapPair>();
         powerUps = new List<PowerUpPair>();
+
+        // Can move variable
+        canMove = true;
     }
 
     void Update()
@@ -216,18 +234,13 @@ public class PlayerController : MonoBehaviour
 
         //Order of movement events matter. Be mindful of changes.
         HandleGravity();
-        HandleHorizontalMovement();
-        HandleJump();
-        /*
-        if (!_controllerInput || !_controllerInput.enabled)
+        if (canMove)
         {
+            HandleHorizontalMovement();
+            HandleJump();
             UpdateBulletTime();
             HandleShoot();
         }
-        */
-
-        UpdateBulletTime();
-        HandleShoot();
 
         //PlayFootSound();
 
@@ -252,12 +265,16 @@ public class PlayerController : MonoBehaviour
             landSound.setParameterByName("SurfaceIndex", surfaceIndex);
             landSound.start();
         }
-        UpdateAnimation();
+        if(canMove) UpdateAnimation();
+        else _anim.SetBool("Grounded", _mover.IsGrounded);
         TickTimers();
     }
 
     private void UpdateAnimation()
     {
+        if (isDead)
+            return;
+        
         _anim.SetBool("IsInCannonball", IsCannonBall());
         _anim.SetBool("Grounded", _mover.IsGrounded);
         Vector2 movement = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
@@ -318,6 +335,9 @@ public class PlayerController : MonoBehaviour
     }
     private void HandleHorizontalMovement()
     {
+        if (isDead)
+            return;
+        
         horizontalMove = Input.GetAxisRaw("Horizontal");
         float targetVelocity = horizontalMove * maxSpeed;
 
@@ -361,6 +381,9 @@ public class PlayerController : MonoBehaviour
 
     private void HandleJump()
     {
+        if (isDead)
+            return;
+        
         if (Input.GetButtonDown("Jump"))
         {
             jumpGraceTimer.StartTimer(graceTime);
@@ -395,6 +418,9 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateBulletTime()
     {
+        if (isDead)
+            return;
+        
         if (Input.GetMouseButton(0) && !Input.GetMouseButton(1) && !cancelBulletTime)
         {
             if (!inBulletTime)
@@ -425,6 +451,9 @@ public class PlayerController : MonoBehaviour
 
     public void BulletTime(bool bulletTimeStatus, Vector2 dir)
     {
+        if (isDead)
+            return;
+        
         if (bulletTimeStatus)
         {
             if (!inBulletTime)
@@ -454,6 +483,9 @@ public class PlayerController : MonoBehaviour
 
     private void EnterBulletTime()
     {
+        if (isDead)
+            return;
+        
         var endTime = timeCurve.keys[timeCurve.length - 1].time;
         bulletTime = (bulletTime + Time.unscaledDeltaTime);
 
@@ -515,6 +547,9 @@ public class PlayerController : MonoBehaviour
 
     private void HandleShoot()
     {
+        if (isDead)
+            return;
+        
         if (Input.GetMouseButtonUp(0) && !Input.GetMouseButton(1))
         {
             //calculate inverse of vector between mouse and player
@@ -532,6 +567,9 @@ public class PlayerController : MonoBehaviour
 
     public void ShootController(Vector2 dir)
     {
+        if (isDead)
+            return;
+        
         if (!cancelBulletTime)
             PlacePadInDirection(dir);
 
@@ -542,6 +580,9 @@ public class PlayerController : MonoBehaviour
 
     private void PlacePadInDirection(Vector2 direction)
     {
+        if (isDead)
+            return;
+        
         shootTimer.StartTimer(shotCooldown);
 
         //normalize direction for ease-of-use.
@@ -622,6 +663,7 @@ public class PlayerController : MonoBehaviour
     {
         if(!lastCheckpoint || lastCheckpoint.GetInstanceID() != gameObject.GetInstanceID())
         {
+            ResetHP();
             lastCheckpoint = gameObject;
             checkpointPos = gameObject.transform.position;
             tilemaps.Clear();
@@ -639,8 +681,39 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void TakeDamage(float damage) {
+        GetHP(-damage);
+    }
+
+    public void GetHP(float hp) {
+        health += hp;
+        if (health <= 0) {
+            health = 0;
+            Die();
+        }
+    }
+
+    public void ResetHP() {
+        health = maxHP;
+    }
+
     public void Die()
     {
+        if (!Application.isPlaying || isDead)
+            return;
+
+        //reset velocity
+        velocity = Vector2.zero;
+        
+        isDead = true;
+        CancelBulletTime();
+        _anim.SetTrigger("Die");
+    }
+
+    public void Respawn()
+    {
+        ResetHP();
+        isDead = false;
         //Refresh tilemap       
         if (tilemaps != null)
         {
@@ -671,14 +744,8 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        //reset velocity
-        velocity = Vector2.zero;
-
         //'respawn' at checkpoint
         _mover.MoveTo(checkpointPos);
-
-        
-
     }
 
     private Vector3Int[] EnumeratorToArray(BoundsInt.PositionEnumerator enumerator) {
