@@ -115,6 +115,8 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]
     public bool canMove;
 
+    [HideInInspector] public int totalPillsPickedUp = 0;
+    
     //private variables
     [Header("-- State")]
     [HideInInspector] public Vector2 velocity;
@@ -473,7 +475,7 @@ public class PlayerController : MonoBehaviour
 
     private void EnterBulletTime()
     {
-        if (isDead)
+        if (isDead || numPadsAllowed <= 0)
             return;
         
         var endTime = timeCurve.keys[timeCurve.length - 1].time;
@@ -570,7 +572,7 @@ public class PlayerController : MonoBehaviour
 
     private void PlacePadInDirection(Vector2 direction)
     {
-        if (isDead)
+        if (isDead || numPadsAllowed <= 0)
             return;
         
         shootTimer.StartTimer(shotCooldown);
@@ -601,15 +603,16 @@ public class PlayerController : MonoBehaviour
             }
 
             padList.Add(platform);
-            if (padList.Count > numPadsAllowed)
+            /*if (padList.Count > numPadsAllowed)
             {
                 Destroy(padList[0]);
                 padList.RemoveAt(0);
-            }
+            }*/
 
+            numPadsAllowed--;
             // Play sound for placing bounce pads
             RuntimeManager.PlayOneShot(placePad, transform.position);
-
+        
         }
     }
     private void TickTimers()
@@ -657,7 +660,7 @@ public class PlayerController : MonoBehaviour
                 tilemaps.Add(new TilemapPair(cTilemaps[i].gameObject.GetInstanceID(), cTilemaps[i].GetTilesBlock(cTilemaps[i].cellBounds)));
             }
             powerUps.Clear();
-            var cPowerUps = Resources.FindObjectsOfTypeAll<PowerUpHandler>();
+            var cPowerUps = Resources.FindObjectsOfTypeAll<PillHandler>();
             for (int i = 0; i < cPowerUps.Length; i++)
             {
                 powerUps.Add(new PowerUpPair(cPowerUps[i].gameObject.GetInstanceID(), cPowerUps[i].gameObject.activeSelf));
@@ -694,7 +697,7 @@ public class PlayerController : MonoBehaviour
         _anim.SetTrigger("Die");
     }
 
-    public void Respawn()
+    public void Respawn() // Currently only called from animation event
     {
         ResetHP();
         isDead = false;
@@ -714,7 +717,7 @@ public class PlayerController : MonoBehaviour
                     }
                 }
             }
-            var cPowerUps = Resources.FindObjectsOfTypeAll<PowerUpHandler>();
+            var cPowerUps = Resources.FindObjectsOfTypeAll<PillHandler>();
             for (int i = 0; i < powerUps.Count; i++)
             {
                 for (int j = 0; j < cPowerUps.Length; j++)
@@ -740,7 +743,12 @@ public class PlayerController : MonoBehaviour
         }
 
         return positions.ToArray();
-    } 
+    }
+
+    public void AddPlatform()
+    {
+        numPadsAllowed++;
+    }
     #endregion
 
     #region Utilities
