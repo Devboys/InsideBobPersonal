@@ -769,7 +769,7 @@ public class PlayerController : MonoBehaviour
             }
             foreach (RemoverInfo info in removers)
             {
-                var obj = Instantiate(GetComponent<LevelController>().remover);
+                var obj = Instantiate(Camera.current.GetComponent<LevelController>().remover);
                 obj.GetComponent<RemoverController>().info = info;
             }
 
