@@ -52,6 +52,7 @@ public class PlayerController : MonoBehaviour
     [Header("-- Properties")]
     public float maxHP = 100f;
     [ReadOnly]public float health;
+    [ReadOnly] public bool isDead;
     public float spikeDamageInitial = 10f;
     [Tooltip("Damage pr Second")]
     public float spikeDamageStay = 100f;
@@ -252,14 +253,6 @@ public class PlayerController : MonoBehaviour
         {
             HandleHorizontalMovement();
             HandleJump();
-            /*
-            if (!_controllerInput || !_controllerInput.enabled)
-            {
-                UpdateBulletTime();
-                HandleShoot();
-            }
-            */
-
             UpdateBulletTime();
             HandleShoot();
         }
@@ -294,6 +287,9 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateAnimation()
     {
+        if (isDead)
+            return;
+        
         _anim.SetBool("IsInCannonball", IsCannonBall());
         _anim.SetBool("Grounded", _mover.IsGrounded);
         Vector2 movement = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
@@ -348,6 +344,9 @@ public class PlayerController : MonoBehaviour
     }
     private void HandleHorizontalMovement()
     {
+        if (isDead)
+            return;
+        
         horizontalMove = Input.GetAxisRaw("Horizontal");
         float targetVelocity = horizontalMove * maxSpeed;
 
@@ -390,6 +389,9 @@ public class PlayerController : MonoBehaviour
 
     private void HandleJump()
     {
+        if (isDead)
+            return;
+        
         if (Input.GetButtonDown("Jump"))
         {
             jumpGraceTimer.StartTimer(graceTime);
@@ -424,6 +426,9 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateBulletTime()
     {
+        if (isDead)
+            return;
+        
         if (Input.GetMouseButton(0) && !Input.GetMouseButton(1) && !cancelBulletTime)
         {
             if (!inBulletTime)
@@ -454,6 +459,9 @@ public class PlayerController : MonoBehaviour
 
     public void BulletTime(bool bulletTimeStatus, Vector2 dir)
     {
+        if (isDead)
+            return;
+        
         if (bulletTimeStatus)
         {
             if (!inBulletTime)
@@ -483,6 +491,9 @@ public class PlayerController : MonoBehaviour
 
     private void EnterBulletTime()
     {
+        if (isDead)
+            return;
+        
         var endTime = timeCurve.keys[timeCurve.length - 1].time;
         bulletTime = (bulletTime + Time.unscaledDeltaTime);
 
@@ -544,6 +555,9 @@ public class PlayerController : MonoBehaviour
 
     private void HandleShoot()
     {
+        if (isDead)
+            return;
+        
         if (Input.GetMouseButtonUp(0) && !Input.GetMouseButton(1))
         {
             //calculate inverse of vector between mouse and player
@@ -561,6 +575,9 @@ public class PlayerController : MonoBehaviour
 
     public void ShootController(Vector2 dir)
     {
+        if (isDead)
+            return;
+        
         if (!cancelBulletTime)
             PlacePadInDirection(dir);
 
@@ -571,6 +588,9 @@ public class PlayerController : MonoBehaviour
 
     private void PlacePadInDirection(Vector2 direction)
     {
+        if (isDead)
+            return;
+        
         shootTimer.StartTimer(shotCooldown);
 
         //normalize direction for ease-of-use.
@@ -687,9 +707,21 @@ public class PlayerController : MonoBehaviour
 
     public void Die()
     {
-        if (!Application.isPlaying)
+        if (!Application.isPlaying || isDead)
             return;
+
+        //reset velocity
+        velocity = Vector2.zero;
+        
+        isDead = true;
+        CancelBulletTime();
+        _anim.SetTrigger("Die");
+    }
+
+    public void Respawn()
+    {
         ResetHP();
+        isDead = false;
         //Refresh tilemap       
         if (tilemaps != null)
         {
@@ -730,14 +762,8 @@ public class PlayerController : MonoBehaviour
 
         }
 
-        //reset velocity
-        velocity = Vector2.zero;
-
         //'respawn' at checkpoint
         _mover.MoveTo(checkpointPos);
-
-        
-
     }
 
     private Vector3Int[] EnumeratorToArray(BoundsInt.PositionEnumerator enumerator) {
