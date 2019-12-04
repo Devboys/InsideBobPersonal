@@ -235,10 +235,10 @@ public class PlayerController : MonoBehaviour
         }
 
         //set init checkpoint
-        checkpointPos = transform.position;
         tilemaps = new List<TilemapPair>();
         powerUps = new List<PowerUpPair>();
         removers = new List<RemoverInfo>();
+        SetCheckpoint(gameObject); // checkpointPos = transform.position;
 
         // Can move variable
         canMove = true;
