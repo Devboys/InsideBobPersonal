@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class PowerUpHandler : MonoBehaviour
+public class PillHandler : MonoBehaviour
 {
-    public Tilemap tilemap;
-
     public float floatAmplitude;
     public float floatFrequency;
 

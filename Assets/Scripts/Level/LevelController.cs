@@ -1,12 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Tilemaps;
 
 public class LevelController : MonoBehaviour
 {
     public AnimationCurve screenTransition;
     public Vector2 levelSize;
+    public TileBase diseaseTile;
+    public TileBase bacteriaTile;
 
     private PlayerController player;
     private Camera mainCam;
@@ -14,11 +18,25 @@ public class LevelController : MonoBehaviour
     [HideInInspector]
     public Vector2Int levelIndex = Vector2Int.zero;
 
+    private Tilemap currentLevel;
+    
+    [SerializeField]
+    private List<Tilemap> allLevels = new List<Tilemap>();
+
+    private int pillsForCurrentLevel;
+
     private void Awake()
     {
         player = FindObjectOfType<PlayerController>();
         mainCam = Camera.main;
+        allLevels = FindObjectsOfType<Tilemap>().ToList();
+        foreach (Tilemap tilemap in allLevels)
+        {
+            tilemap.CompressBounds();
+        }
         levelIndex = GetCurrentPlayerLevelIndex();
+        currentLevel = FindCurrentLevel();
+        pillsForCurrentLevel = PillCountInCurrentLevel();
         StartCoroutine(TransitionCamera());
     }
 
@@ -42,6 +60,8 @@ public class LevelController : MonoBehaviour
     {
         StopAllCoroutines();
         levelIndex += dir;
+        currentLevel = FindCurrentLevel();
+        pillsForCurrentLevel = PillCountInCurrentLevel();
         StartCoroutine(TransitionCamera());
     }
 
@@ -65,5 +85,60 @@ public class LevelController : MonoBehaviour
         int x = (int)((player.transform.position.x - levelSize.x / 2) / levelSize.x);
         int y = (int)((player.transform.position.y - levelSize.y / 2) / levelSize.y);
         return new Vector2Int(x, y);
+    }
+
+    private Tilemap FindCurrentLevel()
+    {
+        Vector2 topRight = levelSize / 2 + levelIndex * levelSize;
+        Vector2 bottomLeft = topRight - levelSize;
+        foreach (Tilemap level in allLevels)
+        {
+            if (level.transform.position.x < topRight.x &&
+                level.transform.position.x > bottomLeft.x &&
+                level.transform.position.y < topRight.y &&
+                level.transform.position.y > bottomLeft.y)
+            {
+                return level;
+            }
+        }
+
+        return null;
+    }
+
+    private int PillCountInCurrentLevel()
+    {
+        return currentLevel == null ? 0 : currentLevel.transform.Find("Pills").childCount;
+    }
+
+    public void PillTaken()
+    {
+        pillsForCurrentLevel--;
+        CheckOpen();
+    } 
+
+    public void CheckOpen()
+    {
+        if (pillsForCurrentLevel > 0)
+            return;
+        if (currentLevel.ContainsTile(diseaseTile))
+            return;
+
+        List<Vector3Int> positions = new List<Vector3Int>();
+        BoundsInt bounds = currentLevel.cellBounds;
+        TileBase[] allTiles = currentLevel.GetTilesBlock(bounds);
+
+        for (int x = 0; x < bounds.size.x; x++) 
+        {
+            for (int y = 0; y < bounds.size.y; y++)
+            {
+                TileBase tile = allTiles[x + y * bounds.size.x];
+                if (tile == bacteriaTile)
+                {
+                    positions.Add(new Vector3Int(x, y, 0) + bounds.position);
+                }
+            }
+        }
+
+        currentLevel.SetTiles(positions.ToArray(), new TileBase[positions.Count]);
     }
 }
