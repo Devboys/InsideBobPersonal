@@ -29,6 +29,22 @@ struct TilemapPair
     }
 }
 
+public struct RemoverInfo
+{
+    public Tilemap tilemap;
+    public Vector3 startPos;
+    public Vector3Int pos;
+    public Vector3 velocity;
+    public RemoverInfo(Tilemap tilemap, Vector3 startPos, Vector3Int pos, Vector3 velocity)
+    {
+        this.tilemap = tilemap;
+        this.startPos = startPos;
+        this.pos = pos;
+        this.velocity = velocity;
+    }
+
+}
+
 [RequireComponent(typeof(RaycastMover))]
 public class PlayerController : MonoBehaviour
 {
@@ -138,6 +154,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 checkpointPos;
     private List<TilemapPair> tilemaps;
     private List<PowerUpPair> powerUps;
+    private List<RemoverInfo> removers;
 
     //DEBUG
     private Vector2 lastLanding;
@@ -218,6 +235,7 @@ public class PlayerController : MonoBehaviour
         checkpointPos = transform.position;
         tilemaps = new List<TilemapPair>();
         powerUps = new List<PowerUpPair>();
+        removers = new List<RemoverInfo>();
 
         // Can move variable
         canMove = true;
@@ -622,7 +640,6 @@ public class PlayerController : MonoBehaviour
     {
         return !cannonballTimer.IsFinished;
     }
-
     public void SetCheckpoint(GameObject gameObject)
     {
         if(!lastCheckpoint || lastCheckpoint.GetInstanceID() != gameObject.GetInstanceID())
@@ -641,6 +658,13 @@ public class PlayerController : MonoBehaviour
             for (int i = 0; i < cPowerUps.Length; i++)
             {
                 powerUps.Add(new PowerUpPair(cPowerUps[i].gameObject.GetInstanceID(), cPowerUps[i].gameObject.activeSelf));
+            }
+            removers.Clear();
+            var cRemovers = FindObjectsOfType<RemoverController>();
+            for (int i = 0; i < cRemovers.Length; i++)
+            {
+                var r = cRemovers[i];
+                removers.Add(new RemoverInfo(r.tilemap, r.gameObject.transform.position, r.pos, r.gameObject.GetComponent<Rigidbody2D>().velocity));
             }
         }
     }
@@ -694,6 +718,16 @@ public class PlayerController : MonoBehaviour
                     }
                 }
             }
+            var cRemovers = FindObjectsOfType<RemoverController>();
+            foreach (var remover in cRemovers) {
+                Destroy(remover.gameObject);
+            }
+            foreach (RemoverInfo info in removers)
+            {
+                var obj = Instantiate(GetComponent<TileCollider>().remover);
+                obj.GetComponent<RemoverController>().info = info;
+            }
+
         }
 
         //reset velocity

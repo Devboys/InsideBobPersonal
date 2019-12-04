@@ -11,8 +11,11 @@ public class TileCollider : MonoBehaviour
 
     public LevelController levelController;
 
-    private float cooldown = 0.01f;
-    private float lastHit = 0;
+    public GameObject remover;
+    public float removerMaxSpeed;
+    [Tooltip("The variance in speed by percentage. Range: 0 -> 1")]
+    [Range(0, 1)]
+    public float speedVariance = 0.5f;
 
     private PlayerController playerController;
 
@@ -53,24 +56,37 @@ public class TileCollider : MonoBehaviour
     private void RemoveSpikes(Tilemap map)
     {
         float hit = Time.time;
-        if (hit - lastHit > cooldown)
-        {
-            lastHit = hit;
-            Vector2Int levelIndex = levelController.levelIndex;
-            Vector2 levelSize = levelController.levelSize;
-            float xInit = -levelSize.x / 2;
-            float yInit = -levelSize.y / 2;
 
-            List<Vector3Int> positions = new List<Vector3Int>();
-            for (float i = xInit + levelIndex.x * levelSize.x; i < xInit + levelIndex.x * levelSize.x + levelSize.x; i++)
+        Vector2Int levelIndex = levelController.levelIndex;
+        Vector2 levelSize = levelController.levelSize;
+        float xInit = -levelSize.x / 2;
+        float yInit = -levelSize.y / 2;
+
+        List<Vector3Int> positions = new List<Vector3Int>();
+        for (float i = xInit + levelIndex.x * levelSize.x; i < xInit + levelIndex.x * levelSize.x + levelSize.x; i++)
+        {
+            for (float j = yInit + levelIndex.y * levelSize.y; j < yInit + levelIndex.y * levelSize.y + levelSize.y; j++)
             {
-                for (float j = yInit + levelIndex.y * levelSize.y; j < yInit + levelIndex.y * levelSize.y + levelSize.y; j++)
-                {
-                    var pos = map.WorldToCell(new Vector3(i, j, transform.position.z));
-                    if (map.GetTile(pos) != null) positions.Add(pos);//map.SetTile(pos, null);
-                }
+                var pos = map.WorldToCell(new Vector3(i, j, transform.position.z));
+                if (map.GetTile(pos) != null) positions.Add(pos);//map.SetTile(pos, null);
             }
-            map.SetTiles(positions.ToArray(), new TileBase[positions.Count]);
+        }
+
+        SpawnRemovers(map, positions);
+
+        //map.SetTiles(positions.ToArray(), new TileBase[positions.Count]);
+    }
+
+    private void SpawnRemovers(Tilemap tilemap, List<Vector3Int> positions) {
+        foreach (Vector3Int pos in positions) {
+            var obj = Instantiate(remover);
+            obj.transform.position = transform.position;
+            var rc = obj.GetComponent<RemoverController>();
+            rc.pos = pos;
+            rc.tilemap = tilemap;
+            rc.speed = removerMaxSpeed * Random.Range(1.0f - speedVariance, 1.0f);
         }
     }
+
+
 }
