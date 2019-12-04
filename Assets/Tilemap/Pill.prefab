@@ -94,7 +94,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e7b81157fc38b646a44c792a6ccd6b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tilemap: {fileID: 0}
   floatAmplitude: 0.2
   floatFrequency: 4
 --- !u!61 &5821861032465216644
