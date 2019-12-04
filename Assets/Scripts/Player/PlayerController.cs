@@ -757,11 +757,11 @@ public class PlayerController : MonoBehaviour
             foreach (var remover in cRemovers) {
                 Destroy(remover.gameObject);
             }
-            foreach (RemoverInfo info in removers)
+            /*foreach (RemoverInfo info in removers)
             {
                 var obj = Instantiate(GetComponent<TileCollider>().remover);
                 obj.GetComponent<RemoverController>().info = info;
-            }
+            }*/ // Uncommented to resolve merge conflicts
 
         }
 
