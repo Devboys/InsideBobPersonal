@@ -1,47 +1,64 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class TileCollider : MonoBehaviour
 {
-    public Tilemap tilemap;
 
-    public Tilemap[] spikeTilemaps;
+    public TileBase diseaseTile;
+    public TileBase bacteriaTile;
+    public TileBase walkingTile;
 
-    public LevelController levelController;
+    private PlayerController playerController;
+    private LevelController levelController;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void Awake()
     {
-        var tilemap = collision.gameObject.GetComponent<Tilemap>();
-        if (tilemap) {
-            foreach (Tilemap map in spikeTilemaps) {
-                if (map == tilemap) GetComponent<PlayerController>().Die();
-            }
-        }
-
-        var handler = collision.gameObject.GetComponent<PowerUpHandler>();
-        if (handler) {
-            RemoveSpikes(handler.tilemap);
-            //Destroy(collision.gameObject);
-            collision.gameObject.SetActive(false);
-        }
+        playerController = GetComponent<PlayerController>();
+        levelController = FindObjectOfType<LevelController>();
     }
 
-    private void RemoveSpikes(Tilemap map)
+    private void OnCollisionStay2D(Collision2D collision)
     {
-        Vector2Int levelIndex = levelController.levelIndex;
-        Vector2 levelSize = levelController.levelSize;
-        float xInit = -levelSize.x / 2;
-        float yInit = -levelSize.y / 2;
-
-        for (float i = xInit + levelIndex.x * levelSize.x; i < xInit + levelIndex.x * levelSize.x + levelSize.x; i++)
+        Tilemap tilemap = collision.gameObject.GetComponent<Tilemap>();
+        if (tilemap)
         {
-            for (float j = yInit + levelIndex.y * levelSize.y; j < yInit + levelIndex.y * levelSize.y + levelSize.y; j++)
+            foreach (ContactPoint2D contact in collision.contacts)
             {
-                var pos = map.WorldToCell(new Vector3(i, j, transform.position.z));
-                map.SetTile(pos, null);
+                Vector3Int tilePosition = tilemap.WorldToCell(contact.point - contact.normal * 0.01f);
+                TileBase tile = tilemap.GetTile(tilePosition);
+                if (tile == diseaseTile)
+                {
+                    tilemap.SetTile(tilePosition, walkingTile);
+                    levelController.CheckOpen();
+                }
+                else if (tile == bacteriaTile)
+                {
+                    playerController.Die();
+                }
             }
+        }
+    }
+    
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        PillHandler pill = collision.gameObject.GetComponent<PillHandler>();
+        if (pill) {
+            pill.gameObject.SetActive(false);
+            playerController.totalPillsPickedUp++;
+            levelController.PillTaken();
+            return;
+        }
+
+        PowerupHandler powerup = collision.gameObject.GetComponent<PowerupHandler>();
+        if (powerup)
+        {
+            powerup.gameObject.SetActive(false);
+            playerController.AddPlatform();
+            return;
         }
     }
 }

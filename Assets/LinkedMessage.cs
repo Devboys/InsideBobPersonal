@@ -6,45 +6,73 @@ public class LinkedMessage : MonoBehaviour
 {
     [SerializeField]
     public LinkedMessage nextMessage;
+    [SerializeField]
+    public KeyCode[] nextMessageKeys;
+    [SerializeField]
+    public string[] nextMessageAxis;
+
+    public bool blockOtherInput;
 
     [HideInInspector]
     public List<LinkedMessage> prevMessages;
+
+    private PlayerController playerController;
 
     // Start is called before the first frame update
     void Awake()
     {
         prevMessages = new List<LinkedMessage>();
+        playerController = FindObjectOfType<PlayerController>();
     }
 
     private void Start()
     {
         if (nextMessage) nextMessage.prevMessages.Add(this);
         HideNextMessage();
+        LockInput();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyUp(KeyCode.E)) {
-            ShowNextMessage();
+        foreach(KeyCode key in nextMessageKeys)
+        {
+            if (Input.GetKeyUp(key)) {
+                ShowNextMessage();
+            }
+        }
+        foreach (string axis in nextMessageAxis) {
+            if (Input.GetAxisRaw(axis) != 0)
+            {
+                ShowNextMessage();
+            }
         }
     }
 
     public void ShowMessage() {
-        gameObject.SetActive(true);
+        LockInput();
         HidePrevMessage();
         HideNextMessage();
+        gameObject.SetActive(true);
     }
 
     void ShowNextMessage() {
-        nextMessage.gameObject.SetActive(true);
-        gameObject.SetActive(false);
+        if (nextMessage) nextMessage.ShowMessage();
+        else HideMessage();
+    }
+
+    public void HideMessage() {
+        if (gameObject.activeSelf)
+        {
+            UnlockInput();
+            gameObject.SetActive(false);
+        }
     }
 
     void HideNextMessage() {
         if (nextMessage)
         {
-            nextMessage.gameObject.SetActive(false);
+            nextMessage.HideMessage();
             nextMessage.HideNextMessage();
         }
     }
@@ -54,10 +82,21 @@ public class LinkedMessage : MonoBehaviour
         {
             foreach(LinkedMessage msg in prevMessages)
             {
-                msg.gameObject.SetActive(false);
+                msg.HideMessage();
                 msg.HidePrevMessage();
             }
         }
+    }
+
+    void LockInput() {
+        if (blockOtherInput)
+        {
+            playerController.canMove = false;
+        }
+    }
+
+    void UnlockInput() {
+        if (!playerController.canMove) playerController.canMove = true;
     }
 
 }
