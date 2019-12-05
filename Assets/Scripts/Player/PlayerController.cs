@@ -76,6 +76,9 @@ public class PlayerController : MonoBehaviour
     public float cannonballTime;
     public float bounceDuration;
 
+    public float bounceHeight;
+    public float timeToBounceApex;
+
     [Header("-- Shooting")]
     public GameObject padPrefab;
     public LayerMask hitLayers;
@@ -145,6 +148,10 @@ public class PlayerController : MonoBehaviour
 
     //DEBUG
     private Vector2 lastLanding;
+    private float bounceInitX;
+    private float bounceInitY;
+    private float bounceFinalX;
+    private float bounceFinalY;
 
     #region Cached components
     private RaycastMover _mover;
@@ -175,6 +182,11 @@ public class PlayerController : MonoBehaviour
     private float maxGravity
     {
         get { return (fallGravity * timeToJumpLand) * maxGravityMultiplier; }
+    }
+
+    private float bounceGravityCalculated
+    {
+        get { return (-2 * bounceHeight) / Mathf.Pow(timeToBounceApex, 2); }
     }
 
     private void OnDrawGizmos()
@@ -264,8 +276,13 @@ public class PlayerController : MonoBehaviour
             //RuntimeManager.PlayOneShot(landSound, transform.position);
             landSound.setParameterByName("SurfaceIndex", surfaceIndex);
             landSound.start();
+
+            Debug.Log("DistanceX: " + Mathf.Abs((bounceInitX - transform.position.x)) + "HeightY: " + Mathf.Abs(bounceInitY - bounceFinalY));
         }
-        if(canMove) UpdateAnimation();
+
+        if (transform.position.y > bounceFinalY) bounceFinalY = transform.position.y;
+
+        if (canMove) UpdateAnimation();
         else _anim.SetBool("Grounded", _mover.IsGrounded);
         TickTimers();
     }
@@ -639,11 +656,18 @@ public class PlayerController : MonoBehaviour
     {
         if (!bounceCoolDownTimer.IsFinished) return;
 
+        //inBounceX = true;
+        //bouncingVertically = isVertical;
+        //jumping = false;
+        //velocity = initVelocity * bounceForce;
+        //gravity = bounceGravity;
+
         inBounceX = true;
         bouncingVertically = isVertical;
         jumping = false;
-        velocity = initVelocity * bounceForce;
-        gravity = bounceGravity;
+        velocity.y = Mathf.Abs(bounceGravityCalculated) * timeToJumpApex;
+        velocity.x = initVelocity.x * bounceForce;
+        gravity = bounceGravityCalculated;
 
         cannonballTimer.StartTimer(cannonballTime);
         bounceCoolDownTimer.StartTimer(bounceCoolDown);
@@ -652,6 +676,9 @@ public class PlayerController : MonoBehaviour
             bounceDurationTimer.StartTimer(bounceDuration);
 
         jumpCoyoteTimer.EndTimer();
+
+        bounceInitX = transform.position.x;
+        bounceInitY = transform.position.y;
     }
 
     public bool IsCannonBall()
