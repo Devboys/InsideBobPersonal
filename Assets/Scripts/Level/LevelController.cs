@@ -67,6 +67,7 @@ public class LevelController : MonoBehaviour
         levelIndex += dir;
         currentLevel = FindCurrentLevel();
         pillsForCurrentLevel = PillCountInCurrentLevel();
+        player.numPadsAllowed = 0;
         StartCoroutine(TransitionCamera());
     }
 

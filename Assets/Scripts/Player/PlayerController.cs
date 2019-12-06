@@ -132,6 +132,8 @@ public class PlayerController : MonoBehaviour
     public bool canMove;
 
     [HideInInspector] public int totalPillsPickedUp = 0;
+
+    public KeyCode[] restartButtons;
     
     //private variables
     [Header("-- State")]
@@ -262,8 +264,11 @@ public class PlayerController : MonoBehaviour
             if (_mover.IsGrounded) velocity.x = 0;
         }
 
-        if (Input.GetKeyUp(KeyCode.R))
-            Respawn();
+        foreach (KeyCode button in restartButtons)
+        {
+            if (Input.GetKeyUp(button))
+                Respawn();
+        }
 
         //PlayFootSound();
 
