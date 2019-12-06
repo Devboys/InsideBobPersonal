@@ -30,12 +30,16 @@ public class BouncePadController : MonoBehaviour
             {
                 dir = direction;
                 dir.x = Mathf.Sign(transform.up.x) * dir.x;
-                player.StartBounce(dir);
             }
             else
             {
                 Vector2 reflectedVelocity = Vector2.Reflect(player.velocity, transform.up).normalized;
                 dir = reflectedVelocity;
+
+                if(dir.magnitude == 0)
+                {
+                    dir = Vector2.up;
+                }
 
                 if (Vector2.Angle(transform.up, reflectedVelocity) > minimumBounceAngle)
                 {
