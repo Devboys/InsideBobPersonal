@@ -241,23 +241,19 @@ public class RaycastMover : MonoBehaviour
 
         initialRayOrigin.x += deltaMovement.x;
 
+        float rayOffset = _boxCollider.size.y * Mathf.Abs(transform.localScale.y) - (2f * skinWidth);
+
+        //we 'back-up' rayOrigin a bit to handle when the player is inside the pad collider at checktime
+        //this is because raycasts do not hit colliders they originate within.
+        initialRayOrigin.y += isGoingUp ? -rayOffset : rayOffset;
+        rayDistance += rayOffset;
+
         for (int i = 0; i < numHorizontalRays; i++)
         {
             Vector2 rayOrigin = initialRayOrigin;
             rayOrigin.x += rayWidth * i;
 
-            //we 'back-up' rayOrigin a bit to handle when the player is inside the pad collider at checktime
-            //this is because raycasts do not hit colliders they originate within.
-            float rayOffset = _boxCollider.size.y * Mathf.Abs(transform.localScale.y) - (2f * skinWidth);
-            Ray2D ray = new Ray2D(rayOrigin, rayDirection);
-            rayOrigin = ray.GetPoint( -rayOffset);
-            rayDistance += rayOffset; 
-
-            LayerMask effectiveMask = padMask; //| groundMask; //combine groundMask and padMask into one mask.
-            RaycastHit2D rayHit = Physics2D.Raycast(rayOrigin, rayDirection, 10, effectiveMask);
-
-            //DEBUG
-            Vector2 currentPosition = transform.position;
+            RaycastHit2D rayHit = Physics2D.Raycast(rayOrigin, rayDirection, rayDistance, padMask);
             
 
             if (rayHit)
