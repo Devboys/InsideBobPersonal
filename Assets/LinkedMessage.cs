@@ -50,15 +50,15 @@ public class LinkedMessage : MonoBehaviour
     }
 
     public void ShowMessage() {
+        gameObject.SetActive(true);
         LockInput();
         HidePrevMessage();
         HideNextMessage();
-        gameObject.SetActive(true);
     }
 
     void ShowNextMessage() {
         if (nextMessage) nextMessage.ShowMessage();
-        else HideMessage();
+        HideMessage();
     }
 
     public void HideMessage() {

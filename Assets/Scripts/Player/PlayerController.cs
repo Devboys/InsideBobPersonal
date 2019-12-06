@@ -258,6 +258,8 @@ public class PlayerController : MonoBehaviour
             UpdateBulletTime();
             HandleShoot();
         }
+        if (Input.GetKeyUp(KeyCode.R))
+            Respawn();
 
         //PlayFootSound();
 
@@ -725,6 +727,11 @@ public class PlayerController : MonoBehaviour
     {
         ResetHP();
         isDead = false;
+        //Remove pads
+        foreach (GameObject pad in padList)
+        {
+            Destroy(pad);
+        }
         //Refresh tilemap       
         if (tilemaps != null)
         {
@@ -779,9 +786,9 @@ public class PlayerController : MonoBehaviour
         return positions.ToArray();
     }
 
-    public void AddPlatform()
+    public void AddPlatform(int pads)
     {
-        numPadsAllowed++;
+        numPadsAllowed += pads;
     }
     #endregion
 

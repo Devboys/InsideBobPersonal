@@ -57,7 +57,7 @@ public class TileCollider : MonoBehaviour
         if (powerup)
         {
             powerup.gameObject.SetActive(false);
-            playerController.AddPlatform();
+            playerController.AddPlatform(powerup.padsGiven);
             return;
         }
     }

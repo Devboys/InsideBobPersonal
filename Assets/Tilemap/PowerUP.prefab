@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5030357734890109874}
   - component: {fileID: -2017150884985769468}
   m_Layer: 0
-  m_Name: PowerUP
+  m_Name: Powerup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -120,5 +120,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b204dc7c8dd95a47ad5ac9b0e4563dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  padsGiven: 3
   floatAmplitude: 0.2
   floatFrequency: 4

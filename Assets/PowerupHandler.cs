@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class PowerupHandler : MonoBehaviour
 {
+    public int padsGiven = 3;
+    
     public float floatAmplitude;
     public float floatFrequency;
 
