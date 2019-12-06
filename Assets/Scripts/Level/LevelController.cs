@@ -11,6 +11,11 @@ public class LevelController : MonoBehaviour
     public Vector2 levelSize;
     public TileBase diseaseTile;
     public TileBase bacteriaTile;
+    // Remover Stuff
+    public GameObject remover;
+    public float removerMaxSpeed;
+    [Range(0, 1)]
+    public float speedVariance = 0.7f;
 
     private PlayerController player;
     private Camera mainCam;
@@ -139,6 +144,21 @@ public class LevelController : MonoBehaviour
             }
         }
 
-        currentLevel.SetTiles(positions.ToArray(), new TileBase[positions.Count]);
+        //currentLevel.SetTiles(positions.ToArray(), new TileBase[positions.Count]);
+        SpawnRemovers(currentLevel, positions);
     }
+
+    private void SpawnRemovers(Tilemap tilemap, List<Vector3Int> positions)
+    {
+        foreach (Vector3Int pos in positions)
+        {
+            var obj = Instantiate(remover);
+            obj.transform.position = player.transform.position;
+            var rc = obj.GetComponent<RemoverController>();
+            rc.pos = pos;
+            rc.tilemap = tilemap;
+            rc.speed = removerMaxSpeed * Random.Range(1.0f - speedVariance, 1.0f);
+        }
+    }
+
 }

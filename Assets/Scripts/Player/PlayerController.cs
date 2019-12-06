@@ -235,10 +235,10 @@ public class PlayerController : MonoBehaviour
         }
 
         //set init checkpoint
-        checkpointPos = transform.position;
         tilemaps = new List<TilemapPair>();
         powerUps = new List<PowerUpPair>();
         removers = new List<RemoverInfo>();
+        SetCheckpoint(gameObject); // checkpointPos = transform.position;
 
         // Can move variable
         canMove = true;
@@ -258,6 +258,10 @@ public class PlayerController : MonoBehaviour
             UpdateBulletTime();
             HandleShoot();
         }
+        else {
+            if (_mover.IsGrounded) velocity.x = 0;
+        }
+
         if (Input.GetKeyUp(KeyCode.R))
             Respawn();
 
@@ -284,8 +288,8 @@ public class PlayerController : MonoBehaviour
             landSound.setParameterByName("SurfaceIndex", surfaceIndex);
             landSound.start();
         }
-        if(canMove) UpdateAnimation();
-        else _anim.SetBool("Grounded", _mover.IsGrounded);
+        UpdateAnimation();
+
         TickTimers();
     }
 
@@ -297,16 +301,23 @@ public class PlayerController : MonoBehaviour
         _anim.SetBool("IsInCannonball", IsCannonBall());
         _anim.SetBool("Grounded", _mover.IsGrounded);
         Vector2 movement = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        if (movement.x > 0.1f)
+        if (canMove)
         {
-            _spriteRenderer.flipX = false;
-        }
-        else if (movement.x < -0.1f)
-        {
-            _spriteRenderer.flipX = true;
-        }
+            if (movement.x > 0.1f)
+            {
+                _spriteRenderer.flipX = false;
+            }
+            else if (movement.x < -0.1f)
+            {
+                _spriteRenderer.flipX = true;
+            }
 
-        _anim.SetFloat("Horizontal Speed", Mathf.Abs(movement.x));
+            _anim.SetFloat("Horizontal Speed", Mathf.Abs(movement.x));
+        }
+        else
+        {
+            _anim.SetFloat("Horizontal Speed", 0);
+        }
         _anim.SetFloat("Vertical Speed", Mathf.Abs(movement.y));
     }
 
@@ -764,11 +775,11 @@ public class PlayerController : MonoBehaviour
             foreach (var remover in cRemovers) {
                 Destroy(remover.gameObject);
             }
-            /*foreach (RemoverInfo info in removers)
+            foreach (RemoverInfo info in removers)
             {
-                var obj = Instantiate(GetComponent<TileCollider>().remover);
+                var obj = Instantiate(Camera.current.GetComponent<LevelController>().remover);
                 obj.GetComponent<RemoverController>().info = info;
-            }*/ // Uncommented to resolve merge conflicts
+            }
 
         }
 
