@@ -7,11 +7,11 @@ using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
 
 // Helper structs
-struct PowerUpPair
+struct GameObjectPair
 {
     public int id;
     public bool active;
-    public PowerUpPair(int id, bool active)
+    public GameObjectPair(int id, bool active)
     {
         this.id = id;
         this.active = active;
@@ -94,7 +94,7 @@ public class PlayerController : MonoBehaviour
     public GameObject padPrefab;
     public LayerMask hitLayers;
     public float shotCooldown;
-    public float numPadsAllowed;
+    public int numPadsAllowed;
     public float offset;
     public Gradient lineGradient;
     public Material lineMaterial;
@@ -155,11 +155,16 @@ public class PlayerController : MonoBehaviour
 
     private float bounceCoolDown = 0.001f;
 
+    // Checkpoint stuff
     private GameObject lastCheckpoint;
     private Vector2 checkpointPos;
     private List<TilemapPair> tilemaps;
-    private List<PowerUpPair> powerUps;
+    private List<GameObjectPair> pills;
+    private List<GameObjectPair> powerUps;
     private List<RemoverInfo> removers;
+    private int totalPillCounter;
+    private int totalBounceCounter;
+
 
     //DEBUG
     private Vector2 lastLanding;
@@ -238,7 +243,8 @@ public class PlayerController : MonoBehaviour
 
         //set init checkpoint
         tilemaps = new List<TilemapPair>();
-        powerUps = new List<PowerUpPair>();
+        pills = new List<GameObjectPair>();
+        powerUps = new List<GameObjectPair>();
         removers = new List<RemoverInfo>();
         SetCheckpoint(gameObject); // checkpointPos = transform.position;
 
@@ -685,21 +691,32 @@ public class PlayerController : MonoBehaviour
     {
         if(!lastCheckpoint || lastCheckpoint.GetInstanceID() != gameObject.GetInstanceID())
         {
+            // Reset HP and set checkpoint location
             ResetHP();
             lastCheckpoint = gameObject;
             checkpointPos = gameObject.transform.position;
+            //  Save Tilemap state
             tilemaps.Clear();
             var cTilemaps = FindObjectsOfType<Tilemap>();
             for(int i = 0; i < cTilemaps.Length; i++)
             {
                 tilemaps.Add(new TilemapPair(cTilemaps[i].gameObject.GetInstanceID(), cTilemaps[i].GetTilesBlock(cTilemaps[i].cellBounds)));
             }
+            // Save Pill state
+            pills.Clear();
+            var cPills = Resources.FindObjectsOfTypeAll<PillHandler>();
+            for (int i = 0; i < cPills.Length; i++)
+            {
+                pills.Add(new GameObjectPair(cPills[i].gameObject.GetInstanceID(), cPills[i].gameObject.activeSelf));
+            }
+            // Save PowerUp state
             powerUps.Clear();
-            var cPowerUps = Resources.FindObjectsOfTypeAll<PillHandler>();
+            var cPowerUps = Resources.FindObjectsOfTypeAll<PowerupHandler>();
             for (int i = 0; i < cPowerUps.Length; i++)
             {
-                powerUps.Add(new PowerUpPair(cPowerUps[i].gameObject.GetInstanceID(), cPowerUps[i].gameObject.activeSelf));
+                powerUps.Add(new GameObjectPair(cPowerUps[i].gameObject.GetInstanceID(), cPowerUps[i].gameObject.activeSelf));
             }
+            // Set Remover state
             removers.Clear();
             var cRemovers = FindObjectsOfType<RemoverController>();
             for (int i = 0; i < cRemovers.Length; i++)
@@ -707,6 +724,9 @@ public class PlayerController : MonoBehaviour
                 var r = cRemovers[i];
                 removers.Add(new RemoverInfo(r.tilemap, r.gameObject.transform.position, r.pos, r.gameObject.GetComponent<Rigidbody2D>().velocity));
             }
+            // Set pill counter state & bouncepads allowed
+            totalPillCounter = totalPillsPickedUp;
+            totalBounceCounter = numPadsAllowed;
         }
     }
 
@@ -748,6 +768,7 @@ public class PlayerController : MonoBehaviour
         {
             Destroy(pad);
         }
+        var levelC = FindObjectOfType<LevelController>();
         //Refresh tilemap       
         if (tilemaps != null)
         {
@@ -764,7 +785,19 @@ public class PlayerController : MonoBehaviour
                     }
                 }
             }
-            var cPowerUps = Resources.FindObjectsOfTypeAll<PillHandler>();
+            var cPills = Resources.FindObjectsOfTypeAll<PillHandler>();
+            for (int i = 0; i < pills.Count; i++)
+            {
+                for (int j = 0; j < cPills.Length; j++)
+                {
+                    if (pills[i].id == cPills[j].gameObject.GetInstanceID())
+                    {
+                        var powerUp = cPills[j].gameObject;
+                        powerUp.SetActive(pills[i].active);
+                    }
+                }
+            }
+            var cPowerUps = Resources.FindObjectsOfTypeAll<PowerupHandler>();
             for (int i = 0; i < powerUps.Count; i++)
             {
                 for (int j = 0; j < cPowerUps.Length; j++)
@@ -782,14 +815,16 @@ public class PlayerController : MonoBehaviour
             }
             foreach (RemoverInfo info in removers)
             {
-                var obj = Instantiate(Camera.current.GetComponent<LevelController>().remover);
+                var obj = Instantiate(levelC.remover);
                 obj.GetComponent<RemoverController>().info = info;
             }
-
+            totalPillsPickedUp = totalPillCounter;
+            numPadsAllowed = totalBounceCounter;
         }
 
         //'respawn' at checkpoint
         _mover.MoveTo(checkpointPos);
+        levelC.ForceUpdatePillCountForCurrentLevel();
     }
 
     private Vector3Int[] EnumeratorToArray(BoundsInt.PositionEnumerator enumerator) {

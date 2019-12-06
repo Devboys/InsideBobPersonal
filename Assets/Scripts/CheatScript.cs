@@ -30,9 +30,11 @@ public class CheatScript : MonoBehaviour
             controllerInput.enabled = true;
             controllerInput.useBulletTimeButton = false;
         }
+        /*
         if (Input.GetKeyDown(KeyCode.R))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
+        */
     }
 }
