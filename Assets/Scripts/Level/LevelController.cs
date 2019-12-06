@@ -112,6 +112,9 @@ public class LevelController : MonoBehaviour
 
     private int PillCountInCurrentLevel()
     {
+        if (currentLevel == null)
+            return 0;
+        
         return currentLevel == null ? 0 : currentLevel.transform.Find("Pills").childCount;
     }
 
