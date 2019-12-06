@@ -161,4 +161,9 @@ public class LevelController : MonoBehaviour
         }
     }
 
+    public void ForceUpdatePillCountForCurrentLevel()
+    {
+        pillsForCurrentLevel = PillCountInCurrentLevel();
+    }
+
 }
