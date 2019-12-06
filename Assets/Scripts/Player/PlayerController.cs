@@ -659,6 +659,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!bounceCoolDownTimer.IsFinished) return;
 
+<<<<<<< HEAD
         inBounce = true;
         bouncingVertically = isVertical;
         jumping = false;
@@ -671,6 +672,20 @@ public class PlayerController : MonoBehaviour
         //velocity.y = Mathf.Abs(bounceGravityCalculated) * timeToJumpApex;
         //velocity.x = initVelocity.x * bounceForce;
         //gravity = bounceGravityCalculated;
+=======
+        //inBounceX = true;
+        //bouncingVertically = isVertical;
+        //jumping = false;
+        //velocity = initVelocity * bounceForce;
+        //gravity = bounceGravity;
+
+        inBounceX = true;
+        bouncingVertically = isVertical;
+        jumping = false;
+        velocity.y = Mathf.Abs(bounceGravityCalculated) * timeToJumpApex;
+        velocity.x = initVelocity.x * bounceForce;
+        gravity = bounceGravityCalculated;
+>>>>>>> c0f177739b723f6039976f15a4c0c657818425fa
 
         cannonballTimer.StartTimer(cannonballTime);
         bounceCoolDownTimer.StartTimer(bounceCoolDown);
@@ -680,8 +695,13 @@ public class PlayerController : MonoBehaviour
 
         jumpCoyoteTimer.EndTimer();
 
+<<<<<<< HEAD
         bounceInitX = bounceFinalX = transform.position.x;
         bounceInitY = bounceFinalY = transform.position.y;
+=======
+        bounceInitX = transform.position.x;
+        bounceInitY = transform.position.y;
+>>>>>>> c0f177739b723f6039976f15a4c0c657818425fa
     }
 
     public bool IsCannonBall()
