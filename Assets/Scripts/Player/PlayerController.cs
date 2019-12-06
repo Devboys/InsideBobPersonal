@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
     //Editor properties.
     [Header("-- Properties")]
     public float maxHP = 100f;
-    [ReadOnly]public float health;
+    [ReadOnly] public float health;
     [ReadOnly] public bool isDead;
     public float spikeDamageInitial = 10f;
     [Tooltip("Damage pr Second")]
@@ -69,8 +69,11 @@ public class PlayerController : MonoBehaviour
     public float graceTime = 0.2f;
 
     [Header("-- Bouncing")]
-    public float bounceForce;
-    public float bounceGravity;
+    public float bounceForceVert;
+    public float bounceForceHori;
+    public float bounceGravityVert;
+    public float bounceGravityHori;
+
     public float bounceDamping;
     public float bounceVelocityCutoff;
     public float cannonballTime;
@@ -127,7 +130,7 @@ public class PlayerController : MonoBehaviour
     private bool postJumpApex;
     [HideInInspector] public float horizontalMove; //binary movement input float. 0=none, 1=right, -1=left.
 
-    private bool inBounceX;
+    private bool inBounce;
     private bool bouncingVertically;
     private bool jumping;
 
@@ -166,7 +169,7 @@ public class PlayerController : MonoBehaviour
     Timer shootTimer = new Timer();
     Timer cannonballTimer = new Timer();
     Timer bounceCoolDownTimer = new Timer();
-    Timer bounceDurationTimer = new Timer(); 
+    Timer bounceDurationTimer = new Timer();
     Timer jumpGraceTimer = new Timer();
 
     #endregion
@@ -242,7 +245,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         //Do not attempt to move downwards if already grounded
-        if (_mover.IsGrounded && !inBounceX) velocity.y = 0;
+        if (_mover.IsGrounded && !inBounce) velocity.y = 0;
 
         //Order of movement events matter. Be mindful of changes.
         HandleGravity();
@@ -269,7 +272,7 @@ public class PlayerController : MonoBehaviour
         if (_mover.HasLanded) //is true only on the single frame in which the player landed
         {
             lastLanding = transform.position;
-            inBounceX = false;
+            inBounce = false;
             jumping = false;
 
             //Play landing sound
@@ -277,7 +280,7 @@ public class PlayerController : MonoBehaviour
             landSound.setParameterByName("SurfaceIndex", surfaceIndex);
             landSound.start();
 
-            Debug.Log("DistanceX: " + Mathf.Abs((bounceInitX - transform.position.x)) + "HeightY: " + Mathf.Abs(bounceInitY - bounceFinalY));
+            Debug.Log("DistanceX: " + (bounceInitX - transform.position.x) + "HeightY: " + (bounceInitY - bounceFinalY));
         }
 
         if (transform.position.y > bounceFinalY) bounceFinalY = transform.position.y;
@@ -291,7 +294,7 @@ public class PlayerController : MonoBehaviour
     {
         if (isDead)
             return;
-        
+
         _anim.SetBool("IsInCannonball", IsCannonBall());
         _anim.SetBool("Grounded", _mover.IsGrounded);
         Vector2 movement = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
@@ -342,7 +345,7 @@ public class PlayerController : MonoBehaviour
         {
             gravity = fallGravity;
         }
-        
+
         velocity.y += gravity * Time.deltaTime;
 
         if (velocity.y < maxGravity)
@@ -354,11 +357,11 @@ public class PlayerController : MonoBehaviour
     {
         if (isDead)
             return;
-        
+
         horizontalMove = Input.GetAxisRaw("Horizontal");
         float targetVelocity = horizontalMove * maxSpeed;
 
-        if (!inBounceX)
+        if (!inBounce)
         {
             //regular ground/air movement
             if (_mover.IsGrounded)
@@ -375,7 +378,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             //if (Mathf.Abs(velocity.x) > bounceVelocityCutoff)
-            if(!bounceDurationTimer.IsFinished && bouncingVertically)
+            if (!bounceDurationTimer.IsFinished && bouncingVertically)
             {
                 //bounceDamp
                 velocity.x += (targetVelocity - velocity.x) * Time.deltaTime * bounceDamping;
@@ -390,7 +393,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                inBounceX = false; //full regular air damping
+                inBounce = false; //full regular air damping
             }
 
         }
@@ -400,7 +403,7 @@ public class PlayerController : MonoBehaviour
     {
         if (isDead)
             return;
-        
+
         if (Input.GetButtonDown("Jump"))
         {
             jumpGraceTimer.StartTimer(graceTime);
@@ -437,7 +440,7 @@ public class PlayerController : MonoBehaviour
     {
         if (isDead)
             return;
-        
+
         if (Input.GetMouseButton(0) && !Input.GetMouseButton(1) && !cancelBulletTime)
         {
             if (!inBulletTime)
@@ -451,7 +454,7 @@ public class PlayerController : MonoBehaviour
                 DrawBulletLine(dir);
             }
         }
-        else if(!_controllerInput.doBulletTime)
+        else if (!_controllerInput.doBulletTime)
         {
             if (inBulletTime)
             {
@@ -470,7 +473,7 @@ public class PlayerController : MonoBehaviour
     {
         if (isDead)
             return;
-        
+
         if (bulletTimeStatus)
         {
             if (!inBulletTime)
@@ -502,7 +505,7 @@ public class PlayerController : MonoBehaviour
     {
         if (isDead)
             return;
-        
+
         var endTime = timeCurve.keys[timeCurve.length - 1].time;
         bulletTime = (bulletTime + Time.unscaledDeltaTime);
 
@@ -566,7 +569,7 @@ public class PlayerController : MonoBehaviour
     {
         if (isDead)
             return;
-        
+
         if (Input.GetMouseButtonUp(0) && !Input.GetMouseButton(1))
         {
             //calculate inverse of vector between mouse and player
@@ -586,7 +589,7 @@ public class PlayerController : MonoBehaviour
     {
         if (isDead)
             return;
-        
+
         if (!cancelBulletTime)
             PlacePadInDirection(dir);
 
@@ -599,7 +602,7 @@ public class PlayerController : MonoBehaviour
     {
         if (isDead)
             return;
-        
+
         shootTimer.StartTimer(shotCooldown);
 
         //normalize direction for ease-of-use.
@@ -656,29 +659,29 @@ public class PlayerController : MonoBehaviour
     {
         if (!bounceCoolDownTimer.IsFinished) return;
 
+        inBounce = true;
+        bouncingVertically = isVertical;
+        jumping = false;
+        velocity = initVelocity * (isVertical ? bounceForceVert : bounceForceHori);
+        gravity = isVertical ? bounceGravityVert : bounceGravityHori;
+
         //inBounceX = true;
         //bouncingVertically = isVertical;
         //jumping = false;
-        //velocity = initVelocity * bounceForce;
-        //gravity = bounceGravity;
-
-        inBounceX = true;
-        bouncingVertically = isVertical;
-        jumping = false;
-        velocity.y = Mathf.Abs(bounceGravityCalculated) * timeToJumpApex;
-        velocity.x = initVelocity.x * bounceForce;
-        gravity = bounceGravityCalculated;
+        //velocity.y = Mathf.Abs(bounceGravityCalculated) * timeToJumpApex;
+        //velocity.x = initVelocity.x * bounceForce;
+        //gravity = bounceGravityCalculated;
 
         cannonballTimer.StartTimer(cannonballTime);
         bounceCoolDownTimer.StartTimer(bounceCoolDown);
 
-        if(isVertical) 
+        if (isVertical)
             bounceDurationTimer.StartTimer(bounceDuration);
 
         jumpCoyoteTimer.EndTimer();
 
-        bounceInitX = transform.position.x;
-        bounceInitY = transform.position.y;
+        bounceInitX = bounceFinalX = transform.position.x;
+        bounceInitY = bounceFinalY = transform.position.y;
     }
 
     public bool IsCannonBall()
@@ -688,14 +691,14 @@ public class PlayerController : MonoBehaviour
 
     public void SetCheckpoint(GameObject gameObject)
     {
-        if(!lastCheckpoint || lastCheckpoint.GetInstanceID() != gameObject.GetInstanceID())
+        if (!lastCheckpoint || lastCheckpoint.GetInstanceID() != gameObject.GetInstanceID())
         {
             ResetHP();
             lastCheckpoint = gameObject;
             checkpointPos = gameObject.transform.position;
             tilemaps.Clear();
             var cTilemaps = FindObjectsOfType<Tilemap>();
-            for(int i = 0; i < cTilemaps.Length; i++)
+            for (int i = 0; i < cTilemaps.Length; i++)
             {
                 tilemaps.Add(new TilemapPair(cTilemaps[i].gameObject.GetInstanceID(), cTilemaps[i].GetTilesBlock(cTilemaps[i].cellBounds)));
             }
@@ -708,19 +711,23 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void TakeDamage(float damage) {
+    public void TakeDamage(float damage)
+    {
         GetHP(-damage);
     }
 
-    public void GetHP(float hp) {
+    public void GetHP(float hp)
+    {
         health += hp;
-        if (health <= 0) {
+        if (health <= 0)
+        {
             health = 0;
             Die();
         }
     }
 
-    public void ResetHP() {
+    public void ResetHP()
+    {
         health = maxHP;
     }
 
@@ -731,7 +738,7 @@ public class PlayerController : MonoBehaviour
 
         //reset velocity
         velocity = Vector2.zero;
-        
+
         isDead = true;
         CancelBulletTime();
         _anim.SetTrigger("Die");
@@ -745,10 +752,11 @@ public class PlayerController : MonoBehaviour
         if (tilemaps != null)
         {
             var cTilemaps = FindObjectsOfType<Tilemap>();
-            for (int i = 0; i < tilemaps.Count; i++) {
-                for(int j = 0; j < cTilemaps.Length; j++)
+            for (int i = 0; i < tilemaps.Count; i++)
+            {
+                for (int j = 0; j < cTilemaps.Length; j++)
                 {
-                    if(tilemaps[i].id == cTilemaps[j].gameObject.GetInstanceID())
+                    if (tilemaps[i].id == cTilemaps[j].gameObject.GetInstanceID())
                     {
                         TileBase[] tiles = tilemaps[i].tiles;
                         var pos = EnumeratorToArray(cTilemaps[j].cellBounds.allPositionsWithin);
@@ -775,7 +783,8 @@ public class PlayerController : MonoBehaviour
         _mover.MoveTo(checkpointPos);
     }
 
-    private Vector3Int[] EnumeratorToArray(BoundsInt.PositionEnumerator enumerator) {
+    private Vector3Int[] EnumeratorToArray(BoundsInt.PositionEnumerator enumerator)
+    {
         List<Vector3Int> positions = new List<Vector3Int>();
         while (enumerator.MoveNext())
         {
@@ -783,7 +792,7 @@ public class PlayerController : MonoBehaviour
         }
 
         return positions.ToArray();
-    } 
+    }
     #endregion
 
     #region Utilities
