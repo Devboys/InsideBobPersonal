@@ -94,7 +94,7 @@ public class PlayerController : MonoBehaviour
     public GameObject padPrefab;
     public LayerMask hitLayers;
     public float shotCooldown;
-    public float numPadsAllowed;
+    public int numPadsAllowed;
     public float offset;
     public Gradient lineGradient;
     public Material lineMaterial;
@@ -160,7 +160,8 @@ public class PlayerController : MonoBehaviour
     private List<GameObjectPair> pills;
     private List<GameObjectPair> powerUps;
     private List<RemoverInfo> removers;
-    private int totalPillCounter; 
+    private int totalPillCounter;
+    private int totalBounceCounter;
 
 
     //DEBUG
@@ -718,8 +719,9 @@ public class PlayerController : MonoBehaviour
                 var r = cRemovers[i];
                 removers.Add(new RemoverInfo(r.tilemap, r.gameObject.transform.position, r.pos, r.gameObject.GetComponent<Rigidbody2D>().velocity));
             }
-            // Set pill counter state
+            // Set pill counter state & bouncepads allowed
             totalPillCounter = totalPillsPickedUp;
+            totalBounceCounter = numPadsAllowed;
         }
     }
 
@@ -761,6 +763,7 @@ public class PlayerController : MonoBehaviour
         {
             Destroy(pad);
         }
+        var levelC = FindObjectOfType<LevelController>();
         //Refresh tilemap       
         if (tilemaps != null)
         {
@@ -807,15 +810,15 @@ public class PlayerController : MonoBehaviour
             }
             foreach (RemoverInfo info in removers)
             {
-                var obj = Instantiate(Camera.current.GetComponent<LevelController>().remover);
+                var obj = Instantiate(levelC.remover);
                 obj.GetComponent<RemoverController>().info = info;
             }
             totalPillsPickedUp = totalPillCounter;
+            numPadsAllowed = totalBounceCounter;
         }
 
         //'respawn' at checkpoint
         _mover.MoveTo(checkpointPos);
-        var levelC = FindObjectOfType<LevelController>();
         levelC.ForceUpdatePillCountForCurrentLevel();
     }
 

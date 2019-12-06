@@ -114,8 +114,14 @@ public class LevelController : MonoBehaviour
     {
         if (currentLevel == null)
             return 0;
-        
-        return currentLevel == null ? 0 : currentLevel.transform.Find("Pills").childCount;
+
+        var activeChildCount = 0;
+        foreach(Transform child in currentLevel.transform.Find("Pills"))
+        {
+            if (child.gameObject.activeSelf) activeChildCount++;
+        }
+
+        return activeChildCount;
     }
 
     public void PillTaken()
