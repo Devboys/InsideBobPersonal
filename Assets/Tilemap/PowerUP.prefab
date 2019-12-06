@@ -120,6 +120,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b204dc7c8dd95a47ad5ac9b0e4563dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  padsGiven: 3
+  padsGiven: 1
   floatAmplitude: 0.2
   floatFrequency: 4
