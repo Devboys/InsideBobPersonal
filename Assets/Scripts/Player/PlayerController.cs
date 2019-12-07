@@ -138,7 +138,7 @@ public class PlayerController : MonoBehaviour
     //private variables
     [Header("-- State")]
     [HideInInspector] public Vector2 velocity;
-    private List<GameObject> padList = new List<GameObject>();
+    [HideInInspector] public List<GameObject> padList = new List<GameObject>();
     private bool postJumpApex;
     [HideInInspector] public float horizontalMove; //binary movement input float. 0=none, 1=right, -1=left.
 

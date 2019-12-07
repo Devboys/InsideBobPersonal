@@ -67,6 +67,11 @@ public class LevelController : MonoBehaviour
         levelIndex += dir;
         currentLevel = FindCurrentLevel();
         pillsForCurrentLevel = PillCountInCurrentLevel();
+        for (int i = player.padList.Count - 1; i >= 0; i--)
+        {
+            Destroy(player.padList[i]);
+            player.padList.RemoveAt(i);
+        }
         player.numPadsAllowed = 0;
         StartCoroutine(TransitionCamera());
     }
