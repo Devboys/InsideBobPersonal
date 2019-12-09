@@ -823,6 +823,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //'respawn' at checkpoint
+        _anim.SetTrigger("Respawn");
         _mover.MoveTo(checkpointPos);
         levelC.ForceUpdatePillCountForCurrentLevel();
     }

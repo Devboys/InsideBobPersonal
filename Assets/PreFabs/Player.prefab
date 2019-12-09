@@ -82,7 +82,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2, y: 2.000326}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -126,8 +126,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2, y: 2.0007055}
-    newSize: {x: 1, y: 1}
+    oldSize: {x: 2, y: 2.000326}
+    newSize: {x: 2, y: 2.000326}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -200,7 +200,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   shotCooldown: 0
-  numPadsAllowed: 2
+  numPadsAllowed: 0
   offset: -0.25
   lineGradient:
     serializedVersion: 2
@@ -273,7 +273,10 @@ MonoBehaviour:
   placePad: event:/Sfx/PlacePad
   bulletTimePath: event:/Sfx/InBulletTime
   canMove: 0
+  totalPillsPickedUp: 0
+  restartButtons: 
   velocity: {x: -0.000008005669, y: -0.000026955631}
+  padList: []
   horizontalMove: 0
   bulletTimePercentage: 0
 --- !u!95 &232158605
@@ -307,15 +310,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fae8632aa7a286543a2bb6f3ed3f669a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tilemap: {fileID: 0}
-  spikeTilemaps:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  levelController: {fileID: 0}
-  remover: {fileID: 4901365962245422612, guid: 54adefaa9eec4ba4885099beaf62bbfc, type: 3}
-  removerMaxSpeed: 20
-  speedVariance: 0.7
+  diseaseTile: {fileID: 0}
+  bacteriaTile: {fileID: 0}
+  walkingTile: {fileID: 0}
 --- !u!114 &232158607
 MonoBehaviour:
   m_ObjectHideFlags: 0
