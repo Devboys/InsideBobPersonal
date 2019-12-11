@@ -177,6 +177,8 @@ MonoBehaviour:
   maxHP: 100
   health: 0
   isDead: 0
+  bobplosionPrefab: {fileID: 1222009392711773792, guid: 50e31c9ab329baa46b75c7b1faaf6ed9,
+    type: 3}
   spikeDamageInitial: 10
   spikeDamageStay: 100
   gravity: -124.99999

@@ -53,6 +53,9 @@ public class PlayerController : MonoBehaviour
     public float maxHP = 100f;
     [ReadOnly]public float health;
     [ReadOnly] public bool isDead;
+
+    public GameObject bobplosionPrefab;
+
     public float spikeDamageInitial = 10f;
     [Tooltip("Damage pr Second")]
     public float spikeDamageStay = 100f;
@@ -273,7 +276,7 @@ public class PlayerController : MonoBehaviour
         foreach (KeyCode button in restartButtons)
         {
             if (Input.GetKeyUp(button))
-                Respawn();
+                Implode();
         }
 
         //PlayFootSound();
@@ -759,8 +762,21 @@ public class PlayerController : MonoBehaviour
         _anim.SetTrigger("Die");
     }
 
+    public void Implode() // Called when Respawn button is clicked
+    {
+        velocity.x = velocity.y = 0;
+        _anim.SetTrigger("Implode");
+    }
+
+    public void SpawnBobplosion()
+    {
+        var obj = Instantiate(bobplosionPrefab);
+        obj.transform.position = transform.position;
+    }
+
     public void Respawn() // Currently only called from animation event
     {
+        velocity.x = velocity.y = 0;
         ResetHP();
         isDead = false;
         //Remove pads
@@ -780,7 +796,7 @@ public class PlayerController : MonoBehaviour
                     {
                         TileBase[] tiles = tilemaps[i].tiles;
                         var pos = EnumeratorToArray(cTilemaps[j].cellBounds.allPositionsWithin);
-                        cTilemaps[i].SetTiles(pos, tiles);
+                        cTilemaps[j].SetTiles(pos, tiles);
                         break;
                     }
                 }
