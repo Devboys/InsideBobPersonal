@@ -18,23 +18,7 @@ public class CheatScript : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            controllerInput.enabled = false;
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            controllerInput.enabled = true;
-            controllerInput.useBulletTimeButton = true;
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            controllerInput.enabled = true;
-            controllerInput.useBulletTimeButton = false;
-        }
-        /*
-        if (Input.GetKeyDown(KeyCode.R))
-        {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
-        */
     }
 }
