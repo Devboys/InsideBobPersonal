@@ -15,6 +15,8 @@ public class TileCollider : MonoBehaviour
     private PlayerController playerController;
     private LevelController levelController;
 
+    public GameObject diseaseClearParticlePrefab;
+
     private void Awake()
     {
         playerController = GetComponent<PlayerController>();
@@ -34,6 +36,24 @@ public class TileCollider : MonoBehaviour
                 {
                     tilemap.SetTile(tilePosition, walkingTile);
                     levelController.CheckOpen();
+
+                    //instantiate particle prefab at player's feet.
+                    var particle = Instantiate(diseaseClearParticlePrefab);
+                    //Vector3 pos = tilemap.CellToWorld(tilePosition);
+                    //pos.z = particle.transform.position.z;
+                    Vector3 pos = contact.point - contact.normal * 0.01f;
+                    Quaternion rot = Quaternion.identity;
+
+                    //if clearing from below tile, send particles downwards
+                    if ((Mathf.Abs(this.transform.position.y) - Mathf.Abs(pos.y) > 0))
+                    {
+                        rot = Quaternion.LookRotation(Vector2.down);
+                    }
+                    particle.transform.SetPositionAndRotation(pos, rot);
+
+
+                    //TODO: SOUND - PLAY DISEASE TILE REMOVE SOUND HERE
+
                 }
                 else if (tile == bacteriaTile)
                 {
