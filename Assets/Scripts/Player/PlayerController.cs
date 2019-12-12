@@ -95,6 +95,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("-- Shooting")]
     public GameObject padPrefab;
+    public GameObject padPreviewPrefab;
     public LayerMask hitLayers;
     public float shotCooldown;
     public int numPadsAllowed;
@@ -235,7 +236,7 @@ public class PlayerController : MonoBehaviour
         line.startWidth = 0.05f;
         line.endWidth = 0.05f;
         line.positionCount = 2;
-        padPreview = Instantiate(padPrefab);
+        padPreview = Instantiate(padPreviewPrefab);
         padPreview.transform.parent = transform;
         padPreview.SetActive(false);
         var previewComponents = padPreview.GetComponents(typeof(Component));

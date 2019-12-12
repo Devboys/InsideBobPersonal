@@ -19,6 +19,14 @@ public class BouncePadController : MonoBehaviour
     [Range(0, 90)]
     public float minimumBounceAngle = 45;
 
+    public GameObject placeParticlePrefab;
+
+
+    private void Awake()
+    {
+        Instantiate(placeParticlePrefab, this.transform);
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
