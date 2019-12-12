@@ -39,8 +39,6 @@ public class TileCollider : MonoBehaviour
 
                     //instantiate particle prefab at player's feet.
                     var particle = Instantiate(diseaseClearParticlePrefab);
-                    //Vector3 pos = tilemap.CellToWorld(tilePosition);
-                    //pos.z = particle.transform.position.z;
                     Vector3 pos = contact.point - contact.normal * 0.01f;
                     Quaternion rot = Quaternion.identity;
 

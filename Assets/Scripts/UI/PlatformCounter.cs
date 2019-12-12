@@ -11,10 +11,21 @@ public class PlatformCounter : MonoBehaviour
     
     private PlayerController _playerController;
 
+    public GameObject padImage;
+
     private void Awake()
     {
         _playerController = FindObjectOfType<PlayerController>();
         _text = GetComponent<Text>();
+
+        //subscribe to pickup event
+        _playerController.OnPadPickup += () => {
+
+            padImage.GetComponent<Animator>().SetTrigger("pickup");
+
+            //TODO: SOUND - Play pickup sound.
+
+        };
     }
 
     private void Update()

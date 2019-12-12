@@ -5,6 +5,7 @@ using FMODUnity;
 using FMOD.Studio;
 using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
+using System;
 
 // Helper structs
 struct GameObjectPair
@@ -135,7 +136,16 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]
     public bool canMove;
 
-    [HideInInspector] public int totalPillsPickedUp = 0;
+    private int totalPills;
+    [HideInInspector] public int totalPillsPickedUp {
+    get { return totalPills; }
+    set {
+            totalPills = value;
+            OnPillPickup?.Invoke(); //invoke any subscriptions to event (if not null)
+        }
+    }
+    public event Action OnPillPickup;
+    public event Action OnPadPickup;
 
     public KeyCode[] restartButtons;
     
@@ -858,6 +868,7 @@ public class PlayerController : MonoBehaviour
     public void AddPlatform(int pads)
     {
         numPadsAllowed += pads;
+        OnPadPickup?.Invoke();
     }
     #endregion
 
