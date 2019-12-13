@@ -7,6 +7,10 @@
       <e p="Assembly-CSharp-firstpass.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
+        <e p="BobpolosionController.cs" t="Include" />
+        <e p="LinkedMessage.cs" t="Include" />
+        <e p="MessageTrigger.cs" t="Include" />
+        <e p="PillHandler.cs" t="Include" />
         <e p="Plugins" t="Include">
           <e p="FMOD" t="Include">
             <e p="addons" t="Include">
@@ -111,16 +115,51 @@
             <e p="RaycastMover.cs" t="Include" />
           </e>
           <e p="PostProcessingCamera.cs" t="Include" />
+          <e p="RemoverController.cs" t="Include" />
           <e p="TerrainTriggers" t="Include">
             <e p="CheckpointTrigger.cs" t="Include" />
             <e p="SpikeTrigger.cs" t="Include" />
           </e>
           <e p="TileCollider.cs" t="Include" />
+          <e p="UI" t="Include">
+            <e p="Healthbar.cs" t="Include" />
+            <e p="PillCounter.cs" t="Include" />
+            <e p="PlatformCounter.cs" t="Include" />
+          </e>
         </e>
         <e p="Shaders" t="Include">
           <e p="GrayscaleEffect.shader" t="Include" />
           <e p="InversionEffect.shader" t="Include" />
         </e>
+        <e p="TextMesh Pro" t="Include">
+          <e p="Fonts" t="Include">
+            <e p="LiberationSans - OFL.txt" t="Include" />
+          </e>
+          <e p="Resources" t="Include">
+            <e p="LineBreaking Following Characters.txt" t="Include" />
+            <e p="LineBreaking Leading Characters.txt" t="Include" />
+            <e p="Shaders" t="Include">
+              <e p="TMP_Bitmap-Custom-Atlas.shader" t="Include" />
+              <e p="TMP_Bitmap-Mobile.shader" t="Include" />
+              <e p="TMP_Bitmap.shader" t="Include" />
+              <e p="TMP_SDF Overlay.shader" t="Include" />
+              <e p="TMP_SDF-Mobile Masking.shader" t="Include" />
+              <e p="TMP_SDF-Mobile Overlay.shader" t="Include" />
+              <e p="TMP_SDF-Mobile.shader" t="Include" />
+              <e p="TMP_SDF-Surface-Mobile.shader" t="Include" />
+              <e p="TMP_SDF-Surface.shader" t="Include" />
+              <e p="TMP_SDF.shader" t="Include" />
+              <e p="TMP_Sprite.shader" t="Include" />
+              <e p="TMPro.cginc" t="Include" />
+              <e p="TMPro_Properties.cginc" t="Include" />
+              <e p="TMPro_Surface.cginc" t="Include" />
+            </e>
+          </e>
+          <e p="Sprites" t="Include">
+            <e p="EmojiOne Attribution.txt" t="Include" />
+          </e>
+        </e>
+        <e p="TitleScreenController.cs" t="Include" />
       </e>
       <e p="Inside-Bob.sln" t="IncludeFlat" />
       <e p="obj" t="ExcludeRecursive" />
