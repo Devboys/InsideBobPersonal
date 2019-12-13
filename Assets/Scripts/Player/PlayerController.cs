@@ -5,6 +5,7 @@ using FMODUnity;
 using FMOD.Studio;
 using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
+using System;
 
 // Helper structs
 struct GameObjectPair
@@ -95,6 +96,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("-- Shooting")]
     public GameObject padPrefab;
+    public GameObject padPreviewPrefab;
     public LayerMask hitLayers;
     public float shotCooldown;
     public int numPadsAllowed;
@@ -134,7 +136,16 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]
     public bool canMove;
 
-    [HideInInspector] public int totalPillsPickedUp = 0;
+    private int totalPills;
+    [HideInInspector] public int totalPillsPickedUp {
+    get { return totalPills; }
+    set {
+            totalPills = value;
+            OnPillPickup?.Invoke(); //invoke any subscriptions to event (if not null)
+        }
+    }
+    public event Action OnPillPickup;
+    public event Action OnPadPickup;
 
     public KeyCode[] restartButtons;
     
@@ -235,7 +246,7 @@ public class PlayerController : MonoBehaviour
         line.startWidth = 0.05f;
         line.endWidth = 0.05f;
         line.positionCount = 2;
-        padPreview = Instantiate(padPrefab);
+        padPreview = Instantiate(padPreviewPrefab);
         padPreview.transform.parent = transform;
         padPreview.SetActive(false);
         var previewComponents = padPreview.GetComponents(typeof(Component));
@@ -857,6 +868,7 @@ public class PlayerController : MonoBehaviour
     public void AddPlatform(int pads)
     {
         numPadsAllowed += pads;
+        OnPadPickup?.Invoke();
     }
     #endregion
 

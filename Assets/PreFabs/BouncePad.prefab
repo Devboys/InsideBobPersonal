@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4840296420896782310}
   - component: {fileID: 4840296420896782311}
   - component: {fileID: 4840296420896782104}
+  - component: {fileID: 1886349437}
   m_Layer: 10
   m_Name: BouncePad
   m_TagString: Untagged
@@ -100,7 +101,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0.4921875, y: 0.6328125, z: 0.51953125, w: 0.57421875}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 5, y: 1}
+    oldSize: {x: 5.015625, y: 1}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -146,3 +147,24 @@ MonoBehaviour:
   bounceSound: event:/Sfx/BouncePad
   direction: {x: 0.5, y: 0.875}
   minimumBounceAngle: 45
+  placeParticlePrefab: {fileID: 5713395460452565480, guid: 7a13c764cd4e7cb4d8f2d78bf0374aaa,
+    type: 3}
+--- !u!95 &1886349437
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4840296420896782106}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4100b37065463294c9beb14d356a3b65, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
