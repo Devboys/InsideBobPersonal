@@ -745,6 +745,7 @@ public class PlayerController : MonoBehaviour
     }
 
     public void TakeDamage(float damage) {
+        // TODO: SOUND (Take Damage sound like ouch, uh) idk
         GetHP(-damage);
     }
 
@@ -765,6 +766,8 @@ public class PlayerController : MonoBehaviour
         if (!Application.isPlaying || isDead)
             return;
 
+        // TODO: SOUND (Die sound?)
+
         //reset velocity
         velocity = Vector2.zero;
         
@@ -775,12 +778,14 @@ public class PlayerController : MonoBehaviour
 
     public void Implode() // Called when Respawn button is clicked
     {
+        //TODO: SOUND (The sound when the player is swinking)
         velocity.x = velocity.y = 0;
         _anim.SetTrigger("Implode");
     }
 
     public void SpawnBobplosion()
     {
+        //TODO: SOUND (The sound when the player explode after swinking)
         var obj = Instantiate(bobplosionPrefab);
         obj.transform.position = transform.position;
     }
@@ -850,6 +855,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //'respawn' at checkpoint
+        //TODO: SOUND (The sound when the player is expanding)
         _anim.SetTrigger("Respawn");
         _mover.MoveTo(checkpointPos);
         levelC.ForceUpdatePillCountForCurrentLevel();
