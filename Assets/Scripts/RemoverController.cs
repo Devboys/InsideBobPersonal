@@ -19,11 +19,13 @@ public class RemoverController : MonoBehaviour
     public RemoverInfo info;
 
     private Rigidbody2D rb;
+    private ParticleSystem ps;
     private float lastDist;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        ps = GetComponent<ParticleSystem>();
     }
 
     // Start is called before the first frame update
@@ -52,11 +54,12 @@ public class RemoverController : MonoBehaviour
        var dist = Vector2.Distance(endPos, transform.position);
        if (dist > lastDist) DestroyBacteria();
        lastDist = dist;
+       if (!ps.IsAlive()) Destroy(gameObject);
     }
 
     private void DestroyBacteria()
     {
         tilemap.SetTile(pos, null);
-        Destroy(gameObject);
+        ps.Stop();
     }
 }
