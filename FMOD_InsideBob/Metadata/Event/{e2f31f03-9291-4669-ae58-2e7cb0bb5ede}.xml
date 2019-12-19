@@ -249,11 +249,17 @@
 		</property>
 	</object>
 	<object class="SingleSound" id="{2d12e73d-8b4d-4d8f-8303-66d55de4887b}">
+		<property name="pitch">
+			<value>7</value>
+		</property>
 		<relationship name="audioFile">
 			<destination>{c9f89fa8-0ea7-40bf-810a-f9db9aebe838}</destination>
 		</relationship>
 	</object>
 	<object class="SingleSound" id="{e910e2fb-54a6-42af-8a99-664fcada9645}">
+		<property name="pitch">
+			<value>7</value>
+		</property>
 		<relationship name="audioFile">
 			<destination>{501a4ac6-4825-40ed-9f96-1032a6483a91}</destination>
 		</relationship>

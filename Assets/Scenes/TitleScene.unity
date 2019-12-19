@@ -165,6 +165,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicEventPath: event:/Music/MusicMain
   musicVolume: 1
+  indexSwitchCooldown: 1
 --- !u!1 &334102496
 GameObject:
   m_ObjectHideFlags: 0
@@ -5185,3 +5186,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startKeys: 4a0100000d000000
+  nextMess: event:/UI/NextMess
