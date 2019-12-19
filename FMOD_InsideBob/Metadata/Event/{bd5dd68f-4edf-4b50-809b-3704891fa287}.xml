@@ -110,7 +110,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{78c12f4c-16da-42c5-b5db-0b684ceacae9}">
 		<property name="volume">
-			<value>-18</value>
+			<value>-23.5</value>
 		</property>
 		<property name="name">
 			<value>Germ Removal</value>
@@ -159,6 +159,7 @@
 		<relationship name="effects">
 			<destination>{ce1e40a9-5639-46be-8747-ba8061f8fd90}</destination>
 			<destination>{1a2fe778-1467-4018-9639-ec4111e2da0b}</destination>
+			<destination>{5451b8b5-6a06-4a09-8a1a-e15d37b4b3fa}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{0d4ebc98-df01-4750-9bab-f159bc6ca89f}" />
@@ -173,6 +174,14 @@
 		</property>
 		<property name="mix">
 			<value>80</value>
+		</property>
+	</object>
+	<object class="SFXReverbEffect" id="{5451b8b5-6a06-4a09-8a1a-e15d37b4b3fa}">
+		<property name="decayTime">
+			<value>500</value>
+		</property>
+		<property name="wetLevel">
+			<value>-33</value>
 		</property>
 	</object>
 </objects>

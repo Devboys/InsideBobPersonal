@@ -501,7 +501,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{3150652c-5703-4822-ba5d-a7b75d70822c}">
 		<property name="volume">
-			<value>-3</value>
+			<value>-6</value>
 		</property>
 		<property name="name">
 			<value>Kick</value>
@@ -751,6 +751,9 @@
 		<property name="length">
 			<value>15.609749999999995</value>
 		</property>
+		<relationship name="fadeOutCurve">
+			<destination>{6c95839f-743a-4499-af22-9758b4d526cc}</destination>
+		</relationship>
 		<relationship name="sounds">
 			<destination>{e42aa6a3-842a-461b-a824-5d83853478e0}</destination>
 			<destination>{b0e67720-307a-48a4-abb0-3d17aa0a470f}</destination>
@@ -1067,7 +1070,7 @@
 			<value>15.609749999999995</value>
 		</property>
 		<property name="quantizationInterval">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{17efeba2-61e4-4708-a32e-b4ef8f822480}</destination>
@@ -1250,7 +1253,7 @@
 			<value>62.439033028455285</value>
 		</property>
 		<property name="quantizationInterval">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{17efeba2-61e4-4708-a32e-b4ef8f822480}</destination>
@@ -1273,7 +1276,7 @@
 			<value>85.853667174796769</value>
 		</property>
 		<property name="quantizationInterval">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{17efeba2-61e4-4708-a32e-b4ef8f822480}</destination>
@@ -1296,7 +1299,7 @@
 			<value>109.26830132113825</value>
 		</property>
 		<property name="quantizationInterval">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{17efeba2-61e4-4708-a32e-b4ef8f822480}</destination>
@@ -1319,7 +1322,7 @@
 			<value>132.68292936991875</value>
 		</property>
 		<property name="quantizationInterval">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{17efeba2-61e4-4708-a32e-b4ef8f822480}</destination>
@@ -1342,7 +1345,7 @@
 			<value>156.09756961382112</value>
 		</property>
 		<property name="quantizationInterval">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{17efeba2-61e4-4708-a32e-b4ef8f822480}</destination>
@@ -1365,7 +1368,7 @@
 			<value>181.46341463414623</value>
 		</property>
 		<property name="quantizationInterval">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{17efeba2-61e4-4708-a32e-b4ef8f822480}</destination>
@@ -1388,7 +1391,7 @@
 			<value>39.024398882113822</value>
 		</property>
 		<property name="quantizationInterval">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{17efeba2-61e4-4708-a32e-b4ef8f822480}</destination>
@@ -1431,7 +1434,7 @@
 			<value>179.51218648373984</value>
 		</property>
 		<property name="quantizationInterval">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{17efeba2-61e4-4708-a32e-b4ef8f822480}</destination>
@@ -1454,7 +1457,7 @@
 			<value>156.09755233739835</value>
 		</property>
 		<property name="quantizationInterval">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{17efeba2-61e4-4708-a32e-b4ef8f822480}</destination>
@@ -1477,7 +1480,7 @@
 			<value>132.6829181910569</value>
 		</property>
 		<property name="quantizationInterval">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{17efeba2-61e4-4708-a32e-b4ef8f822480}</destination>
@@ -1500,7 +1503,7 @@
 			<value>109.26828404471544</value>
 		</property>
 		<property name="quantizationInterval">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{17efeba2-61e4-4708-a32e-b4ef8f822480}</destination>
@@ -1523,7 +1526,7 @@
 			<value>85.853649898373902</value>
 		</property>
 		<property name="quantizationInterval">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{17efeba2-61e4-4708-a32e-b4ef8f822480}</destination>
@@ -1546,7 +1549,7 @@
 			<value>62.439015752032446</value>
 		</property>
 		<property name="quantizationInterval">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{17efeba2-61e4-4708-a32e-b4ef8f822480}</destination>
@@ -1569,7 +1572,7 @@
 			<value>39.024381605690962</value>
 		</property>
 		<property name="quantizationInterval">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{17efeba2-61e4-4708-a32e-b4ef8f822480}</destination>
@@ -1817,6 +1820,14 @@
 	<object class="SingleSound" id="{8c39e7f3-6be0-427d-a430-529081bec002}">
 		<relationship name="audioFile">
 			<destination>{b55a42a9-5454-4708-be01-6f997510434a}</destination>
+		</relationship>
+	</object>
+	<object class="FadeCurve" id="{6c95839f-743a-4499-af22-9758b4d526cc}">
+		<relationship name="startPoint">
+			<destination>{337dcfaf-5821-4b0f-a9c6-8f900086c472}</destination>
+		</relationship>
+		<relationship name="endPoint">
+			<destination>{2a69a540-9bbb-408f-82f6-62702c280da6}</destination>
 		</relationship>
 	</object>
 	<object class="SingleSound" id="{e42aa6a3-842a-461b-a824-5d83853478e0}">
@@ -2149,6 +2160,25 @@
 			<value>1</value>
 		</property>
 	</object>
+	<object class="AutomationPoint" id="{337dcfaf-5821-4b0f-a9c6-8f900086c472}">
+		<property name="position">
+			<value>23.170731707317074</value>
+		</property>
+		<property name="value">
+			<value>1</value>
+		</property>
+		<property name="curveShape">
+			<value>0.25471893</value>
+		</property>
+	</object>
+	<object class="AutomationPoint" id="{2a69a540-9bbb-408f-82f6-62702c280da6}">
+		<property name="position">
+			<value>23.414628048780482</value>
+		</property>
+		<property name="value">
+			<value>0</value>
+		</property>
+	</object>
 	<object class="AutomationCurve" id="{03fccea8-78e3-4d8a-960f-a7e4b6ffd792}">
 		<relationship name="parameter">
 			<destination>{65d883c5-3553-4c0e-9a89-65cd39dbfd6a}</destination>
@@ -2212,7 +2242,7 @@
 			<value>1</value>
 		</property>
 		<property name="value">
-			<value>0</value>
+			<value>-9</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{222ad38e-fa47-4714-a5fa-c95224856a55}">
