@@ -132,6 +132,8 @@ public class PlayerController : MonoBehaviour
     public string deathSwirl;
     [EventRef]
     public string deathSpin;
+    [EventRef]
+    public string deathLand;
     
     
 
@@ -354,6 +356,11 @@ public class PlayerController : MonoBehaviour
     {
         footsteps.setParameterByName("SurfaceIndex", surfaceIndex);
         footsteps.start();
+    }
+
+    public void PlayDeathLandSound()
+    {
+        landSound.start(); // Play landing sound for event on last frame of death animation
     }
 
     private void OnDisable()

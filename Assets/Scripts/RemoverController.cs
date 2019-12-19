@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using FMODUnity;
+using FMOD.Studio;
 
 public class RemoverController : MonoBehaviour
 {
@@ -17,6 +19,11 @@ public class RemoverController : MonoBehaviour
 
     [HideInInspector]
     public RemoverInfo info;
+    
+    
+    [Space(20)]
+    [EventRef]
+    public string germRemove;
 
     private Rigidbody2D rb;
     private ParticleSystem ps;
@@ -54,7 +61,11 @@ public class RemoverController : MonoBehaviour
        var dist = Vector2.Distance(endPos, transform.position);
        if (dist > lastDist) DestroyBacteria();
        lastDist = dist;
-       if (!ps.IsAlive()) Destroy(gameObject);
+       if (!ps.IsAlive())
+       {
+           RuntimeManager.PlayOneShot(germRemove, transform.position); // Play destroy germs sound
+           Destroy(gameObject);
+       }
     }
 
     private void DestroyBacteria()

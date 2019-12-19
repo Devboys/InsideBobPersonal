@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FMODUnity;
+using FMOD.Studio;
 
 public class LinkedMessage : MonoBehaviour
 {
@@ -15,6 +17,11 @@ public class LinkedMessage : MonoBehaviour
 
     [HideInInspector]
     public List<LinkedMessage> prevMessages;
+    
+    [Header("-- FMOD Event")]
+    [Space(20)]
+    [EventRef]
+    public string nextMessageSound;
 
     private PlayerController playerController;
 
@@ -59,6 +66,8 @@ public class LinkedMessage : MonoBehaviour
     void ShowNextMessage() {
         if (nextMessage) nextMessage.ShowMessage();
         HideMessage();
+        
+        RuntimeManager.PlayOneShot(nextMessageSound, transform.position); // Play button press confirmation sound
     }
 
     public void HideMessage() {

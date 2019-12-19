@@ -101,7 +101,7 @@
 			<value>-17.5</value>
 		</property>
 		<property name="name">
-			<value>PopUpMessage</value>
+			<value>Pop Up Message</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{e8410d14-d8a4-4255-86bd-56e4bc8ecd94}</destination>

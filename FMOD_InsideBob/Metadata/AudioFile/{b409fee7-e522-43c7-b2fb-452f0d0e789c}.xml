@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.00.00">
 	<object class="AudioFile" id="{b409fee7-e522-43c7-b2fb-452f0d0e789c}">
 		<property name="assetPath">
-			<value>Sfx/PadPickup/PadPickupTone1.wav</value>
+			<value>Sfx/PadPickup/Sweetners/PadPickupTone1.wav</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>48</value>
