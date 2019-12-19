@@ -57,7 +57,11 @@
 			<destination>{9223202b-b0de-4e06-ba09-18ef97ca14d0}</destination>
 		</relationship>
 	</object>
-	<object class="EventAutomatableProperties" id="{7f3b247e-111d-4c8d-81f8-7eb065b3e2d3}" />
+	<object class="EventAutomatableProperties" id="{7f3b247e-111d-4c8d-81f8-7eb065b3e2d3}">
+		<property name="triggerCooldown">
+			<value>20</value>
+		</property>
+	</object>
 	<object class="MarkerTrack" id="{f7dacbc4-a2de-48b2-970b-a11fe20a4469}" />
 	<object class="GroupTrack" id="{8866c21a-99ff-4d7c-86fd-fa387a7ec23b}">
 		<relationship name="modules">
@@ -172,7 +176,7 @@
 			<value>pitch</value>
 		</property>
 		<property name="amount">
-			<value>9</value>
+			<value>12.5</value>
 		</property>
 	</object>
 	<object class="SingleSound" id="{6aa6d2fb-6c3d-4d1a-ac93-089f7fd651b3}">
