@@ -74785,7 +74785,7 @@ MonoBehaviour:
   speedVariance: 0.175
   levelIndex: {x: 0, y: 0}
   allLevels: []
-  germDestroy: event:/Sfx/GermRemove
+  germDestroy: event:/Sfx/GermDestroy
 --- !u!114 &1180331851
 MonoBehaviour:
   m_ObjectHideFlags: 0

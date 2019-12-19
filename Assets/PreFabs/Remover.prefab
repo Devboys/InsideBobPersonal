@@ -71,6 +71,7 @@ MonoBehaviour:
   pos: {x: 0, y: 0, z: 0}
   speed: 0
   endPos: {x: 0, y: 0, z: 0}
+  germRemove: event:/Sfx/GermRemove
 --- !u!198 &-6724917273680183856
 ParticleSystem:
   m_ObjectHideFlags: 0
