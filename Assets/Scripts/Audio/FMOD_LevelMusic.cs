@@ -18,6 +18,9 @@ public class FMOD_LevelMusic : MonoBehaviour
     private PlayerController playerController;
     private LevelController levelController;
 
+    Timer indexSwitchTimer = new Timer();
+    public float indexSwitchCooldown = 1;
+
     private void Start()
     {
         playerController = FindObjectOfType<PlayerController>();
@@ -29,19 +32,29 @@ public class FMOD_LevelMusic : MonoBehaviour
         // Randomize FMOD MusicIndex parameter on player re-spawn
         playerController.OnRespawnEvent += () =>
         {
-            int musicIndex = UnityEngine.Random.Range(0, 9);
-            levelMusic.setParameterByName("MusicIndex", musicIndex);
-            
-            Debug.Log(musicIndex); 
+            if (indexSwitchTimer.IsFinished)
+            {
+                int musicIndex = UnityEngine.Random.Range(0, 9);
+                levelMusic.setParameterByName("MusicIndex", musicIndex);
+
+                indexSwitchTimer.StartTimer(indexSwitchCooldown);
+
+                Debug.Log(musicIndex);
+            }
         };
             
         // Randomize FMOD MusicIndex parameter on level change
         levelController.onLevelChangeEvent += () =>
         {
-            int musicIndex = UnityEngine.Random.Range(0, 9);
-            levelMusic.setParameterByName("MusicIndex", musicIndex);
-            
-            Debug.Log(musicIndex); 
+            if (indexSwitchTimer.IsFinished)
+            {
+                int musicIndex = UnityEngine.Random.Range(0, 9);
+                levelMusic.setParameterByName("MusicIndex", musicIndex);
+
+                indexSwitchTimer.StartTimer(indexSwitchCooldown);
+
+                Debug.Log(musicIndex);
+            }
         };
     }
 
@@ -51,10 +64,44 @@ public class FMOD_LevelMusic : MonoBehaviour
         levelMusic.setParameterByName("ReverbStop 2", 1 - playerController.bulletTimePercentage);
         levelMusic.setParameterByName("MasterVol", musicVolume);
 
+        indexSwitchTimer.TickTimer(Time.deltaTime);
+
     }
 
     private void OnDisable()
     { 
         levelMusic.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+    }
+
+
+    private class Timer
+    {
+        private float initTime = 1; //initialized as 1 to prevent div by 0
+        private float timer = 0;
+        bool finishedLastCheck;
+
+        public bool IsFinished
+        {
+            get { return timer <= 0; }
+        }
+
+        public float AsFraction()
+        {
+            if (timer < 0) return 0;
+
+            return 1 - timer / initTime;
+        }
+
+        public bool HasJustFinished()
+        {
+            bool result = finishedLastCheck == IsFinished;
+            finishedLastCheck = IsFinished;
+
+            return result;
+        }
+
+        public void StartTimer(float startTime) { timer = this.initTime = startTime; }
+        public void TickTimer(float amount) { timer -= amount; }
+        public void EndTimer() { timer = 0; }
     }
 }
