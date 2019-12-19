@@ -15,10 +15,9 @@ public class EndSceneHandler : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        PlayEndScene();
     }
 
     public void PlayEndScene()
