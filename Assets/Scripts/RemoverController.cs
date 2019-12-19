@@ -29,6 +29,8 @@ public class RemoverController : MonoBehaviour
     private ParticleSystem ps;
     private float lastDist;
 
+    bool bacteriaIsDestroyed; // To prevent DestroyBacteria method from spamming FMOD with requests (hack)
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -53,24 +55,30 @@ public class RemoverController : MonoBehaviour
             rb.velocity = info.velocity;
         }
         lastDist = Vector2.Distance(endPos, transform.position);
+
+        bacteriaIsDestroyed = false;
     }
 
     // Update is called once per frame
     void Update()
     {
        var dist = Vector2.Distance(endPos, transform.position);
-       if (dist > lastDist) DestroyBacteria();
+       if (dist > lastDist && !bacteriaIsDestroyed) DestroyBacteria();
        lastDist = dist;
        if (!ps.IsAlive())
        {
-           RuntimeManager.PlayOneShot(germRemove, transform.position); // Play destroy germs sound
            Destroy(gameObject);
        }
     }
 
     private void DestroyBacteria()
     {
+        bacteriaIsDestroyed = true;
+        RuntimeManager.PlayOneShot(germRemove, transform.position); // Play destroy germs sound
+        
         tilemap.SetTile(pos, null);
         ps.Stop();
+        
+        
     }
 }

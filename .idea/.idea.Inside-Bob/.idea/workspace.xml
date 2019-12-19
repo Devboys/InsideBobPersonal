@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d5316cca-873b-42fb-acd9-14797aec2b1c" name="Default Changelist" comment="" />
+    <list default="true" id="d5316cca-873b-42fb-acd9-14797aec2b1c" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/RemoverController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/RemoverController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/StreamingAssets/Master.bank" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Master.bank" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FMOD_InsideBob/Assets/Desktop/Master.bank" beforeDir="false" afterPath="$PROJECT_DIR$/FMOD_InsideBob/Assets/Desktop/Master.bank" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FMOD_InsideBob/Metadata/Event/{bd5dd68f-4edf-4b50-809b-3704891fa287}.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FMOD_InsideBob/Metadata/Event/{bd5dd68f-4edf-4b50-809b-3704891fa287}.xml" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -139,21 +144,21 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Assets/Scripts/RemoverController.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="962">
-              <caret line="66" column="31" selection-start-line="66" selection-start-column="31" selection-end-line="66" selection-end-column="31" />
+            <state relative-caret-position="887">
+              <caret line="69" column="31" lean-forward="true" selection-start-line="69" selection-start-column="31" selection-end-line="69" selection-end-column="31" />
               <folding>
-                <marker date="1576768116136" expanded="true" signature="6:156" ph="..." />
-                <marker date="1576768116136" expanded="true" signature="204:1910" ph="{...}" />
-                <marker date="1576768116136" expanded="true" signature="645:744" ph="{...}" />
-                <marker date="1576768116136" expanded="true" signature="815:1425" ph="{...}" />
-                <marker date="1576768116136" expanded="true" signature="855:1093" ph="{...}" />
-                <marker date="1576768116136" expanded="true" signature="1106:1354" ph="{...}" />
-                <marker date="1576768116136" expanded="true" signature="1483:1805" ph="{...}" />
-                <marker date="1576768116136" expanded="true" signature="1650:1799" ph="{...}" />
-                <marker date="1576768116136" expanded="true" signature="1841:1908" ph="{...}" />
+                <marker date="1576770443724" expanded="true" signature="6:156" ph="..." />
+                <marker date="1576770443724" expanded="true" signature="204:2140" ph="{...}" />
+                <marker date="1576770443724" expanded="true" signature="753:852" ph="{...}" />
+                <marker date="1576770443724" expanded="true" signature="923:1571" ph="{...}" />
+                <marker date="1576770443724" expanded="true" signature="963:1201" ph="{...}" />
+                <marker date="1576770443724" expanded="true" signature="1214:1462" ph="{...}" />
+                <marker date="1576770443724" expanded="true" signature="1629:1876" ph="{...}" />
+                <marker date="1576770443724" expanded="true" signature="1820:1870" ph="{...}" />
+                <marker date="1576770443724" expanded="true" signature="1912:2138" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -349,11 +354,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Assets/Scripts/Level/LevelController.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="615">
-              <caret line="41" column="30" lean-forward="true" selection-start-line="38" selection-start-column="4" selection-end-line="41" selection-end-column="30" />
+            <state relative-caret-position="135">
+              <caret line="41" column="30" selection-start-line="38" selection-start-column="4" selection-end-line="41" selection-end-column="30" />
               <folding>
                 <marker date="1576750024620" expanded="true" signature="6:245" ph="..." />
                 <marker date="1576750024620" expanded="true" signature="291:6118" ph="{...}" />
@@ -528,9 +533,9 @@
       <find>playfoot</find>
       <find>playone</find>
       <find>Spawn</find>
-      <find>TODO</find>
       <find>landsound</find>
       <find>play</find>
+      <find>TODO</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -584,9 +589,9 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="441" />
+    <option name="x" value="181" />
     <option name="y" value="23" />
-    <option name="width" value="1351" />
+    <option name="width" value="1306" />
     <option name="height" value="1417" />
   </component>
   <component name="ProjectView">
@@ -652,12 +657,12 @@
       <workItem from="1576115282138" duration="121000" />
       <workItem from="1576590611171" duration="327000" />
       <workItem from="1576692327588" duration="9232000" />
-      <workItem from="1576749517021" duration="4376000" />
+      <workItem from="1576749517021" duration="5101000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="35156000" />
+    <option name="totallyTimeSpent" value="35881000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -669,7 +674,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="441" y="23" width="1351" height="1417" extended-state="0" />
+    <frame x="181" y="23" width="1306" height="1417" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.24847375" />
@@ -1486,28 +1491,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Scripts/RemoverController.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="962">
-          <caret line="66" column="31" selection-start-line="66" selection-start-column="31" selection-end-line="66" selection-end-column="31" />
-          <folding>
-            <marker date="1576768116136" expanded="true" signature="6:156" ph="..." />
-            <marker date="1576768116136" expanded="true" signature="204:1910" ph="{...}" />
-            <marker date="1576768116136" expanded="true" signature="645:744" ph="{...}" />
-            <marker date="1576768116136" expanded="true" signature="815:1425" ph="{...}" />
-            <marker date="1576768116136" expanded="true" signature="855:1093" ph="{...}" />
-            <marker date="1576768116136" expanded="true" signature="1106:1354" ph="{...}" />
-            <marker date="1576768116136" expanded="true" signature="1483:1805" ph="{...}" />
-            <marker date="1576768116136" expanded="true" signature="1650:1799" ph="{...}" />
-            <marker date="1576768116136" expanded="true" signature="1841:1908" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Assets/Scripts/Level/LevelController.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="615">
-          <caret line="41" column="30" lean-forward="true" selection-start-line="38" selection-start-column="4" selection-end-line="41" selection-end-column="30" />
+        <state relative-caret-position="135">
+          <caret line="41" column="30" selection-start-line="38" selection-start-column="4" selection-end-line="41" selection-end-column="30" />
           <folding>
             <marker date="1576750024620" expanded="true" signature="6:245" ph="..." />
             <marker date="1576750024620" expanded="true" signature="291:6118" ph="{...}" />
@@ -1533,6 +1520,24 @@
             <marker date="1576750024620" expanded="true" signature="5480:5990" ph="{...}" />
             <marker date="1576750024620" expanded="true" signature="5532:5863" ph="{...}" />
             <marker date="1576750024620" expanded="true" signature="6045:6115" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Scripts/RemoverController.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="887">
+          <caret line="69" column="31" lean-forward="true" selection-start-line="69" selection-start-column="31" selection-end-line="69" selection-end-column="31" />
+          <folding>
+            <marker date="1576770443724" expanded="true" signature="6:156" ph="..." />
+            <marker date="1576770443724" expanded="true" signature="204:2140" ph="{...}" />
+            <marker date="1576770443724" expanded="true" signature="753:852" ph="{...}" />
+            <marker date="1576770443724" expanded="true" signature="923:1571" ph="{...}" />
+            <marker date="1576770443724" expanded="true" signature="963:1201" ph="{...}" />
+            <marker date="1576770443724" expanded="true" signature="1214:1462" ph="{...}" />
+            <marker date="1576770443724" expanded="true" signature="1629:1876" ph="{...}" />
+            <marker date="1576770443724" expanded="true" signature="1820:1870" ph="{...}" />
+            <marker date="1576770443724" expanded="true" signature="1912:2138" ph="{...}" />
           </folding>
         </state>
       </provider>
