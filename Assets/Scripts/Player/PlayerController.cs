@@ -187,6 +187,8 @@ public class PlayerController : MonoBehaviour
     private int totalPillCounter;
     private int totalBounceCounter;
 
+    public bool playerHasDied;
+
 
     //DEBUG
     private Vector2 lastLanding;
@@ -272,6 +274,8 @@ public class PlayerController : MonoBehaviour
 
         // Can move variable
         canMove = true;
+
+        playerHasDied = false;
     }
 
     void Update()
@@ -852,8 +856,13 @@ public class PlayerController : MonoBehaviour
                 var obj = Instantiate(levelC.remover);
                 obj.GetComponent<RemoverController>().info = info;
             }
+
+            //PLAYER HAS DIED IS A HACKY WAY OF MAKING SURE THE PILL SOUND DOESNT PLAY ON RESPAWN
+            playerHasDied = true;
+
             totalPillsPickedUp = totalPillCounter;
             numPadsAllowed = totalBounceCounter;
+            playerHasDied = false;
         }
 
         //'respawn' at checkpoint

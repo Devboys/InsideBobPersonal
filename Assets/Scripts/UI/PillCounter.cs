@@ -32,10 +32,11 @@ public class PillCounter : MonoBehaviour
         //subscribe to pickup event
         _playerController.OnPillPickup += () => {
             
-            pillImage.GetComponent<Animator>().SetTrigger("pickup"); 
-            
-            pillPickup.start(); // Play pill pickup sound
-
+            pillImage.GetComponent<Animator>().SetTrigger("pickup");
+            if (!_playerController.playerHasDied)
+            {
+                pillPickup.start(); // Play pill pickup sound
+            }
         };
     }
     
