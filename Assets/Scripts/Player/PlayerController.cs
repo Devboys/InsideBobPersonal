@@ -116,13 +116,12 @@ public class PlayerController : MonoBehaviour
     [Range(0, 10)]
     public int surfaceIndex;
 
-    //public float footRate = 0.5f;
-    //private float footDelay = 0.0f;
-
     [Space(20)]
     [EventRef]
     public string landPath;
     private EventInstance landSound;
+    [EventRef]
+    public string bulletTimePath;
 
     [Space(20)]
     [EventRef]
@@ -130,7 +129,11 @@ public class PlayerController : MonoBehaviour
     [EventRef]
     public string placePad;
     [EventRef]
-    public string bulletTimePath;
+    public string deathSwirl;
+    [EventRef]
+    public string deathSpin;
+    
+    
 
     // Variable Enable Movement
     [HideInInspector]
@@ -146,6 +149,9 @@ public class PlayerController : MonoBehaviour
     }
     public event Action OnPillPickup;
     public event Action OnPadPickup;
+
+    public event Action OnRespawnEvent;
+    
 
     public KeyCode[] restartButtons;
     
@@ -290,8 +296,6 @@ public class PlayerController : MonoBehaviour
                 Implode();
         }
 
-        //PlayFootSound();
-
         _mover.Move(velocity * Time.deltaTime);
 
         //Apply corrected velocity changes
@@ -345,18 +349,6 @@ public class PlayerController : MonoBehaviour
         }
         _anim.SetFloat("Vertical Speed", Mathf.Abs(movement.y));
     }
-
-    /*private void PlayFootSound()
-    {
-        //Checks if player is moving, grounded, and triggers footstep sounds
-        if (Mathf.Abs(velocity.x) > 0.1f && _mover.IsGrounded && Time.time > footDelay)
-        {
-            footDelay = Time.time + footRate;
-
-            footsteps.setParameterByName("SurfaceIndex", surfaceIndex);
-            footsteps.start();
-        }
-    }*/
 
     public void PlayFootSound()
     {
@@ -767,6 +759,7 @@ public class PlayerController : MonoBehaviour
             return;
 
         // TODO: SOUND (Die sound?)
+        
 
         //reset velocity
         velocity = Vector2.zero;
@@ -779,6 +772,8 @@ public class PlayerController : MonoBehaviour
     public void Implode() // Called when Respawn button is clicked
     {
         //TODO: SOUND (The sound when the player is swinking)
+        RuntimeManager.PlayOneShot(deathSwirl, transform.position); // Play death swirl sound
+        
         velocity.x = velocity.y = 0;
         _anim.SetTrigger("Implode");
     }
@@ -786,6 +781,8 @@ public class PlayerController : MonoBehaviour
     public void SpawnBobplosion()
     {
         //TODO: SOUND (The sound when the player explode after swinking)
+        RuntimeManager.PlayOneShot(deathSpin, transform.position);
+        
         var obj = Instantiate(bobplosionPrefab);
         obj.transform.position = transform.position;
     }
@@ -856,9 +853,14 @@ public class PlayerController : MonoBehaviour
 
         //'respawn' at checkpoint
         //TODO: SOUND (The sound when the player is expanding)
+        RuntimeManager.PlayOneShot(deathSwirl, transform.position); // Play death swirl sound
+        
         _anim.SetTrigger("Respawn");
         _mover.MoveTo(checkpointPos);
         levelC.ForceUpdatePillCountForCurrentLevel();
+        
+        OnRespawnEvent?.Invoke();
+        
     }
 
     private Vector3Int[] EnumeratorToArray(BoundsInt.PositionEnumerator enumerator) {

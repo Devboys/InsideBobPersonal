@@ -4,11 +4,19 @@ using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
+using FMODUnity;
+using FMOD.Studio;
 
 public class PillCounter : MonoBehaviour
 {
 
     public GameObject pillImage;
+    
+    [Header("-- FMOD Event")]
+    [Space(20)]
+    [EventRef]
+    public string pillPickupPath;
+    private EventInstance pillPickup;
 
     private Text _text;
     private PlayerController _playerController;
@@ -18,15 +26,19 @@ public class PillCounter : MonoBehaviour
         _playerController = FindObjectOfType<PlayerController>();
         _text = GetComponent<Text>();
 
+        // FMOD
+        pillPickup = RuntimeManager.CreateInstance(pillPickupPath);
+        
         //subscribe to pickup event
         _playerController.OnPillPickup += () => {
             
             pillImage.GetComponent<Animator>().SetTrigger("pickup"); 
             
-            //TODO: SOUND - Play pickup sound.
+            pillPickup.start(); // Play pill pickup sound
 
         };
     }
+    
 
     private void Update()
     {

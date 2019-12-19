@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="ParameterPreset" id="{247de511-24b2-4be0-8101-c0d07dad1e3b}">
+		<property name="name">
+			<value>ReverbStop 2</value>
+		</property>
+		<relationship name="folder">
+			<destination>{8139f479-809a-4848-9639-b26c21d15f4c}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{65d883c5-3553-4c0e-9a89-65cd39dbfd6a}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{65d883c5-3553-4c0e-9a89-65cd39dbfd6a}">
+		<property name="initialValue">
+			<value>1</value>
+		</property>
+		<property name="seekSpeed">
+			<value>4</value>
+		</property>
+	</object>
+</objects>

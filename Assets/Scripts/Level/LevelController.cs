@@ -1,9 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
+using Random = UnityEngine.Random;
+using FMODUnity;
+using FMOD.Studio;
 
 public class LevelController : MonoBehaviour
 {
@@ -29,6 +33,14 @@ public class LevelController : MonoBehaviour
     private List<Tilemap> allLevels = new List<Tilemap>();
 
     private int pillsForCurrentLevel;
+
+    public event Action onLevelChangeEvent;
+    
+    [Header("-- FMOD Event")]
+    [Space(20)]
+    [EventRef]
+    public string germDestroy;
+   
 
     private void Awake()
     {
@@ -74,6 +86,8 @@ public class LevelController : MonoBehaviour
         }
         player.numPadsAllowed = 0;
         StartCoroutine(TransitionCamera());
+
+        onLevelChangeEvent?.Invoke();
     }
 
     private IEnumerator TransitionCamera()
@@ -174,6 +188,8 @@ public class LevelController : MonoBehaviour
             rc.tilemap = tilemap;
             rc.speed = removerMaxSpeed * Random.Range(1.0f - speedVariance, 1.0f);
         }
+        
+        RuntimeManager.PlayOneShot(germDestroy, transform.position); // Play germ destroy sound to unlock level
     }
 
     public void ForceUpdatePillCountForCurrentLevel()

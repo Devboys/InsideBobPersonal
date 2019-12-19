@@ -31923,6 +31923,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   linkedMessage: {fileID: 1610790360}
   reuseable: 0
+  popUpMessPath: event:/UI/PopUpMess
 --- !u!61 &425792133
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -32519,7 +32520,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &507087788
 Transform:
   m_ObjectHideFlags: 0
@@ -41240,6 +41241,7 @@ Transform:
   m_Children:
   - {fileID: 507087788}
   - {fileID: 1419350807}
+  - {fileID: 1213059444}
   m_Father: {fileID: 1587906835}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -63604,6 +63606,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   linkedMessage: {fileID: 1122055329}
   reuseable: 0
+  popUpMessPath: event:/UI/PopUpMess
 --- !u!61 &939083519
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -63704,6 +63707,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   linkedMessage: {fileID: 178314034}
   reuseable: 0
+  popUpMessPath: event:/UI/PopUpMess
 --- !u!61 &948390752
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -64183,7 +64187,7 @@ Transform:
   m_LocalScale: {x: 2.577217, y: 2.577217, z: 2.577217}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &979967141
 GameObject:
@@ -69665,6 +69669,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   linkedMessage: {fileID: 298684089}
   reuseable: 0
+  popUpMessPath: event:/UI/PopUpMess
 --- !u!61 &1059424432
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -74775,6 +74780,7 @@ MonoBehaviour:
   speedVariance: 0.175
   levelIndex: {x: 0, y: 0}
   allLevels: []
+  germDestroy: event:/Sfx/GermDestroy
 --- !u!114 &1180331851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -83357,6 +83363,51 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1208316282}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1213059443
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1213059444}
+  - component: {fileID: 1213059445}
+  m_Layer: 0
+  m_Name: MainMusic
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1213059444
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1213059443}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 653068397}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1213059445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1213059443}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8e4860fc34e34234bb6d762a203f7c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicEventPath: event:/Music/MusicMain
+  musicVolume: 0.8
 --- !u!1001 &1218851087
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -84111,7 +84162,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1897518864}
     m_Modifications:
     - target: {fileID: 5457290457146480783, guid: 4b1b8f11ba0674f44a529e628f860ebc,
         type: 3}
@@ -84121,17 +84172,17 @@ PrefabInstance:
     - target: {fileID: 5457290457146480771, guid: 4b1b8f11ba0674f44a529e628f860ebc,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 213.5
+      value: -82.4
       objectReference: {fileID: 0}
     - target: {fileID: 5457290457146480771, guid: 4b1b8f11ba0674f44a529e628f860ebc,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -157.2
+      value: -13.5
       objectReference: {fileID: 0}
     - target: {fileID: 5457290457146480771, guid: 4b1b8f11ba0674f44a529e628f860ebc,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 136.1875
       objectReference: {fileID: 0}
     - target: {fileID: 5457290457146480771, guid: 4b1b8f11ba0674f44a529e628f860ebc,
         type: 3}
@@ -84156,7 +84207,7 @@ PrefabInstance:
     - target: {fileID: 5457290457146480771, guid: 4b1b8f11ba0674f44a529e628f860ebc,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5457290457146480771, guid: 4b1b8f11ba0674f44a529e628f860ebc,
         type: 3}
@@ -84186,7 +84237,7 @@ PrefabInstance:
     - target: {fileID: 5457290457146480769, guid: 4b1b8f11ba0674f44a529e628f860ebc,
         type: 3}
       propertyPath: numPadsAllowed
-      value: 0
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 5457290457146480769, guid: 4b1b8f11ba0674f44a529e628f860ebc,
         type: 3}
@@ -84209,6 +84260,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4840296420896782106, guid: 9b7c7a80f36830c42ad7eb57798e0642,
         type: 3}
+    - target: {fileID: 5457290457146480769, guid: 4b1b8f11ba0674f44a529e628f860ebc,
+        type: 3}
+      propertyPath: deathSound
+      value: event:/Sfx/PlayerDeath
+      objectReference: {fileID: 0}
+    - target: {fileID: 5457290457146480769, guid: 4b1b8f11ba0674f44a529e628f860ebc,
+        type: 3}
+      propertyPath: deathSwirl
+      value: event:/Sfx/PlayerDeath
+      objectReference: {fileID: 0}
+    - target: {fileID: 5457290457146480769, guid: 4b1b8f11ba0674f44a529e628f860ebc,
+        type: 3}
+      propertyPath: deathSpin
+      value: event:/Sfx/DeathSpin
+      objectReference: {fileID: 0}
     - target: {fileID: 232158606, guid: 4b1b8f11ba0674f44a529e628f860ebc, type: 3}
       propertyPath: tilemap
       value: 
@@ -84392,6 +84458,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pillImage: {fileID: 1177463138}
+  pillPickupPath: event:/Sfx/PillPickup
 --- !u!4 &1301534124 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3144710801505692258, guid: e78bb7cb7ef0a3a44a0268961c3d0e16,
@@ -84462,6 +84529,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   padImage: {fileID: 1033644241}
+  padPickupPath: event:/Sfx/PadPickup
 --- !u!114 &1316031754
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91631,6 +91699,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   linkedMessage: {fileID: 178314034}
   reuseable: 0
+  popUpMessPath: event:/UI/PopUpMess
 --- !u!61 &1385724059
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -92184,7 +92253,7 @@ RectTransform:
   - {fileID: 1765714762}
   - {fileID: 1160486222}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -92284,7 +92353,7 @@ RectTransform:
   - {fileID: 979967142}
   - {fileID: 1751694760}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -93223,7 +93292,7 @@ Transform:
   - {fileID: 1577688229}
   - {fileID: 1340943880}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1506175785
 MonoBehaviour:
@@ -115862,7 +115931,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 152.10986, y: -2.6071403, z: -136.1875}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 54694748}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -145963,6 +146033,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   linkedMessage: {fileID: 1810067745}
   reuseable: 0
+  popUpMessPath: event:/UI/PopUpMess
 --- !u!4 &1664162839639300539 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3144710801505692258, guid: e78bb7cb7ef0a3a44a0268961c3d0e16,

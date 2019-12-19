@@ -13,21 +13,42 @@ public class FMOD_LevelMusic : MonoBehaviour
     
     [Range(0, 1)]
     public float musicVolume = 1;
- 
+
     private EventInstance levelMusic;
     private PlayerController playerController;
+    private LevelController levelController;
 
     private void Start()
     {
         playerController = FindObjectOfType<PlayerController>();
+        levelController = FindObjectOfType<LevelController>();
         
         levelMusic = RuntimeManager.CreateInstance(musicEventPath);
         levelMusic.start();
+
+        // Randomize FMOD MusicIndex parameter on player re-spawn
+        playerController.OnRespawnEvent += () =>
+        {
+            int musicIndex = UnityEngine.Random.Range(0, 9);
+            levelMusic.setParameterByName("MusicIndex", musicIndex);
+            
+            Debug.Log(musicIndex); 
+        };
+            
+        // Randomize FMOD MusicIndex parameter on level change
+        levelController.onLevelChangeEvent += () =>
+        {
+            int musicIndex = UnityEngine.Random.Range(0, 9);
+            levelMusic.setParameterByName("MusicIndex", musicIndex);
+            
+            Debug.Log(musicIndex); 
+        };
     }
 
     private void Update()
     {
-        levelMusic.setParameterByName("ReverbStop", 1 - playerController.bulletTimePercentage);
+        // Call FMOD ReverbStop 2 parameter when player enters bullet time
+        levelMusic.setParameterByName("ReverbStop 2", 1 - playerController.bulletTimePercentage);
         levelMusic.setParameterByName("MasterVol", musicVolume);
 
     }

@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
+using FMODUnity;
+using FMOD.Studio;
+
 
 public class PlatformCounter : MonoBehaviour
 {
@@ -12,18 +15,27 @@ public class PlatformCounter : MonoBehaviour
     private PlayerController _playerController;
 
     public GameObject padImage;
+    
+    [Header("-- FMOD Event")]
+    [Space(20)]
+    [EventRef]
+    public string padPickupPath;
+    private EventInstance padPickup;
 
     private void Awake()
     {
         _playerController = FindObjectOfType<PlayerController>();
         _text = GetComponent<Text>();
+        
+        // FMOD
+        padPickup = RuntimeManager.CreateInstance(padPickupPath);
 
         //subscribe to pickup event
         _playerController.OnPadPickup += () => {
 
             padImage.GetComponent<Animator>().SetTrigger("pickup");
 
-            //TODO: SOUND - Play pickup sound.
+            padPickup.start(); // Play band-aid pickup sound
 
         };
     }
