@@ -84177,7 +84177,7 @@ PrefabInstance:
     - target: {fileID: 5457290457146480771, guid: 4b1b8f11ba0674f44a529e628f860ebc,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -13.5
+      value: -19.04
       objectReference: {fileID: 0}
     - target: {fileID: 5457290457146480771, guid: 4b1b8f11ba0674f44a529e628f860ebc,
         type: 3}
@@ -84275,6 +84275,11 @@ PrefabInstance:
       propertyPath: deathSpin
       value: event:/Sfx/DeathSpin
       objectReference: {fileID: 0}
+    - target: {fileID: 5457290457146480769, guid: 4b1b8f11ba0674f44a529e628f860ebc,
+        type: 3}
+      propertyPath: surfaceIndex
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 232158606, guid: 4b1b8f11ba0674f44a529e628f860ebc, type: 3}
       propertyPath: tilemap
       value: 
@@ -84320,6 +84325,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5112217799911385483, guid: 84597ed0a4277a445880c27265eeb280,
         type: 3}
+    - target: {fileID: 232158606, guid: 4b1b8f11ba0674f44a529e628f860ebc, type: 3}
+      propertyPath: dTileRemover
+      value: event:/Sfx/DTileRemover
+      objectReference: {fileID: 0}
     - target: {fileID: 232158607, guid: 4b1b8f11ba0674f44a529e628f860ebc, type: 3}
       propertyPath: exitBulletTimeDeadzone
       value: 0.675

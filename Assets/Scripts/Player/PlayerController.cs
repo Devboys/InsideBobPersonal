@@ -771,7 +771,6 @@ public class PlayerController : MonoBehaviour
 
     public void Implode() // Called when Respawn button is clicked
     {
-        //TODO: SOUND (The sound when the player is swinking)
         RuntimeManager.PlayOneShot(deathSwirl, transform.position); // Play death swirl sound
         
         velocity.x = velocity.y = 0;
@@ -780,8 +779,7 @@ public class PlayerController : MonoBehaviour
 
     public void SpawnBobplosion()
     {
-        //TODO: SOUND (The sound when the player explode after swinking)
-        RuntimeManager.PlayOneShot(deathSpin, transform.position);
+       RuntimeManager.PlayOneShot(deathSpin, transform.position); // Play sound for particle explosion
         
         var obj = Instantiate(bobplosionPrefab);
         obj.transform.position = transform.position;
@@ -852,7 +850,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //'respawn' at checkpoint
-        //TODO: SOUND (The sound when the player is expanding)
+        
         RuntimeManager.PlayOneShot(deathSwirl, transform.position); // Play death swirl sound
         
         _anim.SetTrigger("Respawn");

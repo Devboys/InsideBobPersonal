@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using FMODUnity;
+using FMOD.Studio;
 
 public class TileCollider : MonoBehaviour
 {
@@ -16,6 +18,11 @@ public class TileCollider : MonoBehaviour
     private LevelController levelController;
 
     public GameObject diseaseClearParticlePrefab;
+    
+    [Header("-- FMOD Event")]
+    [Space(20)]
+    [EventRef]
+    public string dTileRemover;
 
     private void Awake()
     {
@@ -51,6 +58,7 @@ public class TileCollider : MonoBehaviour
 
 
                     //TODO: SOUND - PLAY DISEASE TILE REMOVE SOUND HERE
+                    RuntimeManager.PlayOneShot(dTileRemover, transform.position); // Play disease tile remover sound
 
                 }
                 else if (tile == bacteriaTile)
